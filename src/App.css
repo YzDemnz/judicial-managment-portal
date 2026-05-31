@@ -1,3 +1,15 @@
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+}
+
 .site-shell {
   min-height: 100vh;
   color: #f5f7fb;
@@ -62,6 +74,10 @@
   display: flex;
   align-items: center;
   gap: 8px;
+}
+
+.mobile-nav-toggle {
+  display: none;
 }
 
 .topnav a {
@@ -249,7 +265,7 @@
   max-width: 740px;
   margin: 0;
   color: #ffffff;
-  font-size: clamp(46px, 7.6vw, 86px);
+  font-size: 72px;
   line-height: 0.98;
   font-weight: 880;
 }
@@ -258,8 +274,12 @@
   max-width: 650px;
   margin: 24px 0 0;
   color: #dce3ee;
-  font-size: clamp(17px, 2vw, 21px);
+  font-size: 20px;
   line-height: 1.58;
+}
+
+.mobile-support-note {
+  display: none;
 }
 
 .download-actions {
@@ -818,7 +838,7 @@
   max-width: 760px;
   margin: 0;
   color: #ffffff;
-  font-size: clamp(30px, 4vw, 48px);
+  font-size: 42px;
   line-height: 1.1;
 }
 
@@ -930,7 +950,7 @@
   display: inline-flex;
   align-items: center;
   gap: 12px;
-  font-size: clamp(21px, 3vw, 30px);
+  font-size: 28px;
   font-weight: 880;
 }
 
@@ -1036,7 +1056,7 @@
 .portal-card h1 {
   margin: 0;
   color: #ffffff;
-  font-size: clamp(36px, 5vw, 58px);
+  font-size: 48px;
   line-height: 1.02;
 }
 
@@ -1589,7 +1609,7 @@
 .confirm-card h1 {
   margin: 0;
   color: #ffffff;
-  font-size: clamp(32px, 5vw, 54px);
+  font-size: 46px;
   line-height: 1.02;
 }
 
@@ -1647,32 +1667,85 @@
 
 @media (max-width: 760px) {
   .topbar {
-    position: static;
-    flex-wrap: wrap;
-    gap: 12px;
+    position: sticky;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 10px 12px;
+    min-height: auto;
+    padding: 12px 16px;
   }
 
   .brand-lockup {
     min-width: 0;
-    flex: 1 1 100%;
+  }
+
+  .brand-mark {
+    width: 38px;
+    height: 38px;
+  }
+
+  .brand-lockup strong {
+    font-size: 16px;
+  }
+
+  .mobile-nav-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    min-height: 40px;
+    border: 1px solid rgba(184, 194, 209, 0.32);
+    border-radius: 7px;
+    padding: 0 11px;
+    background: rgba(255, 255, 255, 0.07);
+    color: #eef3fb;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 850;
+    cursor: pointer;
   }
 
   .topnav {
-    order: 3;
+    display: none;
+    grid-column: 1 / -1;
+    flex-direction: column;
+    align-items: stretch;
     width: 100%;
-    overflow-x: auto;
+    border: 1px solid rgba(184, 194, 209, 0.22);
+    border-radius: 10px;
+    padding: 8px;
+    background: rgba(25, 31, 40, 0.98);
+    overflow: visible;
+  }
+
+  .topnav.open {
+    display: flex;
+  }
+
+  .topnav a {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 12px;
   }
 
   .nav-actions {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
     width: 100%;
   }
 
   .nav-login,
   .nav-session-loading,
   .account-menu,
-  .account-trigger,
+  .account-trigger {
+    width: 100%;
+    min-width: 0;
+  }
+
   .nav-download {
-    flex: 1;
+    min-width: 112px;
   }
 
   .account-menu {
@@ -1688,14 +1761,90 @@
   }
 
   .account-dropdown {
-    right: auto;
+    position: absolute;
     left: 0;
-    width: min(320px, calc(100vw - 40px));
+    right: auto;
+    width: min(340px, calc(100vw - 32px));
   }
 
   .hero-section {
+    grid-template-columns: 1fr;
     min-height: auto;
-    padding-top: 42px;
+    padding: 36px 16px 42px;
+  }
+
+  .hero-content h1 {
+    font-size: 42px;
+    line-height: 1;
+  }
+
+  .hero-copy {
+    margin-top: 18px;
+    font-size: 16px;
+    line-height: 1.55;
+  }
+
+  .mobile-support-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 11px;
+    margin-top: 18px;
+    border: 1px solid rgba(125, 211, 252, 0.28);
+    border-radius: 10px;
+    padding: 13px;
+    background: rgba(12, 74, 110, 0.26);
+    color: #d8f3ff;
+  }
+
+  .mobile-support-note svg {
+    flex: 0 0 auto;
+    margin-top: 2px;
+  }
+
+  .mobile-support-note span {
+    display: grid;
+    gap: 4px;
+  }
+
+  .mobile-support-note strong {
+    color: #ffffff;
+    font-size: 14px;
+  }
+
+  .mobile-support-note small {
+    color: #d8f3ff;
+    font-size: 12px;
+    line-height: 1.45;
+  }
+
+  .preview-stage {
+    display: none;
+  }
+
+  .access-panel {
+    margin-top: 18px;
+    padding: 14px;
+    border-radius: 10px;
+  }
+
+  .access-copy strong {
+    font-size: 19px;
+  }
+
+  .access-form input,
+  .confirm-resend-form input {
+    min-height: 48px;
+    font-size: 16px;
+  }
+
+  .access-buttons button,
+  .access-buttons a,
+  .google-button {
+    min-height: 48px;
+  }
+
+  .trust-row {
+    margin-top: 18px;
   }
 
   .download-actions,
@@ -1705,6 +1854,7 @@
 
   .download-button {
     min-width: 0;
+    min-height: 58px;
   }
 
   .trust-row,
@@ -1725,6 +1875,66 @@
     flex-direction: column;
   }
 
+  .section-band,
+  .security-band,
+  .install-band {
+    padding-inline: 16px;
+  }
+
+  .section-band,
+  .security-band {
+    padding-block: 42px;
+  }
+
+  .section-header h2,
+  .security-band h2 {
+    font-size: 30px;
+  }
+
+  .feature-card {
+    min-height: auto;
+  }
+
+  .install-band {
+    padding-block: 32px;
+  }
+
+  .install-guide {
+    border-radius: 10px;
+  }
+
+  .install-guide summary {
+    min-height: 64px;
+    padding: 0 16px;
+  }
+
+  .install-guide summary span {
+    font-size: 22px;
+  }
+
+  .install-step {
+    min-height: auto;
+  }
+
+  .defender-note {
+    flex-direction: column;
+  }
+
+  .portal-page {
+    min-height: calc(100vh - 112px);
+    padding: 34px 16px;
+  }
+
+  .portal-heading h1,
+  .portal-card h1,
+  .confirm-card h1 {
+    font-size: 32px;
+  }
+
+  .portal-card {
+    padding: 16px;
+  }
+
   .window-actions {
     display: none;
   }
@@ -1735,5 +1945,56 @@
 
   .assistant-strip button {
     width: 100%;
+  }
+
+  .enterprise-footer {
+    padding: 28px 16px 20px;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .footer-column {
+    border-bottom: 1px solid #d7dce3;
+    padding: 16px 0;
+  }
+
+  .footer-column:first-child {
+    padding-top: 0;
+  }
+
+  .footer-column a {
+    min-height: 32px;
+    font-size: 13px;
+  }
+
+  .footer-bottom {
+    align-items: flex-start;
+    flex-direction: column;
+    margin-top: 18px;
+  }
+}
+
+@media (max-width: 390px) {
+  .brand-lockup {
+    gap: 9px;
+  }
+
+  .brand-lockup strong {
+    font-size: 15px;
+  }
+
+  .brand-lockup small {
+    font-size: 11px;
+  }
+
+  .mobile-nav-toggle span {
+    display: none;
+  }
+
+  .hero-content h1 {
+    font-size: 38px;
   }
 }

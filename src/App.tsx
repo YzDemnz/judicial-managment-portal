@@ -26,6 +26,7 @@ import {
   LogIn,
   LogOut,
   MailCheck,
+  Menu,
   MessageSquareText,
   Scale,
   Settings,
@@ -35,6 +36,7 @@ import {
   UserCheck,
   UserPlus,
   Users,
+  X,
 } from 'lucide-react'
 import companyLogo from './assets/company-logo.svg'
 import { supabase } from './lib/supabase'
@@ -271,6 +273,7 @@ function App() {
   const [sessionLoading, setSessionLoading] = useState(true)
   const [appProfile, setAppProfile] = useState<AppProfile | null>(null)
   const [profileLoading, setProfileLoading] = useState(false)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   useEffect(() => {
     let mounted = true
@@ -349,14 +352,16 @@ function App() {
   }
 
   const handleTopbarSignOut = async () => {
+    setMobileMenuOpen(false)
     await supabase.auth.signOut()
   }
+  const closeMobileMenu = () => setMobileMenuOpen(false)
   const canAccessAdmin = isOwnerAdminAccount(session, appProfile)
 
   return (
     <main className="site-shell">
-      <header className="topbar" aria-label="Principal">
-        <a className="brand-lockup" href={pagePath('/')} aria-label="Judicial Managment">
+      <header className={`topbar ${mobileMenuOpen ? 'mobile-open' : ''}`} aria-label="Principal">
+        <a className="brand-lockup" href={pagePath('/')} aria-label="Judicial Managment" onClick={closeMobileMenu}>
           <img src={companyLogo} alt="" className="brand-mark" />
           <span>
             <strong>Judicial Managment</strong>
@@ -364,12 +369,24 @@ function App() {
           </span>
         </a>
 
-        <nav className="topnav" aria-label="Secciones">
-          <a href={pageHash('trabajo')}>Trabajo</a>
-          <a href={pageHash('seguridad')}>Seguridad</a>
-          <a href={pageHash('como-instalar')}>Como instalar</a>
-          <a href={pageHash('descargas')}>Descargas</a>
-          <a href={pageHash('acceso')}>Acceso</a>
+        <button
+          className="mobile-nav-toggle"
+          type="button"
+          aria-controls="site-navigation"
+          aria-expanded={mobileMenuOpen}
+          aria-label={mobileMenuOpen ? 'Cerrar menu' : 'Abrir menu'}
+          onClick={() => setMobileMenuOpen((open) => !open)}
+        >
+          {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+          <span>Menu</span>
+        </button>
+
+        <nav id="site-navigation" className={`topnav ${mobileMenuOpen ? 'open' : ''}`} aria-label="Secciones">
+          <a href={pageHash('trabajo')} onClick={closeMobileMenu}>Trabajo</a>
+          <a href={pageHash('seguridad')} onClick={closeMobileMenu}>Seguridad</a>
+          <a href={pageHash('como-instalar')} onClick={closeMobileMenu}>Como instalar</a>
+          <a href={pageHash('descargas')} onClick={closeMobileMenu}>Descargas</a>
+          <a href={pageHash('acceso')} onClick={closeMobileMenu}>Acceso</a>
         </nav>
 
         <div className="nav-actions">
@@ -397,6 +414,7 @@ function App() {
             href={WINDOWS_DOWNLOAD_URL}
             download={WINDOWS_FILE_NAME}
             aria-label="Descargar Judicial Managment para Windows"
+            onClick={closeMobileMenu}
           >
             <Download size={18} />
             <span>Windows</span>
@@ -440,6 +458,14 @@ function LandingPage({ session, sessionLoading }: LandingPageProps) {
             clientes, movimientos, calendario, reportes y comunicacion interna desde una
             aplicacion profesional.
           </p>
+
+          <div className="mobile-support-note">
+            <Download size={19} />
+            <span>
+              <strong>Tambien puedes empezar desde tu celular.</strong>
+              <small>Crea tu cuenta y confirma el correo aqui; descarga el instalador cuando estes en tu computadora Windows.</small>
+            </span>
+          </div>
 
           <div id="descargas" className="download-actions" aria-label="Descargas">
             <a
