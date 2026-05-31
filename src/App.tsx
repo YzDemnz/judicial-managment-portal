@@ -1816,6 +1816,7 @@ function AuthConfirmPage({ session, sessionLoading }: AuthConfirmPageProps) {
           await supabase.auth.getSession()
         }
 
+        await supabase.rpc('ensure_own_app_profile').then(() => undefined)
         window.history.replaceState({}, document.title, pagePath(AUTH_CONFIRM_PATH))
 
         if (!mounted) return
