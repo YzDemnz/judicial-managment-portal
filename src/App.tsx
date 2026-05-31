@@ -62,6 +62,8 @@ function pageHash(hash: string) {
 }
 
 function currentAppPath() {
+  if (window.location.search.includes(AUTH_CONFIRM_QUERY)) return AUTH_CONFIRM_PATH
+
   const base = getBasePath()
   const cleanBase = base === '/' ? '' : base.replace(/\/$/, '')
   const pathname = window.location.pathname
@@ -79,6 +81,7 @@ const WINDOWS_FILE_NAME = 'Judicial Managment Setup 1.0.1.exe'
 const MAC_FILE_NAME = 'Judicial Managment mac universal.dmg'
 const TERMS_DOC_URL = assetPath('/docs/Judicial-Managment-Terminos-y-Condiciones.docx')
 const AUTH_CONFIRM_PATH = '/auth/confirm'
+const AUTH_CONFIRM_QUERY = 'auth=confirm'
 const DESKTOP_APP_URL = 'judicial-managment://auth/callback?source=web'
 const OWNER_ADMIN_EMAIL = 'marod_legal@outlook.com'
 const GOOGLE_AUTH_ENABLED = false
@@ -189,7 +192,7 @@ interface ChatMessagePreview {
   created_at: string
 }
 
-const getConfirmRedirectUrl = () => `${window.location.origin}${pagePath(AUTH_CONFIRM_PATH)}`
+const getConfirmRedirectUrl = () => `${window.location.origin}${pagePath('/')}?${AUTH_CONFIRM_QUERY}`
 const isOwnerAdminAccount = (session: Session | null, profile: AppProfile | null) =>
   session?.user?.email?.toLowerCase() === OWNER_ADMIN_EMAIL && profile?.role === 'owner'
 
@@ -1817,7 +1820,7 @@ function AuthConfirmPage({ session, sessionLoading }: AuthConfirmPageProps) {
         }
 
         await supabase.rpc('ensure_own_app_profile').then(() => undefined)
-        window.history.replaceState({}, document.title, pagePath(AUTH_CONFIRM_PATH))
+        window.history.replaceState({}, document.title, pagePath('/'))
 
         if (!mounted) return
         setStatus('success')

@@ -6,7 +6,7 @@ Incluye:
 
 - pagina de descarga del instalador Windows;
 - registro e inicio de sesion con Supabase Auth;
-- confirmacion de correo en `/auth/confirm`;
+- confirmacion de correo con `?auth=confirm`;
 - botones para descargar o abrir la app de escritorio.
 
 ## Desarrollo local

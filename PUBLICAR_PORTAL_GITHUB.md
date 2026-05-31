@@ -17,7 +17,8 @@ Este portal ya esta preparado para GitHub Pages con:
    `https://TU_USUARIO.github.io/judicial-managment-portal/`
 6. En Supabase, agrega estas URLs en `Authentication > URL Configuration`:
    - Site URL: `https://TU_USUARIO.github.io/judicial-managment-portal/`
-   - Redirect URL: `https://TU_USUARIO.github.io/judicial-managment-portal/auth/confirm`
+   - Redirect URL: `https://TU_USUARIO.github.io/judicial-managment-portal/?auth=confirm`
+   - Redirect URL: `https://TU_USUARIO.github.io/judicial-managment-portal/**`
 
 ## Mac
 

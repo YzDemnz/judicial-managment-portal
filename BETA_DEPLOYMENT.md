@@ -4,7 +4,7 @@ Esta pagina funciona como puente de beta:
 
 - presenta la app y descarga el instalador de Windows;
 - permite crear cuenta e iniciar sesion con Supabase Auth;
-- confirma correos en `/auth/confirm`;
+- confirma correos con `?auth=confirm`;
 - queda lista para publicarse despues en un dominio real.
 
 ## Variables de entorno
@@ -24,7 +24,7 @@ Para desarrollo local:
 
 - Site URL: `http://127.0.0.1:5173`
 - Additional Redirect URLs:
-  - `http://127.0.0.1:5173/auth/confirm`
+  - `http://127.0.0.1:5173/?auth=confirm`
   - `http://127.0.0.1:5173/**`
   - `judicial-managment://auth/callback`
 
@@ -32,7 +32,7 @@ Cuando la web este publicada, agregar tambien:
 
 - Site URL: `https://TU-DOMINIO.com`
 - Additional Redirect URLs:
-  - `https://TU-DOMINIO.com/auth/confirm`
+  - `https://TU-DOMINIO.com/?auth=confirm`
   - `https://TU-DOMINIO.com/**`
 
 ## Plantilla de correo recomendada
@@ -40,7 +40,7 @@ Cuando la web este publicada, agregar tambien:
 En `Authentication > Email Templates > Confirm signup`, usar un enlace que mande el `token_hash` a la web:
 
 ```html
-<a href="{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=email">
+<a href="{{ .SiteURL }}/?auth=confirm&token_hash={{ .TokenHash }}&type=email">
   Confirmar correo
 </a>
 ```
