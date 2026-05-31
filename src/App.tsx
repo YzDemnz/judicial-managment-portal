@@ -177,6 +177,21 @@ const securityItems = [
   'Instalador Windows x64 generado con Electron Builder',
 ]
 
+const installSteps = [
+  {
+    title: 'Crea tu cuenta',
+    copy: 'Entra al portal, escribe tu correo real y una contrasena segura en Crear cuenta.',
+  },
+  {
+    title: 'Confirma tu correo',
+    copy: 'Abre el correo de verificacion y espera a que el portal confirme la cuenta.',
+  },
+  {
+    title: 'Descarga e instala',
+    copy: 'Descarga la version para Windows, ejecuta el instalador e inicia sesion con la misma cuenta.',
+  },
+]
+
 type AuthMode = 'login' | 'signup'
 type ConfirmStatus = 'verifying' | 'success' | 'error'
 type AppRole = 'owner' | 'admin' | 'user'
@@ -352,6 +367,7 @@ function App() {
         <nav className="topnav" aria-label="Secciones">
           <a href={pageHash('trabajo')}>Trabajo</a>
           <a href={pageHash('seguridad')}>Seguridad</a>
+          <a href={pageHash('como-instalar')}>Como instalar</a>
           <a href={pageHash('descargas')}>Descargas</a>
           <a href={pageHash('acceso')}>Acceso</a>
         </nav>
@@ -552,6 +568,43 @@ function LandingPage({ session, sessionLoading }: LandingPageProps) {
             </div>
           </div>
         </div>
+      </section>
+
+      <section id="como-instalar" className="install-band">
+        <details className="install-guide">
+          <summary>
+            <span>
+              <Download size={18} />
+              Como instalar
+            </span>
+            <ChevronDown className="install-arrow" size={20} />
+          </summary>
+
+          <div className="install-guide-content">
+            <div className="install-steps">
+              {installSteps.map((step, index) => (
+                <article className="install-step" key={step.title}>
+                  <strong>{index + 1}</strong>
+                  <span>
+                    <h3>{step.title}</h3>
+                    <p>{step.copy}</p>
+                  </span>
+                </article>
+              ))}
+            </div>
+
+            <div className="defender-note">
+              <ShieldAlert size={24} />
+              <span>
+                <strong>Advertencia de Windows Defender</strong>
+                <p>
+                  Al ser una beta cerrada y no contar todavia con un certificado de firma digital,
+                  Windows no reconoce la app con reputacion suficiente y puede advertir que no la conoce.
+                </p>
+              </span>
+            </div>
+          </div>
+        </details>
       </section>
 
       <section id="trabajo" className="section-band">
@@ -1535,6 +1588,7 @@ function EnterpriseFooter() {
       links: [
         { label: 'Descargar Windows', href: WINDOWS_DOWNLOAD_URL, download: WINDOWS_FILE_NAME },
         { label: 'Suscripcion Mercado Pago', href: MERCADO_PAGO_PAYMENT_URL },
+        { label: 'Como instalar', href: pageHash('como-instalar') },
         { label: 'Portal beta', href: pageHash('acceso') },
         { label: 'Mac proximamente', href: pageHash('descargas') },
       ],
