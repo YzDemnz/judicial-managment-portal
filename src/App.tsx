@@ -239,14 +239,20 @@ function App() {
 
     const loadProfile = async () => {
       setProfileLoading(true)
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from('app_profiles')
-        .select('id,email,role,created_at,updated_at')
+        .select('id,email,role,account_status,subscription_status,trial_started_at,trial_ends_at,ban_until,ban_reason,disabled_reason,last_seen_at,usage_seconds,created_at,updated_at')
         .eq('id', userId)
         .maybeSingle()
 
+      let nextProfile = data as AppProfile | null
+      if (!nextProfile || error) {
+        const syncResult = await supabase.rpc('ensure_own_app_profile')
+        nextProfile = (syncResult.data as AppProfile | null) ?? nextProfile
+      }
+
       if (mounted) {
-        setAppProfile((data as AppProfile | null) ?? null)
+        setAppProfile(nextProfile)
         setProfileLoading(false)
       }
     }
@@ -1589,6 +1595,37 @@ function AuthPanel({ session, sessionLoading }: AuthPanelProps) {
     }
   }
 
+  const handleResendConfirmation = async () => {
+    setError('')
+    setMessage('')
+
+    const cleanEmail = email.trim()
+    if (!cleanEmail) {
+      setError('Escribe el correo para reenviar la verificacion.')
+      return
+    }
+
+    setLoading(true)
+
+    try {
+      const { error: resendError } = await supabase.auth.resend({
+        type: 'signup',
+        email: cleanEmail,
+        options: {
+          emailRedirectTo: getConfirmRedirectUrl(),
+        },
+      })
+
+      if (resendError) throw resendError
+
+      setMessage('Listo. Enviamos un nuevo correo de verificacion con el enlace actualizado.')
+    } catch (resendError) {
+      setError(resendError instanceof Error ? resendError.message : 'No se pudo reenviar el correo de verificacion.')
+    } finally {
+      setLoading(false)
+    }
+  }
+
   const handleGoogleLogin = async () => {
     setError('')
     setMessage('')
@@ -1726,6 +1763,9 @@ function AuthPanel({ session, sessionLoading }: AuthPanelProps) {
         <span>G</span>
         Continuar con Google
       </button>
+      <button className="text-action" type="button" onClick={handleResendConfirmation} disabled={loading}>
+        Reenviar correo de verificacion
+      </button>
     </form>
   )
 }
@@ -1738,6 +1778,10 @@ interface AuthConfirmPageProps {
 function AuthConfirmPage({ session, sessionLoading }: AuthConfirmPageProps) {
   const [status, setStatus] = useState<ConfirmStatus>('verifying')
   const [detail, setDetail] = useState('Estamos validando tu enlace seguro con Supabase.')
+  const [resendEmail, setResendEmail] = useState('')
+  const [resending, setResending] = useState(false)
+  const [resendMessage, setResendMessage] = useState('')
+  const [resendError, setResendError] = useState('')
 
   useEffect(() => {
     let mounted = true
@@ -1792,6 +1836,37 @@ function AuthConfirmPage({ session, sessionLoading }: AuthConfirmPageProps) {
   }, [])
 
   const confirmedEmail = session?.user?.email
+  const handleConfirmPageResend = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    setResendMessage('')
+    setResendError('')
+
+    const cleanEmail = resendEmail.trim()
+    if (!cleanEmail) {
+      setResendError('Escribe el correo que usaste para crear la cuenta.')
+      return
+    }
+
+    setResending(true)
+
+    try {
+      const { error } = await supabase.auth.resend({
+        type: 'signup',
+        email: cleanEmail,
+        options: {
+          emailRedirectTo: getConfirmRedirectUrl(),
+        },
+      })
+
+      if (error) throw error
+
+      setResendMessage('Te enviamos un nuevo correo de verificacion. Usa el enlace mas reciente.')
+    } catch (error) {
+      setResendError(error instanceof Error ? error.message : 'No se pudo reenviar el correo.')
+    } finally {
+      setResending(false)
+    }
+  }
 
   return (
     <main className="site-shell confirm-shell">
@@ -1835,12 +1910,37 @@ function AuthConfirmPage({ session, sessionLoading }: AuthConfirmPageProps) {
             <AlertCircle className="confirm-icon error" size={46} />
             <h1>No se pudo confirmar</h1>
             <p>{detail}</p>
-            <a className="download-button secondary" href={pageHash('acceso')}>
-              <MailCheck size={20} />
-              <span>
-                Volver al portal
-                <small>Solicitar otro correo</small>
-              </span>
+            <form className="confirm-resend-form" onSubmit={handleConfirmPageResend}>
+              {resendError && (
+                <div className="form-alert error">
+                  <AlertCircle size={17} />
+                  <span>{resendError}</span>
+                </div>
+              )}
+              {resendMessage && (
+                <div className="form-alert success">
+                  <MailCheck size={17} />
+                  <span>{resendMessage}</span>
+                </div>
+              )}
+              <input
+                type="email"
+                value={resendEmail}
+                onChange={(event) => setResendEmail(event.target.value)}
+                placeholder="correo@empresa.com"
+                aria-label="Correo para reenviar verificacion"
+                required
+              />
+              <button className="download-button secondary" type="submit" disabled={resending}>
+                {resending ? <Loader2 className="spin" size={20} /> : <MailCheck size={20} />}
+                <span>
+                  Reenviar verificacion
+                  <small>Genera un enlace nuevo</small>
+                </span>
+              </button>
+            </form>
+            <a className="portal-primary-link" href={pageHash('acceso')}>
+              Volver al portal
             </a>
           </>
         )}
