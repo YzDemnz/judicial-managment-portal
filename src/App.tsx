@@ -61,8 +61,65 @@ function pageHash(hash: string) {
   return `${pagePath('/')}#${cleanHash}`
 }
 
+const AUTH_CONFIRM_PATH = '/auth/confirm'
+const AUTH_CONFIRM_QUERY = 'auth=confirm'
+const AUTH_CONFIRM_QUERY_KEY = 'auth'
+const AUTH_CONFIRM_QUERY_VALUE = 'confirm'
+const AUTH_CALLBACK_SIGNAL_KEYS = [
+  'token_hash',
+  'code',
+  'access_token',
+  'refresh_token',
+  'error',
+  'error_code',
+  'error_description',
+  'expires_at',
+  'expires_in',
+  'provider_token',
+  'provider_refresh_token',
+]
+const AUTH_CALLBACK_TYPES = new Set(['signup', 'email', 'magiclink', 'recovery', 'invite', 'email_change', 'reauthentication'])
+
+function appendAuthCallbackParams(targetParams: URLSearchParams, rawParams: string) {
+  const cleanParams = rawParams.replace(/^[?#]/, '')
+
+  if (!cleanParams || !cleanParams.includes('=')) return
+
+  const sourceParams = new URLSearchParams(cleanParams)
+  sourceParams.forEach((value, key) => {
+    if (!targetParams.has(key)) {
+      targetParams.set(key, value)
+    }
+  })
+}
+
+function getAuthCallbackParams() {
+  const url = new URL(window.location.href)
+  const authParams = new URLSearchParams(url.search)
+  const hash = url.hash.replace(/^#/, '')
+
+  if (hash) {
+    const queryIndex = hash.indexOf('?')
+    appendAuthCallbackParams(authParams, queryIndex >= 0 ? hash.slice(queryIndex + 1) : hash)
+  }
+
+  return authParams
+}
+
+function isAuthConfirmationUrl() {
+  const url = new URL(window.location.href)
+  const authParams = getAuthCallbackParams()
+  const authType = authParams.get('type')?.toLowerCase()
+
+  if (authParams.get(AUTH_CONFIRM_QUERY_KEY) === AUTH_CONFIRM_QUERY_VALUE) return true
+  if (url.pathname.endsWith(AUTH_CONFIRM_PATH)) return true
+  if (window.location.hash.includes(AUTH_CONFIRM_PATH)) return true
+
+  return AUTH_CALLBACK_SIGNAL_KEYS.some((key) => authParams.has(key)) || Boolean(authType && AUTH_CALLBACK_TYPES.has(authType))
+}
+
 function currentAppPath() {
-  if (window.location.search.includes(AUTH_CONFIRM_QUERY)) return AUTH_CONFIRM_PATH
+  if (isAuthConfirmationUrl()) return AUTH_CONFIRM_PATH
 
   const base = getBasePath()
   const cleanBase = base === '/' ? '' : base.replace(/\/$/, '')
@@ -80,8 +137,6 @@ const MAC_DOWNLOAD_URL = assetPath('/downloads/Judicial-Managment-mac-universal.
 const WINDOWS_FILE_NAME = 'Judicial Managment Setup 1.0.1.exe'
 const MAC_FILE_NAME = 'Judicial Managment mac universal.dmg'
 const TERMS_DOC_URL = assetPath('/docs/Judicial-Managment-Terminos-y-Condiciones.docx')
-const AUTH_CONFIRM_PATH = '/auth/confirm'
-const AUTH_CONFIRM_QUERY = 'auth=confirm'
 const DESKTOP_APP_URL = 'judicial-managment://auth/callback?source=web'
 const OWNER_ADMIN_EMAIL = 'marod_legal@outlook.com'
 const GOOGLE_AUTH_ENABLED = false
@@ -1790,12 +1845,13 @@ function AuthConfirmPage({ session, sessionLoading }: AuthConfirmPageProps) {
     let mounted = true
 
     const verifyLink = async () => {
-      const currentUrl = new URL(window.location.href)
-      const hashParams = new URLSearchParams(window.location.hash.replace(/^#/, ''))
-      const authError = currentUrl.searchParams.get('error_description') ?? hashParams.get('error_description')
-      const tokenHash = currentUrl.searchParams.get('token_hash')
-      const type = currentUrl.searchParams.get('type')
-      const code = currentUrl.searchParams.get('code')
+      const authParams = getAuthCallbackParams()
+      const authError = authParams.get('error_description') ?? authParams.get('error')
+      const tokenHash = authParams.get('token_hash')
+      const type = authParams.get('type')
+      const code = authParams.get('code')
+      const accessToken = authParams.get('access_token')
+      const refreshToken = authParams.get('refresh_token')
 
       if (authError) {
         if (!mounted) return
@@ -1815,11 +1871,28 @@ function AuthConfirmPage({ session, sessionLoading }: AuthConfirmPageProps) {
         } else if (code) {
           const { error } = await supabase.auth.exchangeCodeForSession(code)
           if (error) throw error
+        } else if (accessToken && refreshToken) {
+          const { error } = await supabase.auth.setSession({
+            access_token: accessToken,
+            refresh_token: refreshToken,
+          })
+
+          if (error) throw error
         } else {
-          await supabase.auth.getSession()
+          const { data, error } = await supabase.auth.getSession()
+
+          if (error) throw error
+          if (!data.session && authParams.get(AUTH_CONFIRM_QUERY_KEY) !== AUTH_CONFIRM_QUERY_VALUE) {
+            throw new Error('El enlace no contiene datos de confirmacion. Solicita un correo nuevo e intenta de nuevo.')
+          }
         }
 
-        await supabase.rpc('ensure_own_app_profile').then(() => undefined)
+        try {
+          await supabase.rpc('ensure_own_app_profile')
+        } catch {
+          // La sincronizacion del perfil no debe bloquear la confirmacion del correo.
+        }
+
         window.history.replaceState({}, document.title, pagePath('/'))
 
         if (!mounted) return
