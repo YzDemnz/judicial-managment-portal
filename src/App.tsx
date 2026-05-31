@@ -32,6 +32,7 @@ import {
   Settings,
   ShieldAlert,
   ShieldCheck,
+  Smartphone,
   Sparkles,
   UserCheck,
   UserPlus,
@@ -143,6 +144,7 @@ const DESKTOP_APP_URL = 'judicial-managment://auth/callback?source=web'
 const OWNER_ADMIN_EMAIL = 'marod_legal@outlook.com'
 const GOOGLE_AUTH_ENABLED = false
 const MERCADO_PAGO_PAYMENT_URL = 'https://www.mercadopago.com.mx/subscriptions/checkout?preapproval_plan_id=8cb4ab0ac7d343e4a97a31451831f58a'
+const MOBILE_REPO_URL = 'https://github.com/YzDemnz/judicial-managment-mobile'
 
 const productHighlights = [
   { label: 'Expedientes', value: 'Gestion por materia, juzgado y estatus' },
@@ -385,6 +387,7 @@ function App() {
           <a href={pageHash('trabajo')} onClick={closeMobileMenu}>Trabajo</a>
           <a href={pageHash('seguridad')} onClick={closeMobileMenu}>Seguridad</a>
           <a href={pageHash('como-instalar')} onClick={closeMobileMenu}>Como instalar</a>
+          <a href={pageHash('movil')} onClick={closeMobileMenu}>Movil</a>
           <a href={pageHash('descargas')} onClick={closeMobileMenu}>Descargas</a>
           <a href={pageHash('acceso')} onClick={closeMobileMenu}>Acceso</a>
         </nav>
@@ -504,6 +507,17 @@ function LandingPage({ session, sessionLoading }: LandingPageProps) {
               <span>
                 Suscribirse
                 <small>Mercado Pago mensual</small>
+              </span>
+            </a>
+
+            <a
+              className="download-button mobile"
+              href={pageHash('movil')}
+            >
+              <Smartphone size={21} />
+              <span>
+                App movil
+                <small>Android/iPhone en beta</small>
               </span>
             </a>
           </div>
@@ -631,6 +645,41 @@ function LandingPage({ session, sessionLoading }: LandingPageProps) {
             </div>
           </div>
         </details>
+      </section>
+
+      <section id="movil" className="mobile-band">
+        <div className="mobile-copy">
+          <p className="eyebrow">
+            <Smartphone size={18} />
+            Version celular
+          </p>
+          <h2>Judicial Managment Mobile esta en preparacion.</h2>
+          <p>
+            La app movil ya esta separada en React Native/Expo para iniciar sesion con la misma cuenta
+            y preparar expedientes, calendario, chat, Juris, clientes, laboral y archivo desde celular.
+          </p>
+        </div>
+
+        <div className="mobile-download-grid">
+          <article>
+            <IonAndroidIcon />
+            <h3>Android</h3>
+            <p>APK beta en preparacion. Primero se probara internamente antes de compartir instalador.</p>
+            <span>Proximamente</span>
+          </article>
+          <article>
+            <Apple size={28} />
+            <h3>iPhone</h3>
+            <p>Version iOS planeada por TestFlight cuando tengamos cuenta y firma de Apple.</p>
+            <span>Proximamente</span>
+          </article>
+          <article>
+            <ExternalLink size={28} />
+            <h3>Repositorio</h3>
+            <p>Codigo movil separado para mantener ordenadas las versiones web, escritorio y celular.</p>
+            <a href={MOBILE_REPO_URL} target="_blank" rel="noreferrer">Ver proyecto</a>
+          </article>
+        </div>
       </section>
 
       <section id="trabajo" className="section-band">
@@ -1615,6 +1664,7 @@ function EnterpriseFooter() {
         { label: 'Descargar Windows', href: WINDOWS_DOWNLOAD_URL, download: WINDOWS_FILE_NAME },
         { label: 'Suscripcion Mercado Pago', href: MERCADO_PAGO_PAYMENT_URL },
         { label: 'Como instalar', href: pageHash('como-instalar') },
+        { label: 'App movil', href: pageHash('movil') },
         { label: 'Portal beta', href: pageHash('acceso') },
         { label: 'Mac proximamente', href: pageHash('descargas') },
       ],
@@ -1678,6 +1728,15 @@ function EnterpriseFooter() {
         <span>Alpha/Beta privada</span>
       </div>
     </footer>
+  )
+}
+
+function IonAndroidIcon() {
+  return (
+    <svg aria-hidden="true" viewBox="0 0 24 24" width="28" height="28" fill="none">
+      <path d="M7 9h10v8a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2V9Z" stroke="currentColor" strokeWidth="1.8" />
+      <path d="M8.5 7.5 7 5M15.5 7.5 17 5M9 12h.01M15 12h.01M5 10v5M19 10v5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+    </svg>
   )
 }
 
