@@ -500,26 +500,13 @@ function LandingPage({ session, sessionLoading }: LandingPageProps) {
             </a>
 
             <a
-              className="download-button payment"
-              href={MERCADO_PAGO_PAYMENT_URL}
-              target="_blank"
-              rel="noreferrer"
-            >
-              <CreditCard size={21} />
-              <span>
-                Suscribirse
-                <small>Mercado Pago mensual</small>
-              </span>
-            </a>
-
-            <a
               className="download-button mobile"
-              href={pageHash('movil')}
+              href={MOBILE_ANDROID_APK_URL}
             >
               <Smartphone size={21} />
               <span>
-                App movil
-                <small>Android/iPhone en beta</small>
+                Descargar app movil
+                <small>APK Android beta</small>
               </span>
             </a>
           </div>
@@ -667,10 +654,7 @@ function LandingPage({ session, sessionLoading }: LandingPageProps) {
             <IonAndroidIcon />
             <h3>Android</h3>
             <p>APK beta instalable generado desde el repositorio movil. Tamano aproximado: 69 MB.</p>
-            <a href={MOBILE_ANDROID_APK_URL}>
-              <Download size={15} />
-              Descargar APK
-            </a>
+            <span>Disponible desde el boton superior</span>
           </article>
           <article>
             <Apple size={28} />
@@ -732,6 +716,33 @@ function LandingPage({ session, sessionLoading }: LandingPageProps) {
             </div>
           ))}
         </div>
+      </section>
+
+      <section id="suscripcion" className="subscription-band">
+        <div>
+          <p className="eyebrow">
+            <CreditCard size={18} />
+            Licencia beta
+          </p>
+          <h2>Suscripcion mensual cuando quieras activar el plan.</h2>
+          <p>
+            Dejamos el pago fuera del primer vistazo para que la pagina respire mejor.
+            El enlace sigue disponible para usuarios que ya quieran apoyar la beta cerrada.
+          </p>
+        </div>
+
+        <a
+          className="download-button payment lower-payment"
+          href={MERCADO_PAGO_PAYMENT_URL}
+          target="_blank"
+          rel="noreferrer"
+        >
+          <CreditCard size={21} />
+          <span>
+            Suscribirse
+            <small>Mercado Pago mensual</small>
+          </span>
+        </a>
       </section>
 
       <EnterpriseFooter />
