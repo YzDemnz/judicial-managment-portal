@@ -1112,9 +1112,11 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 7px;
   width: fit-content;
   min-height: 36px;
   margin-top: 18px;
+  border: 1px solid rgba(216, 194, 125, 0.24);
   border-radius: 7px;
   padding: 0 11px;
   background: rgba(216, 194, 125, 0.14);
@@ -1122,6 +1124,18 @@ body {
   font-size: 12px;
   font-weight: 900;
   text-decoration: none;
+  transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+}
+
+.mobile-download-grid a + a {
+  margin-top: 10px;
+  background: rgba(148, 163, 184, 0.15);
+  color: #dbe4ef;
+}
+
+.mobile-download-grid a:hover {
+  transform: translateY(-1px);
+  border-color: rgba(243, 221, 155, 0.5);
 }
 
 .portal-page {

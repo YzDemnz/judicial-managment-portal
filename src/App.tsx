@@ -145,6 +145,8 @@ const OWNER_ADMIN_EMAIL = 'marod_legal@outlook.com'
 const GOOGLE_AUTH_ENABLED = false
 const MERCADO_PAGO_PAYMENT_URL = 'https://www.mercadopago.com.mx/subscriptions/checkout?preapproval_plan_id=8cb4ab0ac7d343e4a97a31451831f58a'
 const MOBILE_REPO_URL = 'https://github.com/YzDemnz/judicial-managment-mobile'
+const MOBILE_ANDROID_APK_URL = 'https://github.com/YzDemnz/judicial-managment-mobile/releases/latest/download/Judicial-Managment-Mobile-Android.apk'
+const MOBILE_ANDROID_RELEASE_URL = 'https://github.com/YzDemnz/judicial-managment-mobile/releases/tag/mobile-android-beta'
 
 const productHighlights = [
   { label: 'Expedientes', value: 'Gestion por materia, juzgado y estatus' },
@@ -653,10 +655,10 @@ function LandingPage({ session, sessionLoading }: LandingPageProps) {
             <Smartphone size={18} />
             Version celular
           </p>
-          <h2>Judicial Managment Mobile esta en preparacion.</h2>
+          <h2>Judicial Managment Mobile ya tiene APK beta para Android.</h2>
           <p>
-            La app movil ya esta separada en React Native/Expo para iniciar sesion con la misma cuenta
-            y preparar expedientes, calendario, chat, Juris, clientes, laboral y archivo desde celular.
+            Descarga el instalador desde tu celular Android para probar la beta con tu misma cuenta.
+            Al ser una version cerrada, Android puede pedirte permitir apps de origen desconocido.
           </p>
         </div>
 
@@ -664,8 +666,11 @@ function LandingPage({ session, sessionLoading }: LandingPageProps) {
           <article>
             <IonAndroidIcon />
             <h3>Android</h3>
-            <p>APK beta en preparacion. Primero se probara internamente antes de compartir instalador.</p>
-            <span>Proximamente</span>
+            <p>APK beta instalable generado desde el repositorio movil. Tamano aproximado: 69 MB.</p>
+            <a href={MOBILE_ANDROID_APK_URL}>
+              <Download size={15} />
+              Descargar APK
+            </a>
           </article>
           <article>
             <Apple size={28} />
@@ -675,9 +680,10 @@ function LandingPage({ session, sessionLoading }: LandingPageProps) {
           </article>
           <article>
             <ExternalLink size={28} />
-            <h3>Repositorio</h3>
-            <p>Codigo movil separado para mantener ordenadas las versiones web, escritorio y celular.</p>
-            <a href={MOBILE_REPO_URL} target="_blank" rel="noreferrer">Ver proyecto</a>
+            <h3>Control de version</h3>
+            <p>El APK se actualiza desde GitHub para mantener ordenadas las versiones de prueba.</p>
+            <a href={MOBILE_ANDROID_RELEASE_URL} target="_blank" rel="noreferrer">Ver release</a>
+            <a href={MOBILE_REPO_URL} target="_blank" rel="noreferrer">Ver codigo</a>
           </article>
         </div>
       </section>
