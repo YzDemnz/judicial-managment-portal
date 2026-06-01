@@ -8,7 +8,7 @@ export const legalEffectiveDate = '27 de mayo de 2026'
 export const legalIntro = [
   'Estos Terminos y Condiciones constituyen un contrato de adhesion electronico entre el titular persona fisica del proyecto Judicial Managment, actuando por cuenta propia y bajo la marca comercial MR Legal/Judicial Managment, y toda persona que descargue, instale, acceda, pruebe, use, configure, recomiende o administre la aplicacion, la pagina web, el portal beta, el instalador, los modulos, las funciones experimentales, los servicios conectados, las bases de datos, los documentos digitales, los chats, las notificaciones y cualquier herramienta relacionada.',
   'Judicial Managment se ofrece en fase alpha/beta, es decir, como software preliminar, experimental, sujeto a errores, interrupciones, cambios, ajustes, eliminacion de funciones, variaciones de precio, restricciones de acceso y modificaciones tecnicas. El uso de la aplicacion durante esta etapa no debe entenderse como servicio definitivo, estable, ininterrumpido, certificado, auditado, garantizado ni apto como unico medio de resguardo de informacion juridica o documental.',
-  'La aceptacion ocurre al descargar, instalar, crear una cuenta, iniciar sesion, confirmar correo, unirse a un despacho, crear un despacho, cargar documentos, registrar expedientes, registrar movimientos, usar Juris, usar el calendario, usar el chat, pagar una suscripcion futura o continuar usando el sistema despues de que estos Terminos se pongan a disposicion del usuario.',
+  'La aceptacion ocurre al descargar, instalar, crear una cuenta, iniciar sesion, confirmar correo, unirse a un despacho, crear un despacho, cargar documentos, registrar expedientes, registrar movimientos, usar herramientas internas, usar el calendario, usar el chat, pagar una suscripcion futura o continuar usando el sistema despues de que estos Terminos se pongan a disposicion del usuario.',
 ]
 
 export const legalTermSections: LegalTermSection[] = [
@@ -24,7 +24,7 @@ export const legalTermSections: LegalTermSection[] = [
     title: 'Cuartilla 02. Fase alpha, beta privada y advertencia reforzada',
     body: [
       'El usuario reconoce que la aplicacion esta en fase alpha y/o beta privada. Esto significa que puede contener errores de programacion, pantallas incompletas, fallas de rendimiento, defectos de sincronizacion, cambios de estructura, diferencias entre versiones, funcionalidades no terminadas, modulos temporales y comportamientos no previstos. La prueba de la aplicacion tiene por objeto evaluar viabilidad, recibir retroalimentacion y mejorar el producto antes de una distribucion comercial amplia.',
-      'Durante esta fase, el Titular podra modificar, suspender, limitar, reemplazar o eliminar cualquier modulo, funcion, diseno, precio, periodo de prueba, regla de colaboracion, sistema de permisos, politica de almacenamiento, integracion de correo, integracion de calendario, asistente interno, sistema de seguridad o forma de distribucion, sin que ello genere derecho adquirido a conservar una funcion experimental.',
+      'Durante esta fase, el Titular podra modificar, suspender, limitar, reemplazar o eliminar cualquier modulo, funcion, diseno, precio, periodo de prueba, regla de colaboracion, sistema de permisos, politica de almacenamiento, integracion de correo, integracion de calendario, herramienta interna, sistema de seguridad o forma de distribucion, sin que ello genere derecho adquirido a conservar una funcion experimental.',
       'El usuario acepta que no debe depender de la aplicacion como unica fuente de control de terminos judiciales, audiencias, vencimientos, obligaciones de pago, notificaciones oficiales, plazos procesales, promociones, anexos, documentos originales, contratos, expedientes, pruebas o informacion esencial. El uso prudente exige conservar respaldos externos y verificar cualquier informacion con fuentes oficiales o con el expediente fisico/digital correspondiente.',
     ],
   },
@@ -40,7 +40,7 @@ export const legalTermSections: LegalTermSection[] = [
     title: 'Cuartilla 04. Uso dirigido a profesionales y no sustitucion de criterio juridico',
     body: [
       'Judicial Managment esta pensado para usuarios que cuentan con capacidad profesional o administrativa suficiente para entender que el software es una herramienta de apoyo. La aplicacion no emite resoluciones, no presenta promociones, no valida estrategias procesales, no revisa competencia, no calcula automaticamente todos los plazos legales, no sustituye estudio juridico, no garantiza resultados y no reemplaza la responsabilidad profesional del abogado o despacho.',
-      'Cualquier informacion generada por modulos, listas, plantillas, reportes, calendario, asistente Juris o referencias internas debe considerarse orientativa, administrativa y sujeta a revision humana. El usuario debe confirmar los datos con el expediente, con el juzgado, con la legislacion vigente, con acuerdos publicados, con sistemas oficiales y con su propio criterio profesional antes de tomar decisiones.',
+      'Cualquier informacion generada por modulos, listas, plantillas, reportes, calendario o referencias internas debe considerarse orientativa, administrativa y sujeta a revision humana. El usuario debe confirmar los datos con el expediente, con el juzgado, con la legislacion vigente, con acuerdos publicados, con sistemas oficiales y con su propio criterio profesional antes de tomar decisiones.',
       'El Titular no sera responsable por estrategias legales, omisiones procesales, perdida de oportunidades, multas, preclusiones, caducidades, prescripciones, sanciones, negligencia profesional, errores de captura, mala interpretacion de informacion, uso indebido de plantillas o confianza excesiva en recordatorios o reportes internos.',
     ],
   },
@@ -143,17 +143,17 @@ export const legalTermSections: LegalTermSection[] = [
   {
     title: 'Cuartilla 17. Cambios de funciones y ausencia de derecho adquirido',
     body: [
-      'El usuario acepta que las funciones de expedientes, archivo, clientes, movimientos, calendario, laboral, chat, documentos, Juris, dashboard, seguridad, 2FA, Google, descarga, invitaciones, roles, reportes y cualquier otra pueden modificarse. Los cambios pueden responder a mejoras, errores, seguridad, costo, viabilidad legal, decisiones de producto o comentarios de beta.',
+      'El usuario acepta que las funciones de expedientes, archivo, clientes, movimientos, calendario, laboral, chat, documentos, dashboard, seguridad, 2FA, Google, descarga, invitaciones, roles, reportes y cualquier otra pueden modificarse. Los cambios pueden responder a mejoras, errores, seguridad, costo, viabilidad legal, decisiones de producto o comentarios de beta.',
       'El Titular podra cambiar nombres de modulos, orden de pantallas, colores, iconos, flujos, permisos, estructuras de datos, limites de archivos, integraciones, opciones de busqueda y reglas de colaboracion. La modificacion o eliminacion de funciones experimentales no sera incumplimiento, salvo obligaciones especificas pactadas por escrito en contrato separado.',
       'El usuario debe revisar notas de version o comunicados cuando existan. Si no esta de acuerdo con un cambio, su remedio principal sera dejar de usar la aplicacion, exportar o respaldar su informacion en la medida en que la funcion este disponible y cancelar su participacion beta.',
     ],
   },
   {
-    title: 'Cuartilla 18. Juris, bot interno y ausencia de inteligencia juridica vinculante',
+    title: 'Cuartilla 18. Herramientas internas y ausencia de asesoria juridica automatizada',
     body: [
-      'Juris es un asistente interno basado en reglas, palabras clave, textos predefinidos o logica experimental. No es abogado, no sustituye consulta juridica, no interpreta expedientes completos, no evalua pruebas, no garantiza legislacion vigente, no emite dictamen profesional y no debe utilizarse como base unica para decisiones legales.',
-      'Las respuestas de Juris pueden contener errores, generalizaciones, omisiones, desactualizaciones o recomendaciones no aplicables al caso concreto. El usuario debe verificar cualquier informacion con fuentes oficiales, legislacion vigente y criterio profesional antes de actuar.',
-      'El Titular no responde por danos derivados de confiar exclusivamente en Juris, especialmente cuando el usuario no revise la informacion o la use para plazos, audiencias, promociones, demandas, contestaciones, recursos, convenios, estrategias o asesorias a terceros.',
+      'Las herramientas internas de consulta se basan en reglas, palabras clave, textos predefinidos o logica experimental. No sustituyen consulta juridica, no interpretan expedientes completos, no evaluan pruebas, no garantizan legislacion vigente, no emiten dictamen profesional y no deben utilizarse como base unica para decisiones legales.',
+      'Las respuestas o referencias internas pueden contener errores, generalizaciones, omisiones, desactualizaciones o recomendaciones no aplicables al caso concreto. El usuario debe verificar cualquier informacion con fuentes oficiales, legislacion vigente y criterio profesional antes de actuar.',
+      'El Titular no responde por danos derivados de confiar exclusivamente en herramientas internas, especialmente cuando el usuario no revise la informacion o la use para plazos, audiencias, promociones, demandas, contestaciones, recursos, convenios, estrategias o asesorias a terceros.',
     ],
   },
   {

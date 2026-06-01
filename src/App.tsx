@@ -144,7 +144,6 @@ const DESKTOP_APP_URL = 'judicial-managment://auth/callback?source=web'
 const OWNER_ADMIN_EMAIL = 'marod_legal@outlook.com'
 const GOOGLE_AUTH_ENABLED = false
 const MERCADO_PAGO_PAYMENT_URL = 'https://www.mercadopago.com.mx/subscriptions/checkout?preapproval_plan_id=8cb4ab0ac7d343e4a97a31451831f58a'
-const MOBILE_REPO_URL = 'https://github.com/YzDemnz/judicial-managment-mobile'
 const MOBILE_ANDROID_APK_URL = 'https://github.com/YzDemnz/judicial-managment-mobile/releases/latest/download/Judicial-Managment-Mobile-Android.apk'
 const MOBILE_ANDROID_RELEASE_URL = 'https://github.com/YzDemnz/judicial-managment-mobile/releases/tag/mobile-android-beta'
 
@@ -172,15 +171,15 @@ const workReferences = [
   },
   {
     icon: MessageSquareText,
-    title: 'Juris y reportes',
-    copy: 'Asistente interno, chat del despacho y reportes recientes dentro del panel.',
+    title: 'Equipo y reportes',
+    copy: 'Chat del despacho, alertas internas y reportes recientes dentro del panel.',
   },
 ]
 
 const securityItems = [
   'Aplicacion de escritorio en Electron',
   'Base de datos y autenticacion con Supabase',
-  'Instalador Windows x64 generado con Electron Builder',
+  'Instalador Windows x64 para distribucion controlada',
 ]
 
 const installSteps = [
@@ -495,7 +494,7 @@ function LandingPage({ session, sessionLoading }: LandingPageProps) {
               <Apple size={21} />
               <span>
                 Descargar para Mac
-                <small>DMG beta en preparacion</small>
+                <small>Disponibilidad pendiente</small>
               </span>
             </a>
 
@@ -589,10 +588,10 @@ function LandingPage({ session, sessionLoading }: LandingPageProps) {
                   <Sparkles size={22} />
                 </div>
                 <span>
-                  <small>Nuevo asistente</small>
-                  <strong>Juris</strong>
+                  <small>Modulo interno</small>
+                  <strong>Soporte del despacho</strong>
                 </span>
-                <button type="button">Abrir chat</button>
+                <button type="button">Abrir</button>
               </div>
             </div>
           </div>
@@ -644,7 +643,7 @@ function LandingPage({ session, sessionLoading }: LandingPageProps) {
           </p>
           <h2>Judicial Managment Mobile ya tiene APK beta para Android.</h2>
           <p>
-            Descarga el instalador desde tu celular Android para probar la beta con tu misma cuenta.
+            Descarga el instalador desde tu celular Android para usar tu cuenta en movilidad.
             Al ser una version cerrada, Android puede pedirte permitir apps de origen desconocido.
           </p>
         </div>
@@ -653,21 +652,20 @@ function LandingPage({ session, sessionLoading }: LandingPageProps) {
           <article>
             <IonAndroidIcon />
             <h3>Android</h3>
-            <p>APK beta instalable generado desde el repositorio movil. Tamano aproximado: 69 MB.</p>
-            <span>Disponible desde el boton superior</span>
+            <p>Instalador Android para pruebas internas. Tamano aproximado: 69 MB.</p>
+            <span>Disponible desde Descargar app movil</span>
           </article>
           <article>
             <Apple size={28} />
             <h3>iPhone</h3>
-            <p>Version iOS planeada por TestFlight cuando tengamos cuenta y firma de Apple.</p>
-            <span>Proximamente</span>
+            <p>Version iOS pendiente de publicacion cuando se habilite la distribucion para Apple.</p>
+            <span>Pendiente</span>
           </article>
           <article>
             <ExternalLink size={28} />
-            <h3>Control de version</h3>
-            <p>El APK se actualiza desde GitHub para mantener ordenadas las versiones de prueba.</p>
-            <a href={MOBILE_ANDROID_RELEASE_URL} target="_blank" rel="noreferrer">Ver release</a>
-            <a href={MOBILE_REPO_URL} target="_blank" rel="noreferrer">Ver codigo</a>
+            <h3>Actualizaciones</h3>
+            <p>La descarga apunta a la version beta vigente para que todos prueben el mismo paquete.</p>
+            <a href={MOBILE_ANDROID_RELEASE_URL} target="_blank" rel="noreferrer">Ver version publicada</a>
           </article>
         </div>
       </section>
@@ -703,8 +701,8 @@ function LandingPage({ session, sessionLoading }: LandingPageProps) {
           </p>
           <h2>Lista para presentar, probar y distribuir primero en Windows.</h2>
           <p>
-            La pagina queda preparada para publicar la descarga real del instalador
-            actual. Cuando generes el paquete de Mac, se anade como segunda descarga.
+            La descarga de Windows se mantiene disponible desde este portal. Las demas
+            plataformas se habilitaran cuando cuenten con paquete estable.
           </p>
         </div>
 
@@ -726,8 +724,8 @@ function LandingPage({ session, sessionLoading }: LandingPageProps) {
           </p>
           <h2>Suscripcion mensual cuando quieras activar el plan.</h2>
           <p>
-            Dejamos el pago fuera del primer vistazo para que la pagina respire mejor.
-            El enlace sigue disponible para usuarios que ya quieran apoyar la beta cerrada.
+            El acceso mensual se gestiona mediante Mercado Pago para usuarios que requieran
+            mantener activa su licencia.
           </p>
         </div>
 
@@ -1385,7 +1383,7 @@ function AdminPage({ session, sessionLoading, profileLoading, canAccessAdmin }: 
           Administrador
         </p>
         <h1>Admin</h1>
-        <p>Panel privado para revisar usuarios, despachos, reportes y actividad de la beta cerrada.</p>
+        <p>Panel privado para revisar usuarios, despachos, reportes y actividad de cuentas.</p>
       </div>
 
       {error && (
@@ -1581,7 +1579,7 @@ function AdminPage({ session, sessionLoading, profileLoading, canAccessAdmin }: 
             <ShieldAlert size={22} />
             <span>
               <strong>Alertas de moderacion</strong>
-              <small>El bot interno marca mensajes para revision. Solo el administrador principal puede resolverlas.</small>
+              <small>Los mensajes marcados quedan en revision. Solo el administrador principal puede resolverlos.</small>
             </span>
           </div>
           <div className="moderation-layout">
@@ -1683,7 +1681,7 @@ function EnterpriseFooter() {
         { label: 'Como instalar', href: pageHash('como-instalar') },
         { label: 'App movil', href: pageHash('movil') },
         { label: 'Portal beta', href: pageHash('acceso') },
-        { label: 'Mac proximamente', href: pageHash('descargas') },
+        { label: 'Mac pendiente', href: pageHash('descargas') },
       ],
     },
     {
