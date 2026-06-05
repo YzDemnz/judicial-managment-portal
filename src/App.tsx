@@ -1,4 +1,5 @@
 import {
+  type CSSProperties,
   type FormEvent,
   useCallback,
   useEffect,
@@ -194,6 +195,50 @@ const installSteps = [
   {
     title: 'Descarga e instala',
     copy: 'Descarga la version para Windows, ejecuta el instalador e inicia sesion con la misma cuenta.',
+  },
+]
+
+const localAISetupSteps = [
+  {
+    title: 'Instala Ollama',
+    copy: 'Descarga Ollama para Windows y dejalo abierto. Es el motor local que permite ejecutar modelos en tu equipo.',
+  },
+  {
+    title: 'Elige tu nivel',
+    copy: 'Usa Gama Baja, Gama Media o Gama Gamer segun la memoria y tarjeta grafica de la computadora.',
+  },
+  {
+    title: 'Descarga el modelo',
+    copy: 'Abre PowerShell y ejecuta el comando del nivel elegido. La descarga puede tardar varios minutos.',
+  },
+  {
+    title: 'Activa Juris IA',
+    copy: 'Abre Judicial Managment 2.0, acepta activar los modelos IA y entra al modulo Juris desde el inicio.',
+  },
+]
+
+const localAIModelTiers = [
+  {
+    label: 'Equipo de Gama Baja',
+    model: 'qwen2.5:1.5b',
+    command: 'ollama pull qwen2.5:1.5b',
+    requirements: '8 GB RAM o mas',
+    copy: 'Ideal para guias cortas, orientacion dentro de la app y tareas simples.',
+  },
+  {
+    label: 'Gama Media',
+    model: 'qwen2.5:3b-instruct',
+    command: 'ollama pull qwen2.5:3b-instruct',
+    requirements: '16 GB RAM o mas',
+    copy: 'Recomendado para redactar, resumir y organizar trabajo juridico diario.',
+    recommended: true,
+  },
+  {
+    label: 'Gama Gamer',
+    model: 'qwen3:4b',
+    command: 'ollama pull qwen3:4b',
+    requirements: '32 GB RAM y GPU con 6 GB VRAM recomendados',
+    copy: 'Mejor para respuestas mas largas, revision de textos y analisis mas pesados.',
   },
 ]
 
@@ -741,6 +786,71 @@ function LandingPage({ session, sessionLoading }: LandingPageProps) {
             <small>Mercado Pago mensual</small>
           </span>
         </a>
+      </section>
+
+      <section id="ia-local" className="local-ai-band">
+        <div className="local-ai-heading">
+          <p className="eyebrow">
+            <Sparkles size={18} />
+            Juris IA local
+          </p>
+          <h2>Activa modelos de IA cuando quieras usarlos en tu computadora.</h2>
+          <p>
+            Judicial Managment 2.0 conserva el bot anterior como respaldo, pero permite
+            activar Juris IA con modelos instalados localmente. La IA queda apagada hasta
+            que el usuario decide encenderla.
+          </p>
+        </div>
+
+        <div className="ai-flashcards" aria-label="Pasos para instalar Juris IA local">
+          {localAISetupSteps.map((step, index) => (
+            <article className="ai-flashcard" key={step.title} style={{ '--card-index': index } as CSSProperties}>
+              <strong>{String(index + 1).padStart(2, '0')}</strong>
+              <h3>{step.title}</h3>
+              <p>{step.copy}</p>
+            </article>
+          ))}
+        </div>
+
+        <div className="ai-download-panel">
+          <div className="ai-download-copy">
+            <h3>Motor local</h3>
+            <p>
+              Primero instala Ollama para Windows. Despues descarga uno de los modelos
+              con el comando correspondiente y vuelve a Judicial Managment para revisar el motor.
+            </p>
+            <a className="download-button secondary ai-engine-link" href="https://ollama.com/download/windows" target="_blank" rel="noreferrer">
+              <Download size={21} />
+              <span>
+                Descargar Ollama
+                <small>Motor local para IA</small>
+              </span>
+            </a>
+          </div>
+
+          <div className="ai-tier-grid">
+            {localAIModelTiers.map((tier) => (
+              <article className={tier.recommended ? 'ai-tier recommended' : 'ai-tier'} key={tier.model}>
+                {tier.recommended && <span className="tier-badge">Recomendado</span>}
+                <h3>{tier.label}</h3>
+                <small>{tier.requirements}</small>
+                <p>{tier.copy}</p>
+                <code>{tier.command}</code>
+              </article>
+            ))}
+          </div>
+        </div>
+
+        <div className="ai-responsibility-note">
+          <ShieldCheck size={24} />
+          <span>
+            <strong>Uso responsable</strong>
+            <p>
+              Juris IA ayuda a organizar informacion, redactar borradores y entender rutas de trabajo.
+              No sustituye criterio profesional ni verificacion de leyes, acuerdos, plazos o expedientes.
+            </p>
+          </span>
+        </div>
       </section>
 
       <EnterpriseFooter />
@@ -1679,6 +1789,7 @@ function EnterpriseFooter() {
         { label: 'Descargar Windows', href: WINDOWS_DOWNLOAD_URL, download: WINDOWS_FILE_NAME },
         { label: 'Suscripcion Mercado Pago', href: MERCADO_PAGO_PAYMENT_URL },
         { label: 'Como instalar', href: pageHash('como-instalar') },
+        { label: 'Juris IA local', href: pageHash('ia-local') },
         { label: 'App movil', href: pageHash('movil') },
         { label: 'Portal beta', href: pageHash('acceso') },
         { label: 'Mac pendiente', href: pageHash('descargas') },
