@@ -136,9 +136,10 @@ function currentAppPath() {
   return pathname
 }
 
-const WINDOWS_DOWNLOAD_URL = assetPath('/downloads/Judicial-Managment-Setup-1.0.1.exe')
+const WINDOWS_DOWNLOAD_URL =
+  'https://github.com/YzDemnz/judicial-managment-portal/releases/latest/download/Judicial-Managment-Setup.exe'
 const MAC_DOWNLOAD_URL = assetPath('/downloads/Judicial-Managment-mac-universal.dmg')
-const WINDOWS_FILE_NAME = 'Judicial Managment Setup 1.0.1.exe'
+const WINDOWS_FILE_NAME = 'Judicial-Managment-Setup.exe'
 const MAC_FILE_NAME = 'Judicial Managment mac universal.dmg'
 const TERMS_DOC_URL = assetPath('/docs/Judicial-Managment-Terminos-y-Condiciones.docx')
 const DESKTOP_APP_URL = 'judicial-managment://auth/callback?source=web'
