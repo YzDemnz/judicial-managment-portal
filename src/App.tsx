@@ -19,9 +19,7 @@ import {
   CreditCard,
   Download,
   ExternalLink,
-  FileCheck2,
   FileText,
-  Landmark,
   Loader2,
   LockKeyhole,
   LogIn,
@@ -149,12 +147,6 @@ const MERCADO_PAGO_PAYMENT_URL = 'https://www.mercadopago.com.mx/subscriptions/c
 const MOBILE_ANDROID_APK_URL = 'https://github.com/YzDemnz/judicial-managment-mobile/releases/latest/download/Judicial-Managment-Mobile-Android.apk'
 const MOBILE_ANDROID_RELEASE_URL = 'https://github.com/YzDemnz/judicial-managment-mobile/releases/tag/mobile-android-beta'
 
-const productHighlights = [
-  { label: 'Expedientes', value: 'Gestion por materia, juzgado y estatus' },
-  { label: 'Despachos', value: 'Roles para propietario, admin, editor y lectura' },
-  { label: 'Seguridad', value: 'Correo verificado, Supabase Auth y 2FA' },
-]
-
 const workReferences = [
   {
     icon: FileText,
@@ -266,13 +258,55 @@ interface AppProfile {
   updated_at?: string
 }
 
-interface AuditLogEntry {
+type SupportReportStatus = 'new' | 'in_review' | 'waiting_user' | 'resolved' | 'closed'
+type SupportReportPriority = 'low' | 'normal' | 'high' | 'urgent'
+
+interface SupportReport {
   id: string
-  actor_user_id: string | null
-  action: string
-  entity: string
-  details: Record<string, unknown>
+  user_id: string
+  despacho_id?: string | null
+  category: string
+  priority: SupportReportPriority
+  title: string
+  description: string
+  steps_to_reproduce: string
+  expected_behavior: string
+  contains_sensitive_data: boolean
+  app_version?: string | null
+  platform?: string | null
+  status: SupportReportStatus
+  admin_notes?: string | null
+  admin_reply?: string | null
+  reviewed_at?: string | null
+  resolved_at?: string | null
   created_at: string
+  updated_at: string
+}
+
+const supportReportStatusLabels: Record<SupportReportStatus, string> = {
+  new: 'Nuevo',
+  in_review: 'En revision',
+  waiting_user: 'Esperando usuario',
+  resolved: 'Resuelto',
+  closed: 'Cerrado',
+}
+
+const supportReportPriorityLabels: Record<SupportReportPriority, string> = {
+  low: 'Baja',
+  normal: 'Normal',
+  high: 'Alta',
+  urgent: 'Urgente',
+}
+
+const supportReportCategoryLabels: Record<string, string> = {
+  error: 'Error',
+  sugerencia: 'Sugerencia',
+  cuenta: 'Cuenta y acceso',
+  seguridad: 'Seguridad',
+  privacidad: 'Privacidad / ARCO',
+  datos: 'Datos y respaldos',
+  actualizacion: 'Actualizacion',
+  otro: 'Soporte general',
 }
 
 interface DespachoSummary {
@@ -431,6 +465,7 @@ function App() {
         </button>
 
         <nav id="site-navigation" className={`topnav ${mobileMenuOpen ? 'open' : ''}`} aria-label="Secciones">
+          <a className="active" href={pageHash('inicio')} onClick={closeMobileMenu}>Inicio</a>
           <a href={pageHash('trabajo')} onClick={closeMobileMenu}>Trabajo</a>
           <a href={pageHash('seguridad')} onClick={closeMobileMenu}>Seguridad</a>
           <a href={pageHash('como-instalar')} onClick={closeMobileMenu}>Como instalar</a>
@@ -494,167 +529,227 @@ interface LandingPageProps {
 }
 
 function LandingPage({ session, sessionLoading }: LandingPageProps) {
+  useEffect(() => {
+    const openTargetPanel = () => {
+      if (!window.location.hash) return
+      const target = document.querySelector(window.location.hash)
+      if (target instanceof HTMLDetailsElement) {
+        target.open = true
+      }
+    }
+
+    openTargetPanel()
+    window.addEventListener('hashchange', openTargetPanel)
+    return () => window.removeEventListener('hashchange', openTargetPanel)
+  }, [])
+
   return (
     <>
-      <section id="inicio" className="hero-section">
-        <div className="hero-content">
-          <p className="eyebrow">
-            <Scale size={18} />
-            Software juridico de escritorio
-          </p>
-          <h1>Judicial Managment</h1>
-          <p className="hero-copy">
-            Una plataforma sobria para despachos que necesitan controlar expedientes,
-            clientes, movimientos, calendario, reportes y comunicacion interna desde una
-            aplicacion profesional.
-          </p>
+      <section id="inicio" className="product-hero">
+        <div className="product-hero-grid">
+          <div className="product-hero-copy">
+            <p className="product-kicker">
+              <Scale size={17} />
+              Software juridico de escritorio
+            </p>
+            <h1>
+              <span>Judicial</span>
+              <strong>Managment</strong>
+            </h1>
+            <p className="product-lead">
+              Controla expedientes, clientes, movimientos, calendario, documentos y
+              colaboracion interna desde una aplicacion profesional para despachos.
+            </p>
 
-          <div className="mobile-support-note">
-            <Download size={19} />
-            <span>
-              <strong>Tambien puedes empezar desde tu celular.</strong>
-              <small>Crea tu cuenta y confirma el correo aqui; descarga el instalador cuando estes en tu computadora Windows.</small>
-            </span>
-          </div>
-
-          <div id="descargas" className="download-actions" aria-label="Descargas">
-            <a
-              className="download-button primary"
-              href={WINDOWS_DOWNLOAD_URL}
-              download={WINDOWS_FILE_NAME}
-            >
-              <Download size={21} />
-              <span>
-                Descargar para Windows
-                <small>v1.0.1 - x64 - 98.6 MB</small>
-              </span>
-            </a>
-
-            <a
-              className="download-button secondary"
-              href={MAC_DOWNLOAD_URL}
-              download={MAC_FILE_NAME}
-              aria-disabled="true"
-              onClick={(event) => event.preventDefault()}
-            >
-              <Apple size={21} />
-              <span>
-                Descargar para Mac
-                <small>Disponibilidad pendiente</small>
-              </span>
-            </a>
-
-            <a
-              className="download-button mobile"
-              href={MOBILE_ANDROID_APK_URL}
-            >
-              <Smartphone size={21} />
-              <span>
-                Descargar app movil
-                <small>APK Android beta</small>
-              </span>
-            </a>
-          </div>
-
-          <div id="acceso" className="access-panel" aria-label="Acceso de empresa">
-            <div className="access-copy">
-              <span>Portal de empresa</span>
-              <strong>Acceso para despachos</strong>
-              <small>Inicia sesion o crea una cuenta para la beta privada con correo real.</small>
-            </div>
-            <AuthPanel session={session} sessionLoading={sessionLoading} />
-          </div>
-
-          <div className="trust-row" aria-label="Puntos clave">
-            {productHighlights.map((item) => (
-              <div className="trust-item" key={item.label}>
-                <CheckCircle2 size={18} />
+            <div id="descargas" className="product-downloads" aria-label="Descargas">
+              <a className="product-download primary" href={WINDOWS_DOWNLOAD_URL} download={WINDOWS_FILE_NAME}>
+                <Download size={20} />
                 <span>
-                  <strong>{item.label}</strong>
-                  <small>{item.value}</small>
+                  Descargar para Windows
+                  <small>Instalador x64 para beta cerrada</small>
                 </span>
-              </div>
-            ))}
-          </div>
-        </div>
+              </a>
+              <a
+                className="product-download secondary"
+                href={MAC_DOWNLOAD_URL}
+                download={MAC_FILE_NAME}
+                aria-disabled="true"
+                onClick={(event) => event.preventDefault()}
+              >
+                <Apple size={20} />
+                <span>
+                  Descargar para Mac
+                  <small>Proximamente</small>
+                </span>
+              </a>
+              <a className="product-download mobile" href={MOBILE_ANDROID_APK_URL}>
+                <Smartphone size={20} />
+                <span>
+                  Descargar app movil
+                  <small>APK Android beta</small>
+                </span>
+              </a>
+            </div>
 
-        <div className="preview-stage" aria-label="Vista previa de Judicial Managment">
-          <div className="app-window">
-            <div className="window-header">
-              <div className="window-brand">
+            {session?.user?.email ? (
+              <div className="hero-account-card">
+                <div className="hero-account-badge">
+                  <CheckCircle2 size={15} />
+                  Cuenta verificada
+                </div>
+                <strong>{session.user.email}</strong>
+                <p>Usa esta misma cuenta dentro de la aplicacion de escritorio.</p>
+                <div>
+                  <a href={WINDOWS_DOWNLOAD_URL} download={WINDOWS_FILE_NAME}>
+                    <Download size={16} />
+                    Descargar
+                  </a>
+                  <a href={DESKTOP_APP_URL}>
+                    <ExternalLink size={16} />
+                    Abrir app
+                  </a>
+                  <a href={MERCADO_PAGO_PAYMENT_URL} target="_blank" rel="noreferrer">
+                    <CreditCard size={16} />
+                    Suscripcion
+                  </a>
+                </div>
+              </div>
+            ) : (
+              <a className="hero-access-link" href={pageHash('acceso')}>
+                <UserCheck size={20} />
+                <span>
+                  <strong>Crea tu cuenta para la beta privada</strong>
+                  <small>Confirma tu correo y usa la misma sesion en Windows o Android.</small>
+                </span>
+                <ExternalLink size={18} />
+              </a>
+            )}
+          </div>
+
+          <div className="product-preview" aria-label="Captura actual de Judicial Managment">
+            <div className="product-preview-header">
+              <div>
                 <img src={companyLogo} alt="" />
                 <span>
                   <strong>Judicial Managment</strong>
-                  <small>MR Legal</small>
+                  <small>Aplicacion de escritorio 2.2</small>
                 </span>
               </div>
-              <div className="window-actions">
-                <span>Oscuro</span>
-                <span>Cerrar Sesion</span>
-              </div>
+              <span className="live-product-badge">
+                <CheckCircle2 size={14} />
+                Captura actual
+              </span>
             </div>
-
-            <div className="window-tabs">
-              <span className="active">Panel de Control</span>
-              <span>Expedientes</span>
-              <span>Movimientos</span>
-              <span>Calendario</span>
-              <span>Clientes</span>
+            <div className="product-preview-image">
+              <img
+                src={assetPath('/app-dashboard-current.png')}
+                alt="Panel de Control actual de Judicial Managment en modo oscuro"
+              />
             </div>
-
-            <div className="window-body">
-              <div className="panel-heading">
-                <span>
-                  <strong>Panel de Control</strong>
-                  <small>Resumen general de gestion juridica</small>
-                </span>
-                <span className="court-pill">SCJN</span>
-              </div>
-
-              <div className="metric-grid">
-                <article>
-                  <FileText size={25} />
-                  <span>Total Expedientes</span>
-                  <strong>24</strong>
-                </article>
-                <article>
-                  <FileCheck2 size={25} />
-                  <span>Movimientos</span>
-                  <strong>87</strong>
-                </article>
-                <article>
-                  <Landmark size={25} />
-                  <span>Asuntos Laborales</span>
-                  <strong>9</strong>
-                </article>
-              </div>
-
-              <div className="assistant-strip">
-                <div className="juris-orb">
-                  <Sparkles size={22} />
-                </div>
-                <span>
-                  <small>Modulo interno</small>
-                  <strong>Soporte del despacho</strong>
-                </span>
-                <button type="button">Abrir</button>
-              </div>
+            <div className="product-preview-footer">
+              <span>
+                <ShieldCheck size={16} />
+                Correo verificado, 2FA y respaldos
+              </span>
+              <a href={pageHash('trabajo')}>
+                Ver funciones
+                <ExternalLink size={15} />
+              </a>
             </div>
           </div>
         </div>
+
+        <div className="quick-module-grid" aria-label="Modulos principales">
+          {[
+            { icon: FileText, title: 'Expedientes', copy: 'Materias, juzgados y etapas procesales.', href: 'trabajo' },
+            { icon: BriefcaseBusiness, title: 'Despachos', copy: 'Roles, permisos y colaboradores.', href: 'trabajo' },
+            { icon: ShieldCheck, title: 'Seguridad', copy: '2FA, auditoria y respaldos.', href: 'seguridad' },
+            { icon: CalendarDays, title: 'Calendario', copy: 'Audiencias y recordatorios.', href: 'trabajo' },
+          ].map((item) => {
+            const Icon = item.icon
+            return (
+              <a href={pageHash(item.href)} key={item.title}>
+                <span className="quick-module-icon"><Icon size={21} /></span>
+                <span>
+                  <strong>{item.title}</strong>
+                  <small>{item.copy}</small>
+                  <em>Ver mas <ExternalLink size={13} /></em>
+                </span>
+              </a>
+            )
+          })}
+        </div>
       </section>
 
-      <section id="como-instalar" className="install-band">
-        <details className="install-guide">
+      <section className="portal-drawers" aria-label="Informacion de Judicial Managment">
+        <details id="acceso" className="portal-drawer">
           <summary>
-            <span>
-              <Download size={18} />
-              Como instalar
-            </span>
-            <ChevronDown className="install-arrow" size={20} />
+            <span><CircleUserRound size={20} /> Cuenta y acceso</span>
+            <small>Inicia sesion, crea tu cuenta o abre la app</small>
+            <ChevronDown size={20} />
           </summary>
+          <div className="portal-drawer-content access-drawer-content">
+            <div>
+              <p className="eyebrow">Portal de empresa</p>
+              <h2>Una cuenta para todas tus versiones.</h2>
+              <p>Registra un correo real, confirmalo y utiliza las mismas credenciales en la app de escritorio y Android.</p>
+            </div>
+            <AuthPanel session={session} sessionLoading={sessionLoading} />
+          </div>
+        </details>
 
-          <div className="install-guide-content">
+        <details id="trabajo" className="portal-drawer">
+          <summary>
+            <span><BriefcaseBusiness size={20} /> Trabajo del despacho</span>
+            <small>Expedientes, clientes, calendario y colaboracion</small>
+            <ChevronDown size={20} />
+          </summary>
+          <div className="portal-drawer-content">
+            <div className="feature-grid compact">
+              {workReferences.map((item) => {
+                const Icon = item.icon
+                return (
+                  <article className="feature-card" key={item.title}>
+                    <Icon size={23} />
+                    <h3>{item.title}</h3>
+                    <p>{item.copy}</p>
+                  </article>
+                )
+              })}
+            </div>
+          </div>
+        </details>
+
+        <details id="seguridad" className="portal-drawer">
+          <summary>
+            <span><ShieldCheck size={20} /> Seguridad y respaldos</span>
+            <small>Proteccion de cuentas, permisos y recuperacion</small>
+            <ChevronDown size={20} />
+          </summary>
+          <div className="portal-drawer-content drawer-split">
+            <div>
+              <p className="eyebrow">Base tecnica</p>
+              <h2>Controles visibles y accesos auditables.</h2>
+              <p>La app utiliza correo confirmado, autenticacion de dos factores, permisos por despacho y respaldos recuperables.</p>
+            </div>
+            <div className="security-list">
+              {securityItems.map((item) => (
+                <div key={item}>
+                  <LockKeyhole size={18} />
+                  <span>{item}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </details>
+
+        <details id="como-instalar" className="portal-drawer">
+          <summary>
+            <span><Download size={20} /> Como instalar</span>
+            <small>Cuenta, correo, descarga y aviso de Windows</small>
+            <ChevronDown size={20} />
+          </summary>
+          <div className="portal-drawer-content">
             <div className="install-steps">
               {installSteps.map((step, index) => (
                 <article className="install-step" key={step.title}>
@@ -666,192 +761,101 @@ function LandingPage({ session, sessionLoading }: LandingPageProps) {
                 </article>
               ))}
             </div>
-
             <div className="defender-note">
-              <ShieldAlert size={24} />
+              <ShieldAlert size={23} />
               <span>
-                <strong>Advertencia de Windows Defender</strong>
+                <strong>Por que Windows muestra una advertencia</strong>
                 <p>
-                  Al ser una beta cerrada y no contar todavia con un certificado de firma digital,
-                  Windows no reconoce la app con reputacion suficiente y puede advertir que no la conoce.
+                  La beta cerrada aun no cuenta con certificado comercial de firma digital.
+                  Windows puede indicar que no reconoce al editor, aunque el instalador provenga de este portal oficial.
                 </p>
               </span>
             </div>
           </div>
         </details>
-      </section>
 
-      <section id="movil" className="mobile-band">
-        <div className="mobile-copy">
-          <p className="eyebrow">
-            <Smartphone size={18} />
-            Version celular
-          </p>
-          <h2>Judicial Managment Mobile ya tiene APK beta para Android.</h2>
-          <p>
-            Descarga el instalador desde tu celular Android para usar tu cuenta en movilidad.
-            Al ser una version cerrada, Android puede pedirte permitir apps de origen desconocido.
-          </p>
-        </div>
-
-        <div className="mobile-download-grid">
-          <article>
-            <IonAndroidIcon />
-            <h3>Android</h3>
-            <p>Instalador Android para pruebas internas. Tamano aproximado: 69 MB.</p>
-            <span>Disponible desde Descargar app movil</span>
-          </article>
-          <article>
-            <Apple size={28} />
-            <h3>iPhone</h3>
-            <p>Version iOS pendiente de publicacion cuando se habilite la distribucion para Apple.</p>
-            <span>Pendiente</span>
-          </article>
-          <article>
-            <ExternalLink size={28} />
-            <h3>Actualizaciones</h3>
-            <p>La descarga apunta a la version beta vigente para que todos prueben el mismo paquete.</p>
-            <a href={MOBILE_ANDROID_RELEASE_URL} target="_blank" rel="noreferrer">Ver version publicada</a>
-          </article>
-        </div>
-      </section>
-
-      <section id="trabajo" className="section-band">
-        <div className="section-header">
-          <p className="eyebrow">
-            <BriefcaseBusiness size={18} />
-            Nuestro trabajo
-          </p>
-          <h2>Construido alrededor del dia a dia del despacho.</h2>
-        </div>
-
-        <div className="feature-grid">
-          {workReferences.map((item) => {
-            const Icon = item.icon
-            return (
-              <article className="feature-card" key={item.title}>
-                <Icon size={25} />
-                <h3>{item.title}</h3>
-                <p>{item.copy}</p>
+        <details id="movil" className="portal-drawer">
+          <summary>
+            <span><Smartphone size={20} /> Aplicacion movil</span>
+            <small>Android disponible; iPhone en preparacion</small>
+            <ChevronDown size={20} />
+          </summary>
+          <div className="portal-drawer-content">
+            <div className="mobile-download-grid compact">
+              <article>
+                <IonAndroidIcon />
+                <h3>Android</h3>
+                <p>APK para pruebas internas conectado a tu cuenta y despacho.</p>
+                <a href={MOBILE_ANDROID_APK_URL}>Descargar APK</a>
               </article>
-            )
-          })}
-        </div>
-      </section>
-
-      <section id="seguridad" className="security-band">
-        <div>
-          <p className="eyebrow">
-            <ShieldCheck size={18} />
-            Base tecnica
-          </p>
-          <h2>Lista para presentar, probar y distribuir primero en Windows.</h2>
-          <p>
-            La descarga de Windows se mantiene disponible desde este portal. Las demas
-            plataformas se habilitaran cuando cuenten con paquete estable.
-          </p>
-        </div>
-
-        <div className="security-list">
-          {securityItems.map((item) => (
-            <div key={item}>
-              <LockKeyhole size={19} />
-              <span>{item}</span>
+              <article>
+                <Apple size={28} />
+                <h3>iPhone</h3>
+                <p>La version iOS se habilitara cuando exista distribucion firmada para Apple.</p>
+                <span>Proximamente</span>
+              </article>
+              <article>
+                <ExternalLink size={28} />
+                <h3>Version publicada</h3>
+                <p>Consulta el paquete vigente y sus archivos desde GitHub Releases.</p>
+                <a href={MOBILE_ANDROID_RELEASE_URL} target="_blank" rel="noreferrer">Ver version</a>
+              </article>
             </div>
-          ))}
-        </div>
+          </div>
+        </details>
+
+        <details id="ia-local" className="portal-drawer">
+          <summary>
+            <span><Sparkles size={20} /> Juris IA local</span>
+            <small>Modelos opcionales que trabajan en tu computadora</small>
+            <ChevronDown size={20} />
+          </summary>
+          <div className="portal-drawer-content">
+            <div className="ai-flashcards compact" aria-label="Pasos para instalar Juris IA local">
+              {localAISetupSteps.map((step, index) => (
+                <article className="ai-flashcard" key={step.title} style={{ '--card-index': index } as CSSProperties}>
+                  <strong>{String(index + 1).padStart(2, '0')}</strong>
+                  <h3>{step.title}</h3>
+                  <p>{step.copy}</p>
+                </article>
+              ))}
+            </div>
+            <div className="ai-download-panel">
+              <div className="ai-download-copy">
+                <h3>Motor local</h3>
+                <p>Instala Ollama y elige un modelo de acuerdo con la capacidad de tu computadora.</p>
+                <a className="product-download secondary ai-engine-link" href="https://ollama.com/download/windows" target="_blank" rel="noreferrer">
+                  <Download size={20} />
+                  <span>Descargar Ollama<small>Motor local para IA</small></span>
+                </a>
+              </div>
+              <div className="ai-tier-grid">
+                {localAIModelTiers.map((tier) => (
+                  <article className={tier.recommended ? 'ai-tier recommended' : 'ai-tier'} key={tier.model}>
+                    {tier.recommended && <span className="tier-badge">Recomendado</span>}
+                    <h3>{tier.label}</h3>
+                    <small>{tier.requirements}</small>
+                    <p>{tier.copy}</p>
+                    <code>{tier.command}</code>
+                  </article>
+                ))}
+              </div>
+            </div>
+          </div>
+        </details>
       </section>
 
-      <section id="suscripcion" className="subscription-band">
+      <section id="suscripcion" className="product-subscription">
         <div>
-          <p className="eyebrow">
-            <CreditCard size={18} />
-            Licencia beta
-          </p>
-          <h2>Suscripcion mensual cuando quieras activar el plan.</h2>
-          <p>
-            El acceso mensual se gestiona mediante Mercado Pago para usuarios que requieran
-            mantener activa su licencia.
-          </p>
+          <p className="eyebrow"><CreditCard size={17} /> Licencia beta</p>
+          <h2>Mantener activa la suscripcion es opcional durante la prueba.</h2>
+          <p>El pago mensual se procesa fuera de la app mediante Mercado Pago.</p>
         </div>
-
-        <a
-          className="download-button payment lower-payment"
-          href={MERCADO_PAGO_PAYMENT_URL}
-          target="_blank"
-          rel="noreferrer"
-        >
-          <CreditCard size={21} />
-          <span>
-            Suscribirse
-            <small>Mercado Pago mensual</small>
-          </span>
+        <a href={MERCADO_PAGO_PAYMENT_URL} target="_blank" rel="noreferrer">
+          <CreditCard size={19} />
+          Suscribirse
+          <ExternalLink size={15} />
         </a>
-      </section>
-
-      <section id="ia-local" className="local-ai-band">
-        <div className="local-ai-heading">
-          <p className="eyebrow">
-            <Sparkles size={18} />
-            Juris IA local
-          </p>
-          <h2>Activa modelos de IA cuando quieras usarlos en tu computadora.</h2>
-          <p>
-            Judicial Managment 2.0 conserva el bot anterior como respaldo, pero permite
-            activar Juris IA con modelos instalados localmente. La IA queda apagada hasta
-            que el usuario decide encenderla.
-          </p>
-        </div>
-
-        <div className="ai-flashcards" aria-label="Pasos para instalar Juris IA local">
-          {localAISetupSteps.map((step, index) => (
-            <article className="ai-flashcard" key={step.title} style={{ '--card-index': index } as CSSProperties}>
-              <strong>{String(index + 1).padStart(2, '0')}</strong>
-              <h3>{step.title}</h3>
-              <p>{step.copy}</p>
-            </article>
-          ))}
-        </div>
-
-        <div className="ai-download-panel">
-          <div className="ai-download-copy">
-            <h3>Motor local</h3>
-            <p>
-              Primero instala Ollama para Windows. Despues descarga uno de los modelos
-              con el comando correspondiente y vuelve a Judicial Managment para revisar el motor.
-            </p>
-            <a className="download-button secondary ai-engine-link" href="https://ollama.com/download/windows" target="_blank" rel="noreferrer">
-              <Download size={21} />
-              <span>
-                Descargar Ollama
-                <small>Motor local para IA</small>
-              </span>
-            </a>
-          </div>
-
-          <div className="ai-tier-grid">
-            {localAIModelTiers.map((tier) => (
-              <article className={tier.recommended ? 'ai-tier recommended' : 'ai-tier'} key={tier.model}>
-                {tier.recommended && <span className="tier-badge">Recomendado</span>}
-                <h3>{tier.label}</h3>
-                <small>{tier.requirements}</small>
-                <p>{tier.copy}</p>
-                <code>{tier.command}</code>
-              </article>
-            ))}
-          </div>
-        </div>
-
-        <div className="ai-responsibility-note">
-          <ShieldCheck size={24} />
-          <span>
-            <strong>Uso responsable</strong>
-            <p>
-              Juris IA ayuda a organizar informacion, redactar borradores y entender rutas de trabajo.
-              No sustituye criterio profesional ni verificacion de leyes, acuerdos, plazos o expedientes.
-            </p>
-          </span>
-        </div>
       </section>
 
       <EnterpriseFooter />
@@ -928,7 +932,8 @@ function AccountSettingsPage({ session, sessionLoading, profile }: AccountSettin
   const [newEmail, setNewEmail] = useState('')
   const [newPassword, setNewPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
-  const [reportCategory, setReportCategory] = useState('Soporte')
+  const [reportCategory, setReportCategory] = useState('otro')
+  const [reportTitle, setReportTitle] = useState('')
   const [reportBody, setReportBody] = useState('')
   const [busyAction, setBusyAction] = useState('')
   const [message, setMessage] = useState('')
@@ -1036,34 +1041,33 @@ function AccountSettingsPage({ session, sessionLoading, profile }: AccountSettin
     event.preventDefault()
     clearFeedback()
 
-    if (reportBody.trim().length < 10) {
+    if (reportTitle.trim().length < 4 || reportBody.trim().length < 10) {
       setError('Agrega un poco mas de detalle al reporte.')
       return
     }
 
     setBusyAction('report')
-    const { error: reportError } = await supabase.from('audit_log').insert([
-      {
-        actor_user_id: session.user.id,
-        action: 'support_report',
-        entity: 'portal_settings',
-        details: {
-          category: reportCategory,
-          body: reportBody.trim(),
-          email: session.user.email,
-          page: '/configuracion',
-          user_agent: navigator.userAgent,
-        },
-      },
-    ])
+    const { error: reportError } = await supabase.rpc('create_support_report', {
+      report_category: reportCategory,
+      report_priority: 'normal',
+      report_title: reportTitle.trim(),
+      report_description: reportBody.trim(),
+      report_steps: '',
+      report_expected: '',
+      report_despacho_id: null,
+      report_contains_sensitive_data: false,
+      report_app_version: 'portal-web',
+      report_platform: navigator.platform,
+    })
 
     setBusyAction('')
     if (reportError) {
       setError(reportError.message)
       return
     }
+    setReportTitle('')
     setReportBody('')
-    setMessage('Reporte enviado. Quedo registrado para seguimiento.')
+    setMessage('Reporte enviado. Ya puede revisarse y responderse desde administracion.')
   }
 
   return (
@@ -1216,12 +1220,25 @@ function AccountSettingsPage({ session, sessionLoading, profile }: AccountSettin
           <label>
             Tipo de reporte
             <select value={reportCategory} onChange={(event) => setReportCategory(event.target.value)}>
-              <option>Soporte</option>
-              <option>Error</option>
-              <option>Seguridad</option>
-              <option>Facturacion</option>
-              <option>Sugerencia</option>
+              <option value="otro">Soporte general</option>
+              <option value="error">Error</option>
+              <option value="seguridad">Seguridad</option>
+              <option value="cuenta">Cuenta y acceso</option>
+              <option value="privacidad">Privacidad / ARCO</option>
+              <option value="datos">Datos y respaldos</option>
+              <option value="actualizacion">Actualizacion</option>
+              <option value="sugerencia">Sugerencia</option>
             </select>
+          </label>
+          <label>
+            Titulo
+            <input
+              value={reportTitle}
+              onChange={(event) => setReportTitle(event.target.value)}
+              placeholder="Resumen breve del asunto"
+              maxLength={160}
+              required
+            />
           </label>
           <label>
             Descripcion
@@ -1248,7 +1265,12 @@ function AdminPage({ session, sessionLoading, profileLoading, canAccessAdmin }: 
   const [profiles, setProfiles] = useState<AppProfile[]>([])
   const [despachos, setDespachos] = useState<DespachoSummary[]>([])
   const [memberCounts, setMemberCounts] = useState<Record<string, number>>({})
-  const [logs, setLogs] = useState<AuditLogEntry[]>([])
+  const [supportReports, setSupportReports] = useState<SupportReport[]>([])
+  const [selectedReport, setSelectedReport] = useState<SupportReport | null>(null)
+  const [reportStatus, setReportStatus] = useState<SupportReportStatus>('new')
+  const [reportPriority, setReportPriority] = useState<SupportReportPriority>('normal')
+  const [reportReply, setReportReply] = useState('')
+  const [reportNotes, setReportNotes] = useState('')
   const [flags, setFlags] = useState<ModerationFlag[]>([])
   const [selectedFlag, setSelectedFlag] = useState<ModerationFlag | null>(null)
   const [flagChatMessages, setFlagChatMessages] = useState<ChatMessagePreview[]>([])
@@ -1257,6 +1279,50 @@ function AdminPage({ session, sessionLoading, profileLoading, canAccessAdmin }: 
   const [success, setSuccess] = useState('')
   const [busyAction, setBusyAction] = useState('')
   const [refreshKey, setRefreshKey] = useState(0)
+
+  const openSupportReport = useCallback((report: SupportReport) => {
+    setSelectedReport(report)
+    setReportStatus(report.status)
+    setReportPriority(report.priority)
+    setReportReply(report.admin_reply ?? '')
+    setReportNotes(report.admin_notes ?? '')
+    setError('')
+    setSuccess('')
+  }, [])
+
+  const saveSupportReport = async () => {
+    if (!selectedReport) return
+
+    setBusyAction(`${selectedReport.id}-report`)
+    setError('')
+    setSuccess('')
+
+    const { error: rpcError } = await supabase.rpc('admin_update_support_report', {
+      report_id: selectedReport.id,
+      new_status: reportStatus,
+      new_priority: reportPriority,
+      reply: reportReply.trim() || null,
+      notes: reportNotes.trim() || null,
+    })
+
+    if (rpcError) {
+      setError(rpcError.message)
+    } else {
+      setSelectedReport((current) => current
+        ? {
+            ...current,
+            status: reportStatus,
+            priority: reportPriority,
+            admin_reply: reportReply.trim() || null,
+            admin_notes: reportNotes.trim() || null,
+          }
+        : current)
+      setSuccess('Reporte actualizado. La respuesta ya esta disponible para el usuario.')
+      setRefreshKey((current) => current + 1)
+    }
+
+    setBusyAction('')
+  }
 
   const loadFlagChat = useCallback(async (flag: ModerationFlag) => {
     setSelectedFlag(flag)
@@ -1394,13 +1460,11 @@ function AdminPage({ session, sessionLoading, profileLoading, canAccessAdmin }: 
 
       if (despachosResult.error) throw despachosResult.error
 
-      const logsResult = await supabase
-        .from('audit_log')
-        .select('id,actor_user_id,action,entity,details,created_at')
-        .order('created_at', { ascending: false })
-        .limit(40)
+      const reportsResult = await supabase.rpc('admin_list_support_reports', {
+        report_limit: 100,
+      })
 
-      if (logsResult.error) throw logsResult.error
+      if (reportsResult.error) throw reportsResult.error
 
       const membersResult = await supabase
         .from('despacho_miembros')
@@ -1423,7 +1487,8 @@ function AdminPage({ session, sessionLoading, profileLoading, canAccessAdmin }: 
         setProfiles(profilesData)
         setDespachos((despachosResult.data as DespachoSummary[] | null) ?? [])
         setMemberCounts(nextMemberCounts)
-        setLogs((logsResult.data as AuditLogEntry[] | null) ?? [])
+        const nextReports = (reportsResult.data as SupportReport[] | null) ?? []
+        setSupportReports(nextReports)
         setFlags((flagsResult.data as ModerationFlag[] | null) ?? [])
         if (membersResult.error || flagsResult.error) {
           setError('Panel parcial: ejecuta APLICAR_EN_SUPABASE_ADMIN_CONTROL_MODERACION.sql si faltan colaboradores o alertas.')
@@ -1475,7 +1540,7 @@ function AdminPage({ session, sessionLoading, profileLoading, canAccessAdmin }: 
 
   const ownerCount = profiles.filter((item) => item.role === 'owner').length
   const activeDespachos = despachos.filter((item) => !item.deleted_at).length
-  const reportCount = logs.filter((item) => item.action === 'support_report').length
+  const reportCount = supportReports.length
   const pendingFlagCount = flags.filter((item) => item.status === 'pending').length
   const totalUsageSeconds = profiles.reduce((total, item) => total + Number(item.usage_seconds ?? 0), 0)
   const profileById = new Map(profiles.map((item) => [item.id, item]))
@@ -1665,23 +1730,154 @@ function AdminPage({ session, sessionLoading, profileLoading, canAccessAdmin }: 
           </div>
         </section>
 
-        <section className="portal-card">
+        <section className="portal-card wide">
           <div className="card-title-row">
             <MessageSquareText size={22} />
             <span>
-              <strong>Reportes recientes</strong>
-              <small>Enviados desde configuracion.</small>
+              <strong>Bandeja de reportes</strong>
+              <small>Revisa cada solicitud, responde al usuario y conserva notas internas separadas.</small>
             </span>
           </div>
-          <div className="stack-list">
-            {logs.filter((item) => item.action === 'support_report').slice(0, 8).map((item) => (
-              <div key={item.id}>
-                <strong>{String(item.details.category ?? 'Reporte')}</strong>
-                <small>{formatDate(item.created_at)}</small>
-                <p>{String(item.details.body ?? '')}</p>
-              </div>
-            ))}
-            {!logs.some((item) => item.action === 'support_report') && !loading && <p>Sin reportes todavia.</p>}
+          <div className="support-review-layout">
+            <div className="support-report-list">
+              {supportReports.map((report) => {
+                const reporter = profileById.get(report.user_id)
+                const isSelected = selectedReport?.id === report.id
+
+                return (
+                  <button
+                    type="button"
+                    key={report.id}
+                    className={`support-report-item ${isSelected ? 'selected' : ''} priority-${report.priority}`}
+                    onClick={() => openSupportReport(report)}
+                  >
+                    <span className="support-report-item-header">
+                      <strong>{report.title}</strong>
+                      <span className={`report-status ${report.status}`}>
+                        {supportReportStatusLabels[report.status]}
+                      </span>
+                    </span>
+                    <small>{reporter?.email ?? report.user_id}</small>
+                    <small>
+                      {supportReportCategoryLabels[report.category] ?? report.category}
+                      {' - '}
+                      {supportReportPriorityLabels[report.priority]}
+                      {' - '}
+                      {formatDate(report.created_at)}
+                    </small>
+                  </button>
+                )
+              })}
+              {!supportReports.length && !loading && <p>Sin reportes todavia.</p>}
+            </div>
+
+            <div className="support-report-detail">
+              {selectedReport ? (
+                <>
+                  <div className="support-report-detail-heading">
+                    <div>
+                      <span>{supportReportCategoryLabels[selectedReport.category] ?? selectedReport.category}</span>
+                      <h2>{selectedReport.title}</h2>
+                      <small>
+                        {profileById.get(selectedReport.user_id)?.email ?? selectedReport.user_id}
+                        {' - '}
+                        {formatDate(selectedReport.created_at)}
+                      </small>
+                    </div>
+                    <span className={`report-priority ${selectedReport.priority}`}>
+                      Prioridad {supportReportPriorityLabels[selectedReport.priority]}
+                    </span>
+                  </div>
+
+                  {selectedReport.contains_sensitive_data && (
+                    <div className="support-sensitive-warning">
+                      <ShieldAlert size={18} />
+                      El usuario indico que este reporte puede contener datos sensibles. Revisalo con acceso restringido.
+                    </div>
+                  )}
+
+                  <div className="support-report-copy">
+                    <h3>Descripcion</h3>
+                    <p>{selectedReport.description}</p>
+                    {selectedReport.steps_to_reproduce && (
+                      <>
+                        <h3>Pasos para reproducir</h3>
+                        <p>{selectedReport.steps_to_reproduce}</p>
+                      </>
+                    )}
+                    {selectedReport.expected_behavior && (
+                      <>
+                        <h3>Resultado esperado</h3>
+                        <p>{selectedReport.expected_behavior}</p>
+                      </>
+                    )}
+                    <small>
+                      Version: {selectedReport.app_version || 'No informada'}
+                      {' - '}
+                      Plataforma: {selectedReport.platform || 'No informada'}
+                    </small>
+                  </div>
+
+                  <div className="support-report-fields">
+                    <label>
+                      Estado
+                      <select
+                        value={reportStatus}
+                        onChange={(event) => setReportStatus(event.target.value as SupportReportStatus)}
+                      >
+                        {Object.entries(supportReportStatusLabels).map(([value, label]) => (
+                          <option key={value} value={value}>{label}</option>
+                        ))}
+                      </select>
+                    </label>
+                    <label>
+                      Prioridad
+                      <select
+                        value={reportPriority}
+                        onChange={(event) => setReportPriority(event.target.value as SupportReportPriority)}
+                      >
+                        {Object.entries(supportReportPriorityLabels).map(([value, label]) => (
+                          <option key={value} value={value}>{label}</option>
+                        ))}
+                      </select>
+                    </label>
+                    <label className="wide">
+                      Respuesta visible para el usuario
+                      <textarea
+                        rows={4}
+                        value={reportReply}
+                        onChange={(event) => setReportReply(event.target.value)}
+                        placeholder="Explica el seguimiento, la solucion o la informacion que necesitas."
+                        maxLength={8000}
+                      />
+                    </label>
+                    <label className="wide">
+                      Notas internas
+                      <textarea
+                        rows={3}
+                        value={reportNotes}
+                        onChange={(event) => setReportNotes(event.target.value)}
+                        placeholder="Solo visibles para administracion."
+                        maxLength={8000}
+                      />
+                    </label>
+                  </div>
+
+                  <div className="support-report-actions">
+                    <button
+                      type="button"
+                      onClick={saveSupportReport}
+                      disabled={busyAction === `${selectedReport.id}-report`}
+                    >
+                      <CheckCircle2 size={16} />
+                      {busyAction === `${selectedReport.id}-report` ? 'Guardando...' : 'Guardar seguimiento'}
+                    </button>
+                  </div>
+                </>
+              ) : (
+                <p>Selecciona un reporte para abrir su expediente de seguimiento.</p>
+              )}
+            </div>
           </div>
         </section>
 
