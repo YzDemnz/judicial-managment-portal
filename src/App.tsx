@@ -1,6 +1,7 @@
 import {
   type CSSProperties,
   type FormEvent,
+  type ReactNode,
   useCallback,
   useEffect,
   useState,
@@ -9,7 +10,9 @@ import type { EmailOtpType, Session } from '@supabase/supabase-js'
 import {
   AlertCircle,
   Apple,
+  ArrowLeft,
   Ban,
+  BookOpenCheck,
   BriefcaseBusiness,
   CalendarDays,
   CheckCircle2,
@@ -20,6 +23,8 @@ import {
   Download,
   ExternalLink,
   FileText,
+  FolderKanban,
+  HeartHandshake,
   Loader2,
   LockKeyhole,
   LogIn,
@@ -33,6 +38,7 @@ import {
   ShieldCheck,
   Smartphone,
   Sparkles,
+  WalletCards,
   UserCheck,
   UserPlus,
   Users,
@@ -56,11 +62,6 @@ function pagePath(path = '/') {
   const cleanBase = base === '/' ? '' : base.replace(/\/$/, '')
   const cleanPath = path.startsWith('/') ? path : `/${path}`
   return cleanPath === '/' ? `${cleanBase || '/'}` : `${cleanBase}${cleanPath}`
-}
-
-function pageHash(hash: string) {
-  const cleanHash = hash.replace(/^#/, '')
-  return `${pagePath('/')}#${cleanHash}`
 }
 
 const AUTH_CONFIRM_PATH = '/auth/confirm'
@@ -147,35 +148,6 @@ const MERCADO_PAGO_PAYMENT_URL = 'https://www.mercadopago.com.mx/subscriptions/c
 const MOBILE_ANDROID_APK_URL = 'https://github.com/YzDemnz/judicial-managment-mobile/releases/latest/download/Judicial-Managment-Mobile-Android.apk'
 const MOBILE_ANDROID_RELEASE_URL = 'https://github.com/YzDemnz/judicial-managment-mobile/releases/tag/mobile-android-beta'
 
-const workReferences = [
-  {
-    icon: FileText,
-    title: 'Expedientes y archivo',
-    copy: 'Control de expedientes activos, archivados, partes, juzgados y movimientos recientes.',
-  },
-  {
-    icon: Users,
-    title: 'Clientes y despachos',
-    copy: 'Organizacion por despacho, invitaciones, colaboradores y permisos de acceso.',
-  },
-  {
-    icon: CalendarDays,
-    title: 'Calendario juridico',
-    copy: 'Registro de eventos y seguimiento de fechas importantes para el despacho.',
-  },
-  {
-    icon: MessageSquareText,
-    title: 'Equipo y reportes',
-    copy: 'Chat del despacho, alertas internas y reportes recientes dentro del panel.',
-  },
-]
-
-const securityItems = [
-  'Aplicacion de escritorio en Electron',
-  'Base de datos y autenticacion con Supabase',
-  'Instalador Windows x64 para distribucion controlada',
-]
-
 const installSteps = [
   {
     title: 'Crea tu cuenta',
@@ -188,6 +160,84 @@ const installSteps = [
   {
     title: 'Descarga e instala',
     copy: 'Descarga la version para Windows, ejecuta el instalador e inicia sesion con la misma cuenta.',
+  },
+]
+
+const workTutorials = [
+  {
+    icon: BriefcaseBusiness,
+    title: '1. Crea o abre un despacho',
+    copy: 'El despacho separa los asuntos, integrantes y permisos de cada equipo. Al entrar eliges el espacio en el que vas a trabajar.',
+  },
+  {
+    icon: Users,
+    title: '2. Registra a las personas',
+    copy: 'Agrega clientes y colaboradores para que cada expediente tenga responsables claros y datos de contacto disponibles.',
+  },
+  {
+    icon: FolderKanban,
+    title: '3. Organiza los expedientes',
+    copy: 'Selecciona materia y juzgado, registra las partes y conserva documentos, movimientos y cambios de estado en un solo lugar.',
+  },
+  {
+    icon: CalendarDays,
+    title: '4. Controla fechas importantes',
+    copy: 'Al registrar una audiencia o vencimiento, la fecha aparece en el calendario para facilitar el seguimiento diario.',
+  },
+  {
+    icon: MessageSquareText,
+    title: '5. Coordina al equipo',
+    copy: 'El chat del despacho, los reportes y los permisos permiten colaborar sin perder el contexto de cada asunto.',
+  },
+  {
+    icon: FileText,
+    title: '6. Redacta y conserva documentos',
+    copy: 'Escriba permite preparar documentos jurídicos y mantenerlos vinculados con el expediente correspondiente.',
+  },
+]
+
+const securityGuidance = [
+  {
+    icon: MailCheck,
+    title: 'Correo verificado',
+    purpose: 'Confirma que la cuenta pertenece a una dirección real y permite recuperar el acceso.',
+    action: 'Usa un correo que revises con frecuencia y completa la confirmación cuando recibas el mensaje.',
+  },
+  {
+    icon: ShieldCheck,
+    title: 'Verificación en dos pasos',
+    purpose: 'Añade una barrera adicional si alguien obtiene tu contraseña.',
+    action: 'Actívala desde tu perfil y conserva tus códigos de recuperación en un lugar privado.',
+  },
+  {
+    icon: Users,
+    title: 'Permisos por despacho',
+    purpose: 'Evita que todos los colaboradores puedan modificar o administrar la misma información.',
+    action: 'Entrega solo el nivel de acceso necesario y revisa los permisos cuando cambie el equipo.',
+  },
+  {
+    icon: LockKeyhole,
+    title: 'Respaldo y recuperación',
+    purpose: 'Reduce el riesgo de perder continuidad cuando un archivo se elimina o un equipo deja de funcionar.',
+    action: 'Mantén tus datos actualizados y verifica periódicamente los documentos importantes del despacho.',
+  },
+]
+
+const projectMessages = [
+  {
+    icon: BookOpenCheck,
+    title: 'Creado desde cero',
+    copy: 'Judicial Managment nació como una idea sencilla y fue creciendo módulo por módulo, escuchando necesidades reales del trabajo jurídico.',
+  },
+  {
+    icon: BriefcaseBusiness,
+    title: 'Pensado para el trabajo diario',
+    copy: 'Esperamos que ayude a mantener cada asunto más claro, reducir tareas repetitivas y dar tranquilidad al equipo del despacho.',
+  },
+  {
+    icon: HeartHandshake,
+    title: 'Una versión completa',
+    copy: 'La aplicación actual puede utilizarse como producto completo. La suscripción es una forma voluntaria de apoyar nuevas funciones, mantenimiento y mejoras.',
   },
 ]
 
@@ -440,6 +490,19 @@ function App() {
   }
   const closeMobileMenu = () => setMobileMenuOpen(false)
   const canAccessAdmin = isOwnerAdminAccount(session, appProfile)
+  const navClass = (path: string) => {
+    if (path === '/') return currentPath === '/' ? 'active' : undefined
+    return currentPath === path || currentPath.startsWith(`${path}/`) ? 'active' : undefined
+  }
+  const isPublicInformationPath = [
+    '/trabajo',
+    '/seguridad',
+    '/como-instalar',
+    '/movil',
+    '/descargas',
+    '/acceso',
+    '/ia-local',
+  ].some((path) => currentPath === path || currentPath.startsWith(`${path}/`))
 
   return (
     <main className="site-shell">
@@ -465,13 +528,13 @@ function App() {
         </button>
 
         <nav id="site-navigation" className={`topnav ${mobileMenuOpen ? 'open' : ''}`} aria-label="Secciones">
-          <a className="active" href={pageHash('inicio')} onClick={closeMobileMenu}>Inicio</a>
-          <a href={pageHash('trabajo')} onClick={closeMobileMenu}>Trabajo</a>
-          <a href={pageHash('seguridad')} onClick={closeMobileMenu}>Seguridad</a>
-          <a href={pageHash('como-instalar')} onClick={closeMobileMenu}>Como instalar</a>
-          <a href={pageHash('movil')} onClick={closeMobileMenu}>Movil</a>
-          <a href={pageHash('descargas')} onClick={closeMobileMenu}>Descargas</a>
-          <a href={pageHash('acceso')} onClick={closeMobileMenu}>Acceso</a>
+          <a className={navClass('/')} href={pagePath('/')} onClick={closeMobileMenu}>Inicio</a>
+          <a className={navClass('/trabajo')} href={pagePath('/trabajo')} onClick={closeMobileMenu}>Trabajo</a>
+          <a className={navClass('/seguridad')} href={pagePath('/seguridad')} onClick={closeMobileMenu}>Seguridad</a>
+          <a className={navClass('/como-instalar')} href={pagePath('/como-instalar')} onClick={closeMobileMenu}>Como instalar</a>
+          <a className={navClass('/movil')} href={pagePath('/movil')} onClick={closeMobileMenu}>Movil</a>
+          <a className={navClass('/descargas')} href={pagePath('/descargas')} onClick={closeMobileMenu}>Descargas</a>
+          <a className={navClass('/acceso')} href={pagePath('/acceso')} onClick={closeMobileMenu}>Acceso</a>
         </nav>
 
         <div className="nav-actions">
@@ -489,7 +552,7 @@ function App() {
               onSignOut={handleTopbarSignOut}
             />
           ) : (
-            <a className="nav-login" href={pageHash('acceso')}>
+            <a className="nav-login" href={pagePath('/acceso')}>
               <LogIn size={17} />
               <span>Iniciar sesion</span>
             </a>
@@ -516,8 +579,14 @@ function App() {
           profileLoading={profileLoading}
           canAccessAdmin={canAccessAdmin}
         />
+      ) : isPublicInformationPath ? (
+        <PublicInformationPage
+          path={currentPath}
+          session={session}
+          sessionLoading={sessionLoading}
+        />
       ) : (
-        <LandingPage session={session} sessionLoading={sessionLoading} />
+        <LandingPage session={session} />
       )}
     </main>
   )
@@ -525,24 +594,9 @@ function App() {
 
 interface LandingPageProps {
   session: Session | null
-  sessionLoading: boolean
 }
 
-function LandingPage({ session, sessionLoading }: LandingPageProps) {
-  useEffect(() => {
-    const openTargetPanel = () => {
-      if (!window.location.hash) return
-      const target = document.querySelector(window.location.hash)
-      if (target instanceof HTMLDetailsElement) {
-        target.open = true
-      }
-    }
-
-    openTargetPanel()
-    window.addEventListener('hashchange', openTargetPanel)
-    return () => window.removeEventListener('hashchange', openTargetPanel)
-  }, [])
-
+function LandingPage({ session }: LandingPageProps) {
   return (
     <>
       <section id="inicio" className="product-hero">
@@ -615,7 +669,7 @@ function LandingPage({ session, sessionLoading }: LandingPageProps) {
                 </div>
               </div>
             ) : (
-              <a className="hero-access-link" href={pageHash('acceso')}>
+              <a className="hero-access-link" href={pagePath('/acceso')}>
                 <UserCheck size={20} />
                 <span>
                   <strong>Crea tu cuenta para la beta privada</strong>
@@ -651,7 +705,7 @@ function LandingPage({ session, sessionLoading }: LandingPageProps) {
                 <ShieldCheck size={16} />
                 Correo verificado, 2FA y respaldos
               </span>
-              <a href={pageHash('trabajo')}>
+              <a href={pagePath('/trabajo')}>
                 Ver funciones
                 <ExternalLink size={15} />
               </a>
@@ -661,14 +715,14 @@ function LandingPage({ session, sessionLoading }: LandingPageProps) {
 
         <div className="quick-module-grid" aria-label="Modulos principales">
           {[
-            { icon: FileText, title: 'Expedientes', copy: 'Materias, juzgados y etapas procesales.', href: 'trabajo' },
-            { icon: BriefcaseBusiness, title: 'Despachos', copy: 'Roles, permisos y colaboradores.', href: 'trabajo' },
-            { icon: ShieldCheck, title: 'Seguridad', copy: '2FA, auditoria y respaldos.', href: 'seguridad' },
-            { icon: CalendarDays, title: 'Calendario', copy: 'Audiencias y recordatorios.', href: 'trabajo' },
+            { icon: FileText, title: 'Expedientes', copy: 'Materias, juzgados y etapas procesales.', href: '/trabajo/expedientes' },
+            { icon: BriefcaseBusiness, title: 'Despachos', copy: 'Roles, permisos y colaboradores.', href: '/trabajo/despachos' },
+            { icon: ShieldCheck, title: 'Seguridad', copy: '2FA, permisos y respaldos.', href: '/seguridad' },
+            { icon: CalendarDays, title: 'Calendario', copy: 'Audiencias y recordatorios.', href: '/trabajo/calendario' },
           ].map((item) => {
             const Icon = item.icon
             return (
-              <a href={pageHash(item.href)} key={item.title}>
+              <a href={pagePath(item.href)} key={item.title}>
                 <span className="quick-module-icon"><Icon size={21} /></span>
                 <span>
                   <strong>{item.title}</strong>
@@ -681,185 +735,364 @@ function LandingPage({ session, sessionLoading }: LandingPageProps) {
         </div>
       </section>
 
-      <section className="portal-drawers" aria-label="Informacion de Judicial Managment">
-        <details id="acceso" className="portal-drawer">
-          <summary>
-            <span><CircleUserRound size={20} /> Cuenta y acceso</span>
-            <small>Inicia sesion, crea tu cuenta o abre la app</small>
-            <ChevronDown size={20} />
-          </summary>
-          <div className="portal-drawer-content access-drawer-content">
-            <div>
-              <p className="eyebrow">Portal de empresa</p>
-              <h2>Una cuenta para todas tus versiones.</h2>
-              <p>Registra un correo real, confirmalo y utiliza las mismas credenciales en la app de escritorio y Android.</p>
-            </div>
-            <AuthPanel session={session} sessionLoading={sessionLoading} />
-          </div>
-        </details>
-
-        <details id="trabajo" className="portal-drawer">
-          <summary>
-            <span><BriefcaseBusiness size={20} /> Trabajo del despacho</span>
-            <small>Expedientes, clientes, calendario y colaboracion</small>
-            <ChevronDown size={20} />
-          </summary>
-          <div className="portal-drawer-content">
-            <div className="feature-grid compact">
-              {workReferences.map((item) => {
-                const Icon = item.icon
-                return (
-                  <article className="feature-card" key={item.title}>
-                    <Icon size={23} />
-                    <h3>{item.title}</h3>
-                    <p>{item.copy}</p>
-                  </article>
-                )
-              })}
-            </div>
-          </div>
-        </details>
-
-        <details id="seguridad" className="portal-drawer">
-          <summary>
-            <span><ShieldCheck size={20} /> Seguridad y respaldos</span>
-            <small>Proteccion de cuentas, permisos y recuperacion</small>
-            <ChevronDown size={20} />
-          </summary>
-          <div className="portal-drawer-content drawer-split">
-            <div>
-              <p className="eyebrow">Base tecnica</p>
-              <h2>Controles visibles y accesos auditables.</h2>
-              <p>La app utiliza correo confirmado, autenticacion de dos factores, permisos por despacho y respaldos recuperables.</p>
-            </div>
-            <div className="security-list">
-              {securityItems.map((item) => (
-                <div key={item}>
-                  <LockKeyhole size={18} />
-                  <span>{item}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </details>
-
-        <details id="como-instalar" className="portal-drawer">
-          <summary>
-            <span><Download size={20} /> Como instalar</span>
-            <small>Cuenta, correo, descarga y aviso de Windows</small>
-            <ChevronDown size={20} />
-          </summary>
-          <div className="portal-drawer-content">
-            <div className="install-steps">
-              {installSteps.map((step, index) => (
-                <article className="install-step" key={step.title}>
-                  <strong>{index + 1}</strong>
-                  <span>
-                    <h3>{step.title}</h3>
-                    <p>{step.copy}</p>
-                  </span>
-                </article>
-              ))}
-            </div>
-            <div className="defender-note">
-              <ShieldAlert size={23} />
-              <span>
-                <strong>Por que Windows muestra una advertencia</strong>
-                <p>
-                  La beta cerrada aun no cuenta con certificado comercial de firma digital.
-                  Windows puede indicar que no reconoce al editor, aunque el instalador provenga de este portal oficial.
-                </p>
-              </span>
-            </div>
-          </div>
-        </details>
-
-        <details id="movil" className="portal-drawer">
-          <summary>
-            <span><Smartphone size={20} /> Aplicacion movil</span>
-            <small>Android disponible; iPhone en preparacion</small>
-            <ChevronDown size={20} />
-          </summary>
-          <div className="portal-drawer-content">
-            <div className="mobile-download-grid compact">
-              <article>
-                <IonAndroidIcon />
-                <h3>Android</h3>
-                <p>APK para pruebas internas conectado a tu cuenta y despacho.</p>
-                <a href={MOBILE_ANDROID_APK_URL}>Descargar APK</a>
+      <section className="project-story" aria-labelledby="project-story-title">
+        <div className="project-story-heading">
+          <p className="eyebrow"><BookOpenCheck size={17} /> Nuestra historia</p>
+          <h2 id="project-story-title">Una herramienta construida paso a paso para despachos reales.</h2>
+          <p>
+            El proyecto continúa creciendo con una idea sencilla: que la tecnología jurídica
+            sea clara, útil y accesible sin convertir el trabajo diario en algo más complicado.
+          </p>
+        </div>
+        <div className="project-story-grid">
+          {projectMessages.map((item) => {
+            const Icon = item.icon
+            return (
+              <article key={item.title}>
+                <Icon size={24} />
+                <h3>{item.title}</h3>
+                <p>{item.copy}</p>
               </article>
-              <article>
-                <Apple size={28} />
-                <h3>iPhone</h3>
-                <p>La version iOS se habilitara cuando exista distribucion firmada para Apple.</p>
-                <span>Proximamente</span>
-              </article>
-              <article>
-                <ExternalLink size={28} />
-                <h3>Version publicada</h3>
-                <p>Consulta el paquete vigente y sus archivos desde GitHub Releases.</p>
-                <a href={MOBILE_ANDROID_RELEASE_URL} target="_blank" rel="noreferrer">Ver version</a>
-              </article>
-            </div>
-          </div>
-        </details>
-
-        <details id="ia-local" className="portal-drawer">
-          <summary>
-            <span><Sparkles size={20} /> Juris IA local</span>
-            <small>Modelos opcionales que trabajan en tu computadora</small>
-            <ChevronDown size={20} />
-          </summary>
-          <div className="portal-drawer-content">
-            <div className="ai-flashcards compact" aria-label="Pasos para instalar Juris IA local">
-              {localAISetupSteps.map((step, index) => (
-                <article className="ai-flashcard" key={step.title} style={{ '--card-index': index } as CSSProperties}>
-                  <strong>{String(index + 1).padStart(2, '0')}</strong>
-                  <h3>{step.title}</h3>
-                  <p>{step.copy}</p>
-                </article>
-              ))}
-            </div>
-            <div className="ai-download-panel">
-              <div className="ai-download-copy">
-                <h3>Motor local</h3>
-                <p>Instala Ollama y elige un modelo de acuerdo con la capacidad de tu computadora.</p>
-                <a className="product-download secondary ai-engine-link" href="https://ollama.com/download/windows" target="_blank" rel="noreferrer">
-                  <Download size={20} />
-                  <span>Descargar Ollama<small>Motor local para IA</small></span>
-                </a>
-              </div>
-              <div className="ai-tier-grid">
-                {localAIModelTiers.map((tier) => (
-                  <article className={tier.recommended ? 'ai-tier recommended' : 'ai-tier'} key={tier.model}>
-                    {tier.recommended && <span className="tier-badge">Recomendado</span>}
-                    <h3>{tier.label}</h3>
-                    <small>{tier.requirements}</small>
-                    <p>{tier.copy}</p>
-                    <code>{tier.command}</code>
-                  </article>
-                ))}
-              </div>
-            </div>
-          </div>
-        </details>
+            )
+          })}
+        </div>
       </section>
 
-      <section id="suscripcion" className="product-subscription">
+      <section className="support-project" aria-labelledby="support-project-title">
         <div>
-          <p className="eyebrow"><CreditCard size={17} /> Licencia beta</p>
-          <h2>Mantener activa la suscripcion es opcional durante la prueba.</h2>
-          <p>El pago mensual se procesa fuera de la app mediante Mercado Pago.</p>
+          <p className="eyebrow"><HeartHandshake size={17} /> Apoya el proyecto</p>
+          <h2 id="support-project-title">La aplicación es completa; tu apoyo nos permite seguir mejorándola.</h2>
+          <p>
+            Suscribirte ayuda a mantener actualizaciones, soporte y nuevas herramientas.
+            El uso actual de la aplicación no depende de realizar un donativo.
+          </p>
         </div>
         <a href={MERCADO_PAGO_PAYMENT_URL} target="_blank" rel="noreferrer">
           <CreditCard size={19} />
-          Suscribirse
+          Apoyar con suscripción
           <ExternalLink size={15} />
         </a>
       </section>
 
+      <DonationPreview />
+
       <EnterpriseFooter />
     </>
+  )
+}
+
+interface PublicInformationPageProps {
+  path: string
+  session: Session | null
+  sessionLoading: boolean
+}
+
+function PublicInformationPage({ path, session, sessionLoading }: PublicInformationPageProps) {
+  const workFocus = path.split('/')[2] ?? ''
+  const workHeadings: Record<string, { title: string; copy: string }> = {
+    expedientes: {
+      title: 'Expedientes claros desde el registro hasta el archivo.',
+      copy: 'Conoce el recorrido básico para registrar un asunto, mantenerlo actualizado y consultar su historia sin perder información.',
+    },
+    despachos: {
+      title: 'Un espacio separado para cada equipo de trabajo.',
+      copy: 'Organiza colaboradores y permisos para que cada persona vea o modifique únicamente lo que necesita.',
+    },
+    calendario: {
+      title: 'Fechas importantes visibles para todo el despacho.',
+      copy: 'Registra audiencias y vencimientos desde los movimientos para convertir el calendario en una guía diaria.',
+    },
+  }
+  const workHeading = workHeadings[workFocus] ?? {
+    title: 'Una forma sencilla de trabajar dentro de Judicial Managment.',
+    copy: 'Estos recorridos breves muestran cómo se conectan los módulos principales durante el trabajo diario del despacho.',
+  }
+
+  let content: ReactNode
+
+  if (path.startsWith('/trabajo')) {
+    content = (
+      <>
+        <InformationHero
+          icon={BriefcaseBusiness}
+          eyebrow="Trabajo del despacho"
+          title={workHeading.title}
+          copy={workHeading.copy}
+        />
+        <section className="info-band" aria-labelledby="work-tutorial-title">
+          <div className="info-section-heading">
+            <p className="eyebrow"><BookOpenCheck size={17} /> Mini tutorial</p>
+            <h2 id="work-tutorial-title">Del primer acceso al seguimiento cotidiano.</h2>
+            <p>Cada paso está pensado para que el equipo encuentre rápidamente qué hacer después.</p>
+          </div>
+          <div className="tutorial-grid">
+            {workTutorials.map((item) => {
+              const Icon = item.icon
+              return (
+                <article key={item.title}>
+                  <Icon size={23} />
+                  <h3>{item.title}</h3>
+                  <p>{item.copy}</p>
+                </article>
+              )
+            })}
+          </div>
+        </section>
+        <section className="info-band alternate">
+          <div className="info-section-heading">
+            <p className="eyebrow"><FolderKanban size={17} /> Recorridos específicos</p>
+            <h2>Abre únicamente el tema que necesitas.</h2>
+          </div>
+          <div className="info-route-grid">
+            <a href={pagePath('/trabajo/expedientes')}><FileText size={21} /><span><strong>Expedientes</strong><small>Registro, movimientos, documentos y archivo.</small></span></a>
+            <a href={pagePath('/trabajo/despachos')}><BriefcaseBusiness size={21} /><span><strong>Despachos</strong><small>Integrantes, roles y permisos de acceso.</small></span></a>
+            <a href={pagePath('/trabajo/calendario')}><CalendarDays size={21} /><span><strong>Calendario</strong><small>Audiencias, vencimientos y recordatorios.</small></span></a>
+          </div>
+        </section>
+      </>
+    )
+  } else if (path === '/seguridad') {
+    content = (
+      <>
+        <InformationHero
+          icon={ShieldCheck}
+          eyebrow="Seguridad"
+          title="Protecciones que ayudan a conservar el control de tu información."
+          copy="Aquí explicamos por qué existe cada medida, qué debes hacer como usuario y qué riesgo ayuda a reducir."
+        />
+        <section className="info-band" aria-labelledby="security-purpose-title">
+          <div className="info-section-heading">
+            <p className="eyebrow"><ShieldCheck size={17} /> Tu participación importa</p>
+            <h2 id="security-purpose-title">La seguridad funciona mejor cuando todos cuidan su acceso.</h2>
+          </div>
+          <div className="security-purpose-grid">
+            {securityGuidance.map((item) => {
+              const Icon = item.icon
+              return (
+                <article key={item.title}>
+                  <Icon size={24} />
+                  <h3>{item.title}</h3>
+                  <strong>¿Para qué sirve?</strong>
+                  <p>{item.purpose}</p>
+                  <strong>¿Qué debes hacer?</strong>
+                  <p>{item.action}</p>
+                </article>
+              )
+            })}
+          </div>
+        </section>
+        <section className="security-reminder">
+          <ShieldAlert size={28} />
+          <div>
+            <h2>Tu contraseña nunca debe compartirse.</h2>
+            <p>Cada colaborador debe utilizar su propia cuenta. Así los permisos pueden retirarse sin afectar al resto del despacho.</p>
+          </div>
+        </section>
+      </>
+    )
+  } else if (path === '/como-instalar') {
+    content = (
+      <>
+        <InformationHero
+          icon={Download}
+          eyebrow="Cómo instalar"
+          title="Prepara tu cuenta y entra a la aplicación en pocos pasos."
+          copy="El portal guía la creación de cuenta, la confirmación del correo y la descarga oficial para Windows."
+        />
+        <section className="info-band">
+          <div className="install-steps">
+            {installSteps.map((step, index) => (
+              <article className="install-step" key={step.title}>
+                <strong>{index + 1}</strong>
+                <span><h3>{step.title}</h3><p>{step.copy}</p></span>
+              </article>
+            ))}
+          </div>
+          <div className="defender-note">
+            <ShieldAlert size={23} />
+            <span>
+              <strong>Acerca del aviso de Windows</strong>
+              <p>
+                La distribución cerrada todavía no cuenta con certificado comercial de firma digital.
+                Windows puede advertir que no reconoce al editor. Descarga siempre desde este portal oficial.
+              </p>
+            </span>
+          </div>
+        </section>
+      </>
+    )
+  } else if (path === '/movil') {
+    content = (
+      <>
+        <InformationHero
+          icon={Smartphone}
+          eyebrow="Aplicación móvil"
+          title="Consulta y registra trabajo desde Android."
+          copy="La versión móvil comparte la cuenta y los despachos de la aplicación de escritorio, con una interfaz ajustada a pantallas pequeñas."
+        />
+        <section className="info-band">
+          <div className="mobile-download-grid">
+            <article><IonAndroidIcon /><h3>Android</h3><p>APK beta para pruebas controladas.</p><a href={MOBILE_ANDROID_APK_URL}>Descargar aplicación</a></article>
+            <article><Apple size={28} /><h3>iPhone</h3><p>La edición para iOS requiere distribución y firma de Apple.</p><span>En preparación</span></article>
+            <article><ExternalLink size={28} /><h3>Notas de versión</h3><p>Consulta el paquete publicado y su fecha de actualización.</p><a href={MOBILE_ANDROID_RELEASE_URL} target="_blank" rel="noreferrer">Ver versión</a></article>
+          </div>
+        </section>
+      </>
+    )
+  } else if (path === '/descargas') {
+    content = (
+      <>
+        <InformationHero
+          icon={Download}
+          eyebrow="Descargas oficiales"
+          title="Elige la versión adecuada para tu equipo."
+          copy="Todos los instaladores disponibles se concentran aquí para evitar confusiones con versiones antiguas."
+        />
+        <section className="info-band">
+          <div className="download-catalog">
+            <article><Download size={25} /><h3>Windows</h3><p>Aplicación de escritorio completa para equipos x64.</p><a href={WINDOWS_DOWNLOAD_URL} download={WINDOWS_FILE_NAME}>Descargar instalador</a></article>
+            <article className="unavailable"><Apple size={25} /><h3>Mac</h3><p>La versión universal está en preparación.</p><span>Próximamente</span></article>
+            <article><Smartphone size={25} /><h3>Android</h3><p>Aplicación móvil beta conectada a tu cuenta.</p><a href={MOBILE_ANDROID_APK_URL}>Descargar APK</a></article>
+            <article><Sparkles size={25} /><h3>Juris IA local</h3><p>Consulta los requisitos y modelos opcionales para tu computadora.</p><a href={pagePath('/ia-local')}>Ver guía de IA</a></article>
+          </div>
+        </section>
+      </>
+    )
+  } else if (path === '/ia-local') {
+    content = (
+      <>
+        <InformationHero
+          icon={Sparkles}
+          eyebrow="Juris IA local"
+          title="Modelos opcionales que trabajan desde tu computadora."
+          copy="Esta función se activa únicamente cuando el usuario decide instalar un motor y un modelo compatible con su equipo."
+        />
+        <section className="info-band">
+          <div className="ai-flashcards" aria-label="Pasos para instalar Juris IA local">
+            {localAISetupSteps.map((step, index) => (
+              <article className="ai-flashcard" key={step.title} style={{ '--card-index': index } as CSSProperties}>
+                <strong>{String(index + 1).padStart(2, '0')}</strong>
+                <h3>{step.title}</h3>
+                <p>{step.copy}</p>
+              </article>
+            ))}
+          </div>
+          <div className="ai-download-panel">
+            <div className="ai-download-copy">
+              <h3>Motor local</h3>
+              <p>Instala Ollama y elige un modelo de acuerdo con la capacidad de tu computadora.</p>
+              <a className="product-download secondary ai-engine-link" href="https://ollama.com/download/windows" target="_blank" rel="noreferrer">
+                <Download size={20} /><span>Descargar Ollama<small>Motor local para IA</small></span>
+              </a>
+            </div>
+            <div className="ai-tier-grid">
+              {localAIModelTiers.map((tier) => (
+                <article className={tier.recommended ? 'ai-tier recommended' : 'ai-tier'} key={tier.model}>
+                  {tier.recommended && <span className="tier-badge">Recomendado</span>}
+                  <h3>{tier.label}</h3><small>{tier.requirements}</small><p>{tier.copy}</p><code>{tier.command}</code>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+      </>
+    )
+  } else {
+    content = (
+      <>
+        <InformationHero
+          icon={CircleUserRound}
+          eyebrow="Cuenta y acceso"
+          title="Una cuenta para todas las versiones."
+          copy="Crea tu cuenta con un correo real, confírmalo y utiliza las mismas credenciales en Windows y Android."
+        />
+        <section className="access-page-band">
+          <div>
+            <h2>Tu despacho comienza con una cuenta verificada.</h2>
+            <p>La confirmación permite recuperar el acceso y mantener separadas las cuentas de cada colaborador.</p>
+          </div>
+          <AuthPanel session={session} sessionLoading={sessionLoading} />
+        </section>
+      </>
+    )
+  }
+
+  return (
+    <div className="public-information-page">
+      <a className="info-back-link" href={pagePath('/')}>
+        <ArrowLeft size={17} />
+        Volver al inicio
+      </a>
+      {content}
+      <EnterpriseFooter />
+    </div>
+  )
+}
+
+interface InformationHeroProps {
+  icon: typeof BriefcaseBusiness
+  eyebrow: string
+  title: string
+  copy: string
+}
+
+function InformationHero({ icon: Icon, eyebrow, title, copy }: InformationHeroProps) {
+  return (
+    <section className="information-hero">
+      <div>
+        <p className="eyebrow"><Icon size={17} /> {eyebrow}</p>
+        <h1>{title}</h1>
+        <p>{copy}</p>
+      </div>
+      <img src={companyLogo} alt="" />
+    </section>
+  )
+}
+
+function DonationPreview() {
+  const [amount, setAmount] = useState(50)
+
+  const updateAmount = (value: number) => {
+    setAmount(Math.max(1, Number.isFinite(value) ? Math.round(value) : 1))
+  }
+
+  return (
+    <section className="donation-preview" aria-labelledby="donation-title">
+      <div className="donation-copy">
+        <p className="eyebrow"><WalletCards size={17} /> Donativos</p>
+        <h2 id="donation-title">Cada peso puede convertirse en una mejora.</h2>
+        <p>
+          Este apartado es una vista previa. Más adelante permitirá enviar un apoyo voluntario
+          desde $1 MXN, sin modificar el acceso actual a la aplicación.
+        </p>
+      </div>
+      <div className="donation-control" aria-label="Vista previa de donativo">
+        <label htmlFor="donation-amount">Cantidad voluntaria</label>
+        <div className="donation-input">
+          <span>$</span>
+          <input
+            id="donation-amount"
+            type="number"
+            min="1"
+            step="1"
+            value={amount}
+            onChange={(event) => updateAmount(Number(event.target.value))}
+          />
+          <small>MXN</small>
+        </div>
+        <div className="donation-presets">
+          {[1, 20, 50, 100].map((value) => (
+            <button className={amount === value ? 'selected' : ''} type="button" key={value} onClick={() => updateAmount(value)}>
+              ${value}
+            </button>
+          ))}
+        </div>
+        <button className="donation-disabled" type="button" disabled>
+          <HeartHandshake size={18} />
+          Donativos próximamente
+        </button>
+      </div>
+    </section>
   )
 }
 
@@ -913,7 +1146,7 @@ function AuthRequiredPanel() {
         <LockKeyhole size={34} />
         <h1>Inicia sesion</h1>
         <p>Necesitas una cuenta activa para entrar a esta seccion del portal.</p>
-            <a className="portal-primary-link" href={pageHash('acceso')}>
+            <a className="portal-primary-link" href={pagePath('/acceso')}>
           Ir al acceso
         </a>
       </div>
@@ -1985,27 +2218,27 @@ function EnterpriseFooter() {
       links: [
         { label: 'Descargar Windows', href: WINDOWS_DOWNLOAD_URL, download: WINDOWS_FILE_NAME },
         { label: 'Suscripcion Mercado Pago', href: MERCADO_PAGO_PAYMENT_URL },
-        { label: 'Como instalar', href: pageHash('como-instalar') },
-        { label: 'Juris IA local', href: pageHash('ia-local') },
-        { label: 'App movil', href: pageHash('movil') },
-        { label: 'Portal beta', href: pageHash('acceso') },
-        { label: 'Mac pendiente', href: pageHash('descargas') },
+        { label: 'Como instalar', href: pagePath('/como-instalar') },
+        { label: 'Juris IA local', href: pagePath('/ia-local') },
+        { label: 'App movil', href: pagePath('/movil') },
+        { label: 'Portal beta', href: pagePath('/acceso') },
+        { label: 'Mac pendiente', href: pagePath('/descargas') },
       ],
     },
     {
       title: 'Funciones',
       links: [
-        { label: 'Expedientes', href: pageHash('trabajo') },
-        { label: 'Despachos', href: pageHash('trabajo') },
-        { label: 'Calendario juridico', href: pageHash('trabajo') },
+        { label: 'Expedientes', href: pagePath('/trabajo/expedientes') },
+        { label: 'Despachos', href: pagePath('/trabajo/despachos') },
+        { label: 'Calendario juridico', href: pagePath('/trabajo/calendario') },
       ],
     },
     {
       title: 'Seguridad',
       links: [
-        { label: 'Correo verificado', href: pageHash('seguridad') },
-        { label: 'Supabase Auth', href: pageHash('seguridad') },
-        { label: '2FA en la app', href: pageHash('seguridad') },
+        { label: 'Correo verificado', href: pagePath('/seguridad') },
+        { label: 'Supabase Auth', href: pagePath('/seguridad') },
+        { label: '2FA en la app', href: pagePath('/seguridad') },
       ],
     },
     {
@@ -2019,9 +2252,9 @@ function EnterpriseFooter() {
     {
       title: 'Compania',
       links: [
-        { label: 'Judicial Managment', href: pageHash('inicio') },
-        { label: 'MR Legal', href: pageHash('inicio') },
-        { label: 'Beta privada', href: pageHash('acceso') },
+        { label: 'Judicial Managment', href: pagePath('/') },
+        { label: 'MR Legal', href: pagePath('/') },
+        { label: 'Beta privada', href: pagePath('/acceso') },
       ],
     },
   ]
@@ -2478,7 +2711,7 @@ function AuthConfirmPage({ session, sessionLoading }: AuthConfirmPageProps) {
                 </span>
               </button>
             </form>
-            <a className="portal-primary-link" href={pageHash('acceso')}>
+            <a className="portal-primary-link" href={pagePath('/acceso')}>
               Volver al portal
             </a>
           </>
