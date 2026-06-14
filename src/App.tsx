@@ -64,6 +64,14 @@ function pagePath(path = '/') {
   return cleanPath === '/' ? `${cleanBase || '/'}` : `${cleanBase}${cleanPath}`
 }
 
+const PORTAL_VERSION = '2026.06.14.3'
+
+function publicPagePath(path = '/') {
+  const target = pagePath(path)
+  const separator = target.includes('?') ? '&' : '?'
+  return `${target}${separator}portal_version=${encodeURIComponent(PORTAL_VERSION)}`
+}
+
 const AUTH_CONFIRM_PATH = '/auth/confirm'
 const AUTH_CONFIRM_QUERY = 'auth=confirm'
 const AUTH_CONFIRM_QUERY_KEY = 'auth'
@@ -409,6 +417,50 @@ function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   useEffect(() => {
+    const legacyRoutes: Record<string, string> = {
+      inicio: '/',
+      trabajo: '/trabajo',
+      seguridad: '/seguridad',
+      'como-instalar': '/como-instalar',
+      movil: '/movil',
+      descargas: '/descargas',
+      acceso: '/acceso',
+      'ia-local': '/ia-local',
+    }
+    const legacyHash = window.location.hash.replace(/^#/, '').split('?')[0]
+    const legacyRoute = legacyRoutes[legacyHash]
+
+    if (legacyRoute) {
+      window.location.replace(publicPagePath(legacyRoute))
+      return
+    }
+
+    let disposed = false
+    const checkPortalVersion = async () => {
+      try {
+        const response = await fetch(`${assetPath('/portal-version.json')}?t=${Date.now()}`, {
+          cache: 'no-store',
+        })
+        const data = await response.json() as { version?: string }
+        if (!disposed && data.version && data.version !== PORTAL_VERSION) {
+          const url = new URL(window.location.href)
+          url.searchParams.set('portal_version', data.version)
+          window.location.replace(url.toString())
+        }
+      } catch {
+        // A temporary network failure should not interrupt the current session.
+      }
+    }
+
+    void checkPortalVersion()
+    const intervalId = window.setInterval(checkPortalVersion, 60_000)
+    return () => {
+      disposed = true
+      window.clearInterval(intervalId)
+    }
+  }, [])
+
+  useEffect(() => {
     let mounted = true
 
     supabase.auth.getSession().then(({ data }) => {
@@ -507,7 +559,7 @@ function App() {
   return (
     <main className="site-shell">
       <header className={`topbar ${mobileMenuOpen ? 'mobile-open' : ''}`} aria-label="Principal">
-        <a className="brand-lockup" href={pagePath('/')} aria-label="Judicial Managment" onClick={closeMobileMenu}>
+        <a className="brand-lockup" href={publicPagePath('/')} aria-label="Judicial Managment" onClick={closeMobileMenu}>
           <img src={companyLogo} alt="" className="brand-mark" />
           <span>
             <strong>Judicial Managment</strong>
@@ -528,13 +580,13 @@ function App() {
         </button>
 
         <nav id="site-navigation" className={`topnav ${mobileMenuOpen ? 'open' : ''}`} aria-label="Secciones">
-          <a className={navClass('/')} href={pagePath('/')} onClick={closeMobileMenu}>Inicio</a>
-          <a className={navClass('/trabajo')} href={pagePath('/trabajo')} onClick={closeMobileMenu}>Trabajo</a>
-          <a className={navClass('/seguridad')} href={pagePath('/seguridad')} onClick={closeMobileMenu}>Seguridad</a>
-          <a className={navClass('/como-instalar')} href={pagePath('/como-instalar')} onClick={closeMobileMenu}>Como instalar</a>
-          <a className={navClass('/movil')} href={pagePath('/movil')} onClick={closeMobileMenu}>Movil</a>
-          <a className={navClass('/descargas')} href={pagePath('/descargas')} onClick={closeMobileMenu}>Descargas</a>
-          <a className={navClass('/acceso')} href={pagePath('/acceso')} onClick={closeMobileMenu}>Acceso</a>
+          <a className={navClass('/')} href={publicPagePath('/')} onClick={closeMobileMenu}>Inicio</a>
+          <a className={navClass('/trabajo')} href={publicPagePath('/trabajo')} onClick={closeMobileMenu}>Trabajo</a>
+          <a className={navClass('/seguridad')} href={publicPagePath('/seguridad')} onClick={closeMobileMenu}>Seguridad</a>
+          <a className={navClass('/como-instalar')} href={publicPagePath('/como-instalar')} onClick={closeMobileMenu}>Como instalar</a>
+          <a className={navClass('/movil')} href={publicPagePath('/movil')} onClick={closeMobileMenu}>Movil</a>
+          <a className={navClass('/descargas')} href={publicPagePath('/descargas')} onClick={closeMobileMenu}>Descargas</a>
+          <a className={navClass('/acceso')} href={publicPagePath('/acceso')} onClick={closeMobileMenu}>Acceso</a>
         </nav>
 
         <div className="nav-actions">
@@ -552,7 +604,7 @@ function App() {
               onSignOut={handleTopbarSignOut}
             />
           ) : (
-            <a className="nav-login" href={pagePath('/acceso')}>
+            <a className="nav-login" href={publicPagePath('/acceso')}>
               <LogIn size={17} />
               <span>Iniciar sesion</span>
             </a>
@@ -669,7 +721,7 @@ function LandingPage({ session }: LandingPageProps) {
                 </div>
               </div>
             ) : (
-              <a className="hero-access-link" href={pagePath('/acceso')}>
+              <a className="hero-access-link" href={publicPagePath('/acceso')}>
                 <UserCheck size={20} />
                 <span>
                   <strong>Crea tu cuenta para la beta privada</strong>
@@ -705,7 +757,7 @@ function LandingPage({ session }: LandingPageProps) {
                 <ShieldCheck size={16} />
                 Correo verificado, 2FA y respaldos
               </span>
-              <a href={pagePath('/trabajo')}>
+              <a href={publicPagePath('/trabajo')}>
                 Ver funciones
                 <ExternalLink size={15} />
               </a>
@@ -722,7 +774,7 @@ function LandingPage({ session }: LandingPageProps) {
           ].map((item) => {
             const Icon = item.icon
             return (
-              <a href={pagePath(item.href)} key={item.title}>
+              <a href={publicPagePath(item.href)} key={item.title}>
                 <span className="quick-module-icon"><Icon size={21} /></span>
                 <span>
                   <strong>{item.title}</strong>
@@ -844,9 +896,9 @@ function PublicInformationPage({ path, session, sessionLoading }: PublicInformat
             <h2>Abre únicamente el tema que necesitas.</h2>
           </div>
           <div className="info-route-grid">
-            <a href={pagePath('/trabajo/expedientes')}><FileText size={21} /><span><strong>Expedientes</strong><small>Registro, movimientos, documentos y archivo.</small></span></a>
-            <a href={pagePath('/trabajo/despachos')}><BriefcaseBusiness size={21} /><span><strong>Despachos</strong><small>Integrantes, roles y permisos de acceso.</small></span></a>
-            <a href={pagePath('/trabajo/calendario')}><CalendarDays size={21} /><span><strong>Calendario</strong><small>Audiencias, vencimientos y recordatorios.</small></span></a>
+            <a href={publicPagePath('/trabajo/expedientes')}><FileText size={21} /><span><strong>Expedientes</strong><small>Registro, movimientos, documentos y archivo.</small></span></a>
+            <a href={publicPagePath('/trabajo/despachos')}><BriefcaseBusiness size={21} /><span><strong>Despachos</strong><small>Integrantes, roles y permisos de acceso.</small></span></a>
+            <a href={publicPagePath('/trabajo/calendario')}><CalendarDays size={21} /><span><strong>Calendario</strong><small>Audiencias, vencimientos y recordatorios.</small></span></a>
           </div>
         </section>
       </>
@@ -953,7 +1005,7 @@ function PublicInformationPage({ path, session, sessionLoading }: PublicInformat
             <article><Download size={25} /><h3>Windows</h3><p>Aplicación de escritorio completa para equipos x64.</p><a href={WINDOWS_DOWNLOAD_URL} download={WINDOWS_FILE_NAME}>Descargar instalador</a></article>
             <article className="unavailable"><Apple size={25} /><h3>Mac</h3><p>La versión universal está en preparación.</p><span>Próximamente</span></article>
             <article><Smartphone size={25} /><h3>Android</h3><p>Aplicación móvil beta conectada a tu cuenta.</p><a href={MOBILE_ANDROID_APK_URL}>Descargar APK</a></article>
-            <article><Sparkles size={25} /><h3>Juris IA local</h3><p>Consulta los requisitos y modelos opcionales para tu computadora.</p><a href={pagePath('/ia-local')}>Ver guía de IA</a></article>
+            <article><Sparkles size={25} /><h3>Juris IA local</h3><p>Consulta los requisitos y modelos opcionales para tu computadora.</p><a href={publicPagePath('/ia-local')}>Ver guía de IA</a></article>
           </div>
         </section>
       </>
@@ -1019,7 +1071,7 @@ function PublicInformationPage({ path, session, sessionLoading }: PublicInformat
 
   return (
     <div className="public-information-page">
-      <a className="info-back-link" href={pagePath('/')}>
+      <a className="info-back-link" href={publicPagePath('/')}>
         <ArrowLeft size={17} />
         Volver al inicio
       </a>
@@ -1146,7 +1198,7 @@ function AuthRequiredPanel() {
         <LockKeyhole size={34} />
         <h1>Inicia sesion</h1>
         <p>Necesitas una cuenta activa para entrar a esta seccion del portal.</p>
-            <a className="portal-primary-link" href={pagePath('/acceso')}>
+            <a className="portal-primary-link" href={publicPagePath('/acceso')}>
           Ir al acceso
         </a>
       </div>
@@ -2218,27 +2270,27 @@ function EnterpriseFooter() {
       links: [
         { label: 'Descargar Windows', href: WINDOWS_DOWNLOAD_URL, download: WINDOWS_FILE_NAME },
         { label: 'Suscripcion Mercado Pago', href: MERCADO_PAGO_PAYMENT_URL },
-        { label: 'Como instalar', href: pagePath('/como-instalar') },
-        { label: 'Juris IA local', href: pagePath('/ia-local') },
-        { label: 'App movil', href: pagePath('/movil') },
-        { label: 'Portal beta', href: pagePath('/acceso') },
-        { label: 'Mac pendiente', href: pagePath('/descargas') },
+        { label: 'Como instalar', href: publicPagePath('/como-instalar') },
+        { label: 'Juris IA local', href: publicPagePath('/ia-local') },
+        { label: 'App movil', href: publicPagePath('/movil') },
+        { label: 'Portal beta', href: publicPagePath('/acceso') },
+        { label: 'Mac pendiente', href: publicPagePath('/descargas') },
       ],
     },
     {
       title: 'Funciones',
       links: [
-        { label: 'Expedientes', href: pagePath('/trabajo/expedientes') },
-        { label: 'Despachos', href: pagePath('/trabajo/despachos') },
-        { label: 'Calendario juridico', href: pagePath('/trabajo/calendario') },
+        { label: 'Expedientes', href: publicPagePath('/trabajo/expedientes') },
+        { label: 'Despachos', href: publicPagePath('/trabajo/despachos') },
+        { label: 'Calendario juridico', href: publicPagePath('/trabajo/calendario') },
       ],
     },
     {
       title: 'Seguridad',
       links: [
-        { label: 'Correo verificado', href: pagePath('/seguridad') },
-        { label: 'Supabase Auth', href: pagePath('/seguridad') },
-        { label: '2FA en la app', href: pagePath('/seguridad') },
+        { label: 'Correo verificado', href: publicPagePath('/seguridad') },
+        { label: 'Supabase Auth', href: publicPagePath('/seguridad') },
+        { label: '2FA en la app', href: publicPagePath('/seguridad') },
       ],
     },
     {
@@ -2252,9 +2304,9 @@ function EnterpriseFooter() {
     {
       title: 'Compania',
       links: [
-        { label: 'Judicial Managment', href: pagePath('/') },
-        { label: 'MR Legal', href: pagePath('/') },
-        { label: 'Beta privada', href: pagePath('/acceso') },
+        { label: 'Judicial Managment', href: publicPagePath('/') },
+        { label: 'MR Legal', href: publicPagePath('/') },
+        { label: 'Beta privada', href: publicPagePath('/acceso') },
       ],
     },
   ]
@@ -2281,7 +2333,7 @@ function EnterpriseFooter() {
       </div>
       <div className="footer-bottom">
         <span>Judicial Managment - MR Legal</span>
-        <span>Alpha/Beta privada</span>
+        <span>Portal {PORTAL_VERSION} - Alpha/Beta privada</span>
       </div>
     </footer>
   )
@@ -2711,7 +2763,7 @@ function AuthConfirmPage({ session, sessionLoading }: AuthConfirmPageProps) {
                 </span>
               </button>
             </form>
-            <a className="portal-primary-link" href={pagePath('/acceso')}>
+            <a className="portal-primary-link" href={publicPagePath('/acceso')}>
               Volver al portal
             </a>
           </>
