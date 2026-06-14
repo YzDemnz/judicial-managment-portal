@@ -64,7 +64,7 @@ function pagePath(path = '/') {
   return cleanPath === '/' ? `${cleanBase || '/'}` : `${cleanBase}${cleanPath}`
 }
 
-const PORTAL_VERSION = '2026.06.14.3'
+const PORTAL_VERSION = '2026.06.14.4'
 
 function publicPagePath(path = '/') {
   const target = pagePath(path)

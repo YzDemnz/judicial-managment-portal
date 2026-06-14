@@ -6,6 +6,10 @@ html {
   scroll-behavior: smooth;
 }
 
+@view-transition {
+  navigation: auto;
+}
+
 body {
   margin: 0;
 }
@@ -29,6 +33,63 @@ body {
   border-bottom: 1px solid rgba(170, 179, 197, 0.18);
   background: rgba(12, 20, 36, 0.96);
   backdrop-filter: blur(12px);
+  view-transition-name: portal-header;
+}
+
+::view-transition-group(root) {
+  animation-duration: 320ms;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+::view-transition-old(root) {
+  animation: portal-page-out 170ms ease-in both;
+}
+
+::view-transition-new(root) {
+  animation: portal-page-in 320ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+::view-transition-group(portal-header) {
+  animation-duration: 240ms;
+  animation-timing-function: ease-out;
+}
+
+::view-transition-old(portal-header),
+::view-transition-new(portal-header) {
+  mix-blend-mode: normal;
+}
+
+@keyframes portal-page-out {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes portal-page-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@supports not (view-transition-name: portal-header) {
+  .product-hero,
+  .public-information-page,
+  .portal-page,
+  .confirm-shell {
+    animation: portal-page-in 320ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
 }
 
 .brand-lockup,
@@ -3599,6 +3660,28 @@ body {
     align-items: flex-start;
     flex-direction: column;
     margin-top: 18px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 1ms !important;
+  }
+
+  ::view-transition-old(root),
+  ::view-transition-new(root),
+  ::view-transition-old(portal-header),
+  ::view-transition-new(portal-header) {
+    animation: none;
   }
 }
 
