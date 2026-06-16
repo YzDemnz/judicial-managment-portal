@@ -1,6 +1,6 @@
 # Judicial Managment Web
 
-Pagina web de beta para Judicial Managment.
+Pagina web de distribucion controlada para Judicial Managment.
 
 Incluye:
 
@@ -27,6 +27,6 @@ VITE_SUPABASE_URL=https://TU-PROYECTO.supabase.co
 VITE_SUPABASE_ANON_KEY=TU_ANON_KEY_PUBLICA
 ```
 
-## Produccion beta
+## Produccion
 
 Ver [BETA_DEPLOYMENT.md](./BETA_DEPLOYMENT.md).

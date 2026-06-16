@@ -64,7 +64,7 @@ function pagePath(path = '/') {
   return cleanPath === '/' ? `${cleanBase || '/'}` : `${cleanBase}${cleanPath}`
 }
 
-const PORTAL_VERSION = '2026.06.14.4'
+const PORTAL_VERSION = '2026.06.15.1'
 
 function publicPagePath(path = '/') {
   const target = pagePath(path)
@@ -145,9 +145,13 @@ function currentAppPath() {
 
 const WINDOWS_DOWNLOAD_URL =
   'https://github.com/YzDemnz/judicial-managment-portal/releases/latest/download/Judicial-Managment-Setup.exe'
-const MAC_DOWNLOAD_URL = assetPath('/downloads/Judicial-Managment-mac-universal.dmg')
+const MAC_APPLE_SILICON_DOWNLOAD_URL =
+  'https://github.com/YzDemnz/judicial-managment-portal/releases/latest/download/Judicial-Managment-Mac-Apple-Silicon.dmg'
+const MAC_INTEL_DOWNLOAD_URL =
+  'https://github.com/YzDemnz/judicial-managment-portal/releases/latest/download/Judicial-Managment-Mac-Intel.dmg'
 const WINDOWS_FILE_NAME = 'Judicial-Managment-Setup.exe'
-const MAC_FILE_NAME = 'Judicial Managment mac universal.dmg'
+const MAC_APPLE_SILICON_FILE_NAME = 'Judicial-Managment-Mac-Apple-Silicon.dmg'
+const MAC_INTEL_FILE_NAME = 'Judicial-Managment-Mac-Intel.dmg'
 const TERMS_DOC_URL = assetPath('/docs/Judicial-Managment-Terminos-y-Condiciones.docx')
 const DESKTOP_APP_URL = 'judicial-managment://auth/callback?source=web'
 const OWNER_ADMIN_EMAIL = 'marod_legal@outlook.com'
@@ -167,7 +171,7 @@ const installSteps = [
   },
   {
     title: 'Descarga e instala',
-    copy: 'Descarga la version para Windows, ejecuta el instalador e inicia sesion con la misma cuenta.',
+    copy: 'Descarga la version correspondiente a Windows o Mac e inicia sesion con la misma cuenta.',
   },
 ]
 
@@ -256,7 +260,7 @@ const localAISetupSteps = [
   },
   {
     title: 'Elige tu nivel',
-    copy: 'Usa Gama Baja, Gama Media o Gama Gamer segun la memoria y tarjeta grafica de la computadora.',
+    copy: 'Usa Gama Baja, Gama Media o Gama Alta segun la memoria y tarjeta grafica de la computadora.',
   },
   {
     title: 'Descarga el modelo',
@@ -264,7 +268,7 @@ const localAISetupSteps = [
   },
   {
     title: 'Activa Juris IA',
-    copy: 'Abre Judicial Managment 2.0, acepta activar los modelos IA y entra al modulo Juris desde el inicio.',
+    copy: 'Abre Judicial Managment, activa Juris y entra al modulo desde el inicio.',
   },
 ]
 
@@ -285,7 +289,7 @@ const localAIModelTiers = [
     recommended: true,
   },
   {
-    label: 'Gama Gamer',
+    label: 'Gama Alta',
     model: 'qwen3:4b',
     command: 'ollama pull qwen3:4b',
     requirements: '32 GB RAM y GPU con 6 GB VRAM recomendados',
@@ -448,7 +452,7 @@ function App() {
           window.location.replace(url.toString())
         }
       } catch {
-        // A temporary network failure should not interrupt the current session.
+        return
       }
     }
 
@@ -672,20 +676,29 @@ function LandingPage({ session }: LandingPageProps) {
                 <Download size={20} />
                 <span>
                   Descargar para Windows
-                  <small>Instalador x64 para beta cerrada</small>
+                  <small>Instalador estable para x64</small>
                 </span>
               </a>
               <a
                 className="product-download secondary"
-                href={MAC_DOWNLOAD_URL}
-                download={MAC_FILE_NAME}
-                aria-disabled="true"
-                onClick={(event) => event.preventDefault()}
+                href={MAC_APPLE_SILICON_DOWNLOAD_URL}
+                download={MAC_APPLE_SILICON_FILE_NAME}
               >
                 <Apple size={20} />
                 <span>
-                  Descargar para Mac
-                  <small>Proximamente</small>
+                  Mac Apple Silicon
+                  <small>Procesadores M1, M2, M3 y posteriores</small>
+                </span>
+              </a>
+              <a
+                className="product-download secondary"
+                href={MAC_INTEL_DOWNLOAD_URL}
+                download={MAC_INTEL_FILE_NAME}
+              >
+                <Apple size={20} />
+                <span>
+                  Mac Intel
+                  <small>Equipos Mac con procesador Intel</small>
                 </span>
               </a>
               <a className="product-download mobile" href={MOBILE_ANDROID_APK_URL}>
@@ -724,8 +737,8 @@ function LandingPage({ session }: LandingPageProps) {
               <a className="hero-access-link" href={publicPagePath('/acceso')}>
                 <UserCheck size={20} />
                 <span>
-                  <strong>Crea tu cuenta para la beta privada</strong>
-                  <small>Confirma tu correo y usa la misma sesion en Windows o Android.</small>
+                  <strong>Crea tu cuenta</strong>
+                  <small>Confirma tu correo y usa la misma sesion en Windows, Mac o Android.</small>
                 </span>
                 <ExternalLink size={18} />
               </a>
@@ -1003,7 +1016,8 @@ function PublicInformationPage({ path, session, sessionLoading }: PublicInformat
         <section className="info-band">
           <div className="download-catalog">
             <article><Download size={25} /><h3>Windows</h3><p>Aplicación de escritorio completa para equipos x64.</p><a href={WINDOWS_DOWNLOAD_URL} download={WINDOWS_FILE_NAME}>Descargar instalador</a></article>
-            <article className="unavailable"><Apple size={25} /><h3>Mac</h3><p>La versión universal está en preparación.</p><span>Próximamente</span></article>
+            <article><Apple size={25} /><h3>Mac Apple Silicon</h3><p>Para equipos con procesadores M1, M2, M3 y posteriores.</p><a href={MAC_APPLE_SILICON_DOWNLOAD_URL} download={MAC_APPLE_SILICON_FILE_NAME}>Descargar DMG</a></article>
+            <article><Apple size={25} /><h3>Mac Intel</h3><p>Para equipos Mac con procesador Intel.</p><a href={MAC_INTEL_DOWNLOAD_URL} download={MAC_INTEL_FILE_NAME}>Descargar DMG</a></article>
             <article><Smartphone size={25} /><h3>Android</h3><p>Aplicación móvil beta conectada a tu cuenta.</p><a href={MOBILE_ANDROID_APK_URL}>Descargar APK</a></article>
             <article><Sparkles size={25} /><h3>Juris IA local</h3><p>Consulta los requisitos y modelos opcionales para tu computadora.</p><a href={publicPagePath('/ia-local')}>Ver guía de IA</a></article>
           </div>
@@ -2269,12 +2283,13 @@ function EnterpriseFooter() {
       title: 'Producto',
       links: [
         { label: 'Descargar Windows', href: WINDOWS_DOWNLOAD_URL, download: WINDOWS_FILE_NAME },
+        { label: 'Descargar Mac Apple Silicon', href: MAC_APPLE_SILICON_DOWNLOAD_URL, download: MAC_APPLE_SILICON_FILE_NAME },
+        { label: 'Descargar Mac Intel', href: MAC_INTEL_DOWNLOAD_URL, download: MAC_INTEL_FILE_NAME },
         { label: 'Suscripcion Mercado Pago', href: MERCADO_PAGO_PAYMENT_URL },
         { label: 'Como instalar', href: publicPagePath('/como-instalar') },
         { label: 'Juris IA local', href: publicPagePath('/ia-local') },
         { label: 'App movil', href: publicPagePath('/movil') },
-        { label: 'Portal beta', href: publicPagePath('/acceso') },
-        { label: 'Mac pendiente', href: publicPagePath('/descargas') },
+        { label: 'Portal de acceso', href: publicPagePath('/acceso') },
       ],
     },
     {
@@ -2297,7 +2312,7 @@ function EnterpriseFooter() {
       title: 'Legal',
       links: [
         { label: 'Terminos y condiciones', href: TERMS_DOC_URL },
-        { label: 'Contrato alpha/beta', href: TERMS_DOC_URL },
+        { label: 'Condiciones de uso', href: TERMS_DOC_URL },
         { label: 'Aviso de privacidad', href: TERMS_DOC_URL },
       ],
     },
@@ -2306,7 +2321,7 @@ function EnterpriseFooter() {
       links: [
         { label: 'Judicial Managment', href: publicPagePath('/') },
         { label: 'MR Legal', href: publicPagePath('/') },
-        { label: 'Beta privada', href: publicPagePath('/acceso') },
+        { label: 'Acceso controlado', href: publicPagePath('/acceso') },
       ],
     },
   ]
@@ -2333,7 +2348,7 @@ function EnterpriseFooter() {
       </div>
       <div className="footer-bottom">
         <span>Judicial Managment - MR Legal</span>
-        <span>Portal {PORTAL_VERSION} - Alpha/Beta privada</span>
+        <span>Portal {PORTAL_VERSION} - Distribucion controlada</span>
       </div>
     </footer>
   )
@@ -2382,7 +2397,7 @@ function AuthPanel({ session, sessionLoading }: AuthPanelProps) {
 
         if (signUpError) throw signUpError
 
-        setMessage('Te enviamos un correo de verificacion. Abre el enlace para activar la cuenta beta.')
+        setMessage('Te enviamos un correo de verificacion. Abre el enlace para activar la cuenta.')
         setMode('login')
         setPassword('')
         return
@@ -2637,7 +2652,7 @@ function AuthConfirmPage({ session, sessionLoading }: AuthConfirmPageProps) {
         try {
           await supabase.rpc('ensure_own_app_profile')
         } catch {
-          // La sincronizacion del perfil no debe bloquear la confirmacion del correo.
+          void 0
         }
 
         window.history.replaceState({}, document.title, pagePath('/'))
@@ -2709,13 +2724,13 @@ function AuthConfirmPage({ session, sessionLoading }: AuthConfirmPageProps) {
           <>
             <CheckCircle2 className="confirm-icon success" size={46} />
             <h1>Correo confirmado</h1>
-            <p>{sessionLoading ? detail : confirmedEmail ? `${confirmedEmail} ya esta listo para la beta.` : detail}</p>
+            <p>{sessionLoading ? detail : confirmedEmail ? `${confirmedEmail} ya esta listo para iniciar sesion.` : detail}</p>
             <div className="confirm-actions">
               <a className="download-button primary" href={WINDOWS_DOWNLOAD_URL} download={WINDOWS_FILE_NAME}>
                 <Download size={20} />
                 <span>
                   Descargar Windows
-                  <small>Instalador beta</small>
+                  <small>Instalador estable</small>
                 </span>
               </a>
               <a className="download-button secondary" href={DESKTOP_APP_URL}>
