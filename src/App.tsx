@@ -337,6 +337,24 @@ const localAISetupSteps = [
   },
 ]
 
+const localAIEngineDownloads = [
+  {
+    label: 'Windows',
+    href: 'https://ollama.com/download/windows',
+    note: 'Instalador para PC Windows',
+  },
+  {
+    label: 'Mac Apple Silicon',
+    href: 'https://ollama.com/download/mac',
+    note: 'Equipos M1, M2, M3 o posteriores',
+  },
+  {
+    label: 'Mac Intel',
+    href: 'https://ollama.com/download/mac',
+    note: 'Equipos Mac con procesador Intel',
+  },
+]
+
 const localAIModelTiers = [
   {
     label: 'Equipo de Gama Baja',
@@ -1140,9 +1158,13 @@ function PublicInformationPage({ path, session, sessionLoading }: PublicInformat
             <div className="ai-download-copy">
               <h3>Motor local</h3>
               <p>Instala Ollama y elige un modelo de acuerdo con la capacidad de tu computadora.</p>
-              <a className="product-download secondary ai-engine-link" href="https://ollama.com/download/windows" target="_blank" rel="noreferrer">
-                <Download size={20} /><span>Descargar Ollama<small>Motor local para IA</small></span>
-              </a>
+              <div className="ai-engine-links">
+                {localAIEngineDownloads.map((download) => (
+                  <a className="product-download secondary ai-engine-link" href={download.href} target="_blank" rel="noreferrer" key={download.label}>
+                    <Download size={20} /><span>{download.label}<small>{download.note}</small></span>
+                  </a>
+                ))}
+              </div>
             </div>
             <div className="ai-tier-grid">
               {localAIModelTiers.map((tier) => (

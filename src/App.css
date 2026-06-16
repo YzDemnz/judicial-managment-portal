@@ -1351,8 +1351,14 @@ body {
   line-height: 1.58;
 }
 
+.ai-engine-links {
+  display: grid;
+  gap: 10px;
+}
+
 .ai-engine-link {
-  width: fit-content;
+  justify-content: flex-start;
+  width: 100%;
 }
 
 .ai-tier-grid {
