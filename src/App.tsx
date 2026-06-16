@@ -65,7 +65,7 @@ function pagePath(path = '/') {
   return cleanPath === '/' ? `${cleanBase || '/'}` : `${cleanBase}${cleanPath}`
 }
 
-const PORTAL_VERSION = '2026.06.16.1'
+const PORTAL_VERSION = '2026.06.16.2'
 
 function publicPagePath(path = '/') {
   const target = pagePath(path)
@@ -133,6 +133,11 @@ function isAuthConfirmationUrl() {
 function currentAppPath() {
   if (isAuthConfirmationUrl()) return AUTH_CONFIRM_PATH
 
+  const url = new URL(window.location.href)
+  const legalPage = url.searchParams.get('legal')
+  if (legalPage === 'privacidad') return '/privacidad'
+  if (legalPage === 'terminos') return '/terminos'
+
   const base = getBasePath()
   const cleanBase = base === '/' ? '' : base.replace(/\/$/, '')
   const pathname = window.location.pathname
@@ -154,8 +159,8 @@ const WINDOWS_FILE_NAME = 'Judicial-Managment-Setup.exe'
 const MAC_APPLE_SILICON_FILE_NAME = 'Judicial-Managment-Mac-Apple-Silicon.dmg'
 const MAC_INTEL_FILE_NAME = 'Judicial-Managment-Mac-Intel.dmg'
 const TERMS_DOC_URL = assetPath('/docs/Judicial-Managment-Terminos-y-Condiciones.docx')
-const TERMS_PAGE_URL = pagePath('/terminos')
-const PRIVACY_NOTICE_URL = pagePath('/privacidad')
+const TERMS_PAGE_URL = `${pagePath('/')}?legal=terminos`
+const PRIVACY_NOTICE_URL = `${pagePath('/')}?legal=privacidad`
 const DESKTOP_APP_URL = 'judicial-managment://auth/callback?source=web'
 const OWNER_ADMIN_EMAIL = 'marod_legal@outlook.com'
 const GOOGLE_AUTH_ENABLED = false
