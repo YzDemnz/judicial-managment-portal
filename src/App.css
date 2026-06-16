@@ -2330,6 +2330,102 @@ body {
   margin: 12px 0 0;
 }
 
+.legal-page-band {
+  padding-block: 64px;
+  background: #121a2b;
+}
+
+.legal-document {
+  width: min(1040px, calc(100% - 40px));
+  margin-inline: auto;
+  border: 1px solid rgba(170, 179, 197, 0.18);
+  border-radius: 14px;
+  background: rgba(12, 20, 36, 0.82);
+  box-shadow: 0 22px 70px rgba(0, 0, 0, 0.24);
+  overflow: hidden;
+}
+
+.legal-document-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 22px;
+  padding: clamp(24px, 4vw, 38px);
+  border-bottom: 1px solid rgba(170, 179, 197, 0.16);
+  background: linear-gradient(135deg, rgba(36, 59, 99, 0.42), rgba(12, 20, 36, 0.72));
+}
+
+.legal-document-header h2 {
+  margin: 8px 0 0;
+  font-size: clamp(28px, 4vw, 42px);
+  line-height: 1.08;
+}
+
+.legal-document-header p,
+.legal-intro p,
+.legal-section-list p {
+  color: #c8d0df;
+  line-height: 1.72;
+}
+
+.legal-document-header a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  width: fit-content;
+  height: 42px;
+  border: 1px solid rgba(212, 171, 78, 0.42);
+  border-radius: 8px;
+  padding-inline: 14px;
+  background: rgba(212, 171, 78, 0.12);
+  color: #f0d58d;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.legal-intro,
+.legal-section-list {
+  padding-inline: clamp(24px, 4vw, 38px);
+}
+
+.legal-intro {
+  padding-block: 26px;
+  border-bottom: 1px solid rgba(170, 179, 197, 0.12);
+}
+
+.legal-intro p {
+  margin: 0;
+}
+
+.legal-intro p + p,
+.legal-section-list p + p {
+  margin-top: 12px;
+}
+
+.legal-section-list {
+  padding-block: 8px 38px;
+}
+
+.legal-section-list article {
+  padding-block: 24px;
+  border-bottom: 1px solid rgba(170, 179, 197, 0.12);
+}
+
+.legal-section-list article:last-child {
+  border-bottom: 0;
+}
+
+.legal-section-list h3 {
+  margin: 0 0 10px;
+  color: #f7f8fa;
+  font-size: 19px;
+}
+
+.legal-section-list p {
+  margin: 0;
+}
+
 @keyframes flashcard-in {
   from {
     opacity: 0;
@@ -3824,5 +3920,22 @@ body {
 
   .access-page-band {
     padding-block: 46px;
+  }
+
+  .legal-page-band {
+    padding-block: 42px;
+  }
+
+  .legal-document {
+    width: calc(100% - 32px);
+    border-radius: 10px;
+  }
+
+  .legal-document-header {
+    flex-direction: column;
+  }
+
+  .legal-document-header a {
+    width: 100%;
   }
 }

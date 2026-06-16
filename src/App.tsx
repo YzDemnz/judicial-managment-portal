@@ -46,6 +46,7 @@ import {
 } from 'lucide-react'
 import companyLogo from './assets/company-logo.svg'
 import { supabase } from './lib/supabase'
+import { legalEffectiveDate, legalIntro, legalTermSections } from './legalTerms'
 import './App.css'
 
 function getBasePath() {
@@ -64,7 +65,7 @@ function pagePath(path = '/') {
   return cleanPath === '/' ? `${cleanBase || '/'}` : `${cleanBase}${cleanPath}`
 }
 
-const PORTAL_VERSION = '2026.06.15.1'
+const PORTAL_VERSION = '2026.06.16.1'
 
 function publicPagePath(path = '/') {
   const target = pagePath(path)
@@ -153,6 +154,8 @@ const WINDOWS_FILE_NAME = 'Judicial-Managment-Setup.exe'
 const MAC_APPLE_SILICON_FILE_NAME = 'Judicial-Managment-Mac-Apple-Silicon.dmg'
 const MAC_INTEL_FILE_NAME = 'Judicial-Managment-Mac-Intel.dmg'
 const TERMS_DOC_URL = assetPath('/docs/Judicial-Managment-Terminos-y-Condiciones.docx')
+const TERMS_PAGE_URL = pagePath('/terminos')
+const PRIVACY_NOTICE_URL = pagePath('/privacidad')
 const DESKTOP_APP_URL = 'judicial-managment://auth/callback?source=web'
 const OWNER_ADMIN_EMAIL = 'marod_legal@outlook.com'
 const GOOGLE_AUTH_ENABLED = false
@@ -250,6 +253,63 @@ const projectMessages = [
     icon: HeartHandshake,
     title: 'Una versión completa',
     copy: 'La aplicación actual puede utilizarse como producto completo. La suscripción es una forma voluntaria de apoyar nuevas funciones, mantenimiento y mejoras.',
+  },
+]
+
+const privacyNoticeSections = [
+  {
+    title: '1. Responsable del tratamiento',
+    body: [
+      'Judicial Managment es una aplicacion de gestion juridica operada en fase de distribucion controlada bajo la marca MR Legal/Judicial Managment. Para efectos del presente aviso, el responsable del tratamiento de datos personales es el titular del proyecto, actuando como persona fisica.',
+      'El correo de contacto para asuntos de privacidad, acceso a datos, rectificacion, cancelacion, oposicion o dudas sobre el tratamiento es marod_legal@outlook.com.',
+    ],
+  },
+  {
+    title: '2. Datos personales que puede tratar la aplicacion',
+    body: [
+      'La aplicacion puede tratar datos de cuenta como correo electronico, identificador de usuario, fecha de registro, estado de verificacion, estado de suscripcion, rol de administracion, configuracion de perfil y datos opcionales como nombre visible o telefono.',
+      'Cuando el usuario utiliza la aplicacion para su trabajo, puede cargar informacion propia de expedientes, clientes, colaboradores, movimientos, audiencias, documentos, imagenes, PDF, archivos de Word, mensajes internos, reportes de soporte y configuracion de despacho.',
+      'El usuario es responsable de contar con autorizacion o base legal suficiente para capturar informacion de clientes, partes, colaboradores o terceros dentro de la aplicacion.',
+    ],
+  },
+  {
+    title: '3. Finalidades del tratamiento',
+    body: [
+      'Los datos se usan para crear y autenticar cuentas, confirmar correos, permitir el acceso a despachos, administrar permisos, sincronizar informacion, registrar expedientes, movimientos y clientes, mostrar calendario, gestionar documentos, habilitar chat interno, atender reportes y mejorar la estabilidad del servicio.',
+      'Tambien pueden utilizarse datos tecnicos basicos para seguridad, prevencion de abuso, deteccion de errores, control de acceso, soporte, mantenimiento, auditoria interna y cumplimiento de obligaciones legales aplicables.',
+      'Judicial Managment no tiene por finalidad vender datos personales ni recopilar informacion con fines maliciosos.',
+    ],
+  },
+  {
+    title: '4. Proveedores y servicios conectados',
+    body: [
+      'El servicio puede apoyarse en proveedores tecnicos como Supabase para autenticacion, base de datos y almacenamiento; GitHub Pages o GitHub Releases para distribucion de portal e instaladores; Mercado Pago para pagos o suscripciones; y servicios de correo para confirmaciones y notificaciones.',
+      'Cuando el usuario decide instalar herramientas locales como Ollama o modelos de IA en su propia computadora, su funcionamiento depende del equipo del usuario y de los terminos del proveedor correspondiente.',
+      'Algunos proveedores pueden operar infraestructura fuera de Mexico. El uso de la aplicacion implica la aceptacion de transferencias tecnicas necesarias para operar el servicio, en la medida permitida por la legislacion aplicable.',
+    ],
+  },
+  {
+    title: '5. Derechos ARCO y control del usuario',
+    body: [
+      'El usuario puede solicitar acceso, rectificacion, cancelacion u oposicion respecto de sus datos personales enviando un correo a marod_legal@outlook.com con la informacion necesaria para identificar la cuenta y el derecho que desea ejercer.',
+      'Cuando la informacion pertenezca a un despacho, expediente, colaborador o tercero, la solicitud podra requerir validacion adicional para evitar accesos indebidos o eliminaciones no autorizadas.',
+      'El usuario puede dejar de usar la aplicacion y solicitar orientacion para respaldar o retirar informacion, sujeto a disponibilidad tecnica, permisos, obligaciones legales y medidas razonables de seguridad.',
+    ],
+  },
+  {
+    title: '6. Seguridad y conservacion',
+    body: [
+      'La aplicacion utiliza mecanismos razonables de seguridad como autenticacion, verificacion de correo, roles de acceso, controles por despacho y politicas de base de datos para limitar el acceso a la informacion.',
+      'Ningun sistema tecnologico es infalible. El usuario debe conservar respaldos externos de expedientes, documentos, promociones, acuerdos, audiencias y cualquier informacion que considere critica para su actividad profesional.',
+      'Los datos se conservaran durante el tiempo necesario para operar la cuenta, cumplir obligaciones, atender soporte, prevenir abuso, resolver incidencias o conservar evidencia razonable de uso, salvo solicitud valida de eliminacion o disposicion legal en contrario.',
+    ],
+  },
+  {
+    title: '7. Cambios al aviso de privacidad',
+    body: [
+      'Este aviso puede actualizarse por cambios legales, tecnicos, de seguridad, de proveedores, de funciones, de modelo comercial o de la etapa de desarrollo de la aplicacion.',
+      'La version vigente sera la publicada en este portal. El uso continuo de la aplicacion despues de una actualizacion implica conocimiento de la version publicada, salvo que la ley exija un consentimiento especifico.',
+    ],
   },
 ]
 
@@ -430,6 +490,8 @@ function App() {
       descargas: '/descargas',
       acceso: '/acceso',
       'ia-local': '/ia-local',
+      privacidad: '/privacidad',
+      terminos: '/terminos',
     }
     const legacyHash = window.location.hash.replace(/^#/, '').split('?')[0]
     const legacyRoute = legacyRoutes[legacyHash]
@@ -558,6 +620,8 @@ function App() {
     '/descargas',
     '/acceso',
     '/ia-local',
+    '/privacidad',
+    '/terminos',
   ].some((path) => currentPath === path || currentPath.startsWith(`${path}/`))
 
   return (
@@ -1024,6 +1088,30 @@ function PublicInformationPage({ path, session, sessionLoading }: PublicInformat
         </section>
       </>
     )
+  } else if (path === '/privacidad') {
+    content = (
+      <LegalNoticePage
+        icon={ShieldCheck}
+        eyebrow="Aviso de privacidad"
+        title="Aviso de privacidad de Judicial Managment"
+        copy="Este aviso explica que informacion puede tratar la aplicacion, para que se usa y como puedes ejercer tus derechos."
+        updatedLabel="Version vigente para distribucion controlada"
+        sections={privacyNoticeSections}
+      />
+    )
+  } else if (path === '/terminos') {
+    content = (
+      <LegalNoticePage
+        icon={FileText}
+        eyebrow="Terminos y condiciones"
+        title="Terminos y condiciones de Judicial Managment"
+        copy="Consulta el acuerdo de uso aplicable a la app, portal, instaladores, cuentas, despachos, datos, documentos y funciones conectadas."
+        updatedLabel={`Vigente desde ${legalEffectiveDate}`}
+        intro={legalIntro}
+        sections={legalTermSections}
+        downloadUrl={TERMS_DOC_URL}
+      />
+    )
   } else if (path === '/ia-local') {
     content = (
       <>
@@ -1112,6 +1200,66 @@ function InformationHero({ icon: Icon, eyebrow, title, copy }: InformationHeroPr
       </div>
       <img src={companyLogo} alt="" />
     </section>
+  )
+}
+
+interface LegalNoticePageProps {
+  icon: typeof ShieldCheck
+  eyebrow: string
+  title: string
+  copy: string
+  updatedLabel: string
+  intro?: string[]
+  sections: Array<{ title: string; body: string[] }>
+  downloadUrl?: string
+}
+
+function LegalNoticePage({
+  icon: Icon,
+  eyebrow,
+  title,
+  copy,
+  updatedLabel,
+  intro = [],
+  sections,
+  downloadUrl,
+}: LegalNoticePageProps) {
+  return (
+    <>
+      <InformationHero icon={Icon} eyebrow={eyebrow} title={title} copy={copy} />
+      <section className="legal-page-band" aria-labelledby="legal-document-title">
+        <div className="legal-document">
+          <div className="legal-document-header">
+            <div>
+              <p className="eyebrow"><FileText size={17} /> Documento publico</p>
+              <h2 id="legal-document-title">{title}</h2>
+              <p>{updatedLabel}</p>
+            </div>
+            {downloadUrl && (
+              <a href={downloadUrl} target="_blank" rel="noreferrer">
+                <Download size={17} />
+                Descargar respaldo
+              </a>
+            )}
+          </div>
+
+          {intro.length > 0 && (
+            <div className="legal-intro">
+              {intro.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
+            </div>
+          )}
+
+          <div className="legal-section-list">
+            {sections.map((section) => (
+              <article key={section.title}>
+                <h3>{section.title}</h3>
+                {section.body.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+    </>
   )
 }
 
@@ -2311,9 +2459,9 @@ function EnterpriseFooter() {
     {
       title: 'Legal',
       links: [
-        { label: 'Terminos y condiciones', href: TERMS_DOC_URL },
-        { label: 'Condiciones de uso', href: TERMS_DOC_URL },
-        { label: 'Aviso de privacidad', href: TERMS_DOC_URL },
+        { label: 'Terminos y condiciones', href: TERMS_PAGE_URL },
+        { label: 'Condiciones de uso', href: TERMS_PAGE_URL },
+        { label: 'Aviso de privacidad', href: PRIVACY_NOTICE_URL },
       ],
     },
     {
