@@ -152,12 +152,12 @@ function currentAppPath() {
 const WINDOWS_DOWNLOAD_URL =
   'https://github.com/YzDemnz/judicial-managment-portal/releases/latest/download/Judicial-Managment-Setup.exe'
 const MAC_APPLE_SILICON_DOWNLOAD_URL =
-  'https://github.com/YzDemnz/judicial-managment-portal/releases/latest/download/Judicial-Managment-Mac-Apple-Silicon.dmg'
+  'https://github.com/YzDemnz/judicial-managment-portal/releases/latest/download/Judicial-Managment-Mac-3.0.0-arm64.dmg'
 const MAC_INTEL_DOWNLOAD_URL =
-  'https://github.com/YzDemnz/judicial-managment-portal/releases/latest/download/Judicial-Managment-Mac-Intel.dmg'
+  'https://github.com/YzDemnz/judicial-managment-portal/releases/latest/download/Judicial-Managment-Mac-3.0.0-x64.dmg'
 const WINDOWS_FILE_NAME = 'Judicial-Managment-Setup.exe'
-const MAC_APPLE_SILICON_FILE_NAME = 'Judicial-Managment-Mac-Apple-Silicon.dmg'
-const MAC_INTEL_FILE_NAME = 'Judicial-Managment-Mac-Intel.dmg'
+const MAC_APPLE_SILICON_FILE_NAME = 'Judicial-Managment-Mac-3.0.0-arm64.dmg'
+const MAC_INTEL_FILE_NAME = 'Judicial-Managment-Mac-3.0.0-x64.dmg'
 const TERMS_DOC_URL = assetPath('/docs/Judicial-Managment-Terminos-y-Condiciones.docx')
 const TERMS_PAGE_URL = `${pagePath('/')}?legal=terminos`
 const PRIVACY_NOTICE_URL = `${pagePath('/')}?legal=privacidad`
@@ -838,7 +838,7 @@ function LandingPage({ session }: LandingPageProps) {
                 <img src={companyLogo} alt="" />
                 <span>
                   <strong>Judicial Managment</strong>
-                  <small>Aplicacion de escritorio 2.2</small>
+                  <small>Aplicacion de escritorio 3.0</small>
                 </span>
               </div>
               <span className="live-product-badge">
