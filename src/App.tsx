@@ -166,6 +166,7 @@ const OWNER_ADMIN_EMAIL = 'marod_legal@outlook.com'
 const GOOGLE_AUTH_ENABLED = false
 const MERCADO_PAGO_PAYMENT_URL = 'https://www.mercadopago.com.mx/subscriptions/checkout?preapproval_plan_id=8cb4ab0ac7d343e4a97a31451831f58a'
 const MOBILE_ANDROID_APK_URL = 'https://github.com/YzDemnz/judicial-managment-mobile/releases/latest/download/Judicial-Managment-Mobile-Android.apk'
+const OLLAMA_LEGACY_MAC_URL = 'https://github.com/ollama/ollama/releases/download/v0.12.3/Ollama-darwin.zip'
 const MOBILE_ANDROID_RELEASE_URL = 'https://github.com/YzDemnz/judicial-managment-mobile/releases/tag/mobile-android-beta'
 
 const installSteps = [
@@ -321,7 +322,7 @@ const privacyNoticeSections = [
 const localAISetupSteps = [
   {
     title: 'Instala Ollama',
-    copy: 'Descarga Ollama para Windows y dejalo abierto. Es el motor local que permite ejecutar modelos en tu equipo.',
+    copy: 'Descarga Ollama para tu sistema y dejalo abierto. Es el motor local que permite ejecutar modelos en tu equipo.',
   },
   {
     title: 'Elige tu nivel',
@@ -352,6 +353,11 @@ const localAIEngineDownloads = [
     label: 'Mac Intel',
     href: 'https://ollama.com/download/mac',
     note: 'Equipos Mac con procesador Intel',
+  },
+  {
+    label: 'Ollama macOS',
+    href: OLLAMA_LEGACY_MAC_URL,
+    note: 'Compatibilidad para macOS 14 o anterior',
   },
 ]
 
@@ -1167,6 +1173,12 @@ function PublicInformationPage({ path, session, sessionLoading }: PublicInformat
               </div>
             </div>
             <div className="ai-tier-grid">
+              <article className="ai-tier">
+                <h3>Ollama macOS</h3>
+                <small>macOS 14 o anterior</small>
+                <p>En estos equipos Judicial mostrara una sola opcion compatible y avisara que las funciones de IA pueden ser mas lentas o limitadas.</p>
+                <code>Descargar Ollama v0.12.3 para macOS desde GitHub</code>
+              </article>
               {localAIModelTiers.map((tier) => (
                 <article className={tier.recommended ? 'ai-tier recommended' : 'ai-tier'} key={tier.model}>
                   {tier.recommended && <span className="tier-badge">Recomendado</span>}
