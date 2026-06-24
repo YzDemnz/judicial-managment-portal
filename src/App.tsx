@@ -66,7 +66,7 @@ function pagePath(path = '/') {
   return cleanPath === '/' ? `${cleanBase || '/'}` : `${cleanBase}${cleanPath}`
 }
 
-const PORTAL_VERSION = '2026.06.23.1'
+const PORTAL_VERSION = '2026.06.23.2'
 
 function publicPagePath(path = '/') {
   const target = pagePath(path)
@@ -518,6 +518,7 @@ const isOwnerAdminAccount = (session: Session | null, profile: AppProfile | null
 
 function App() {
   const [session, setSession] = useState<Session | null>(null)
+  const [passwordRecoverySession, setPasswordRecoverySession] = useState<Session | null>(null)
   const [sessionLoading, setSessionLoading] = useState(true)
   const [appProfile, setAppProfile] = useState<AppProfile | null>(null)
   const [profileLoading, setProfileLoading] = useState(false)
@@ -583,8 +584,13 @@ function App() {
       }
     })
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, nextSession) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, nextSession) => {
       setSession(nextSession)
+      if (event === 'PASSWORD_RECOVERY') {
+        setPasswordRecoverySession(nextSession)
+      } else if (!nextSession) {
+        setPasswordRecoverySession(null)
+      }
       if (nextSession) {
         setProfileLoading(true)
       } else {
@@ -646,7 +652,7 @@ function App() {
   }
 
   if (currentPath === PASSWORD_RECOVERY_PATH) {
-    return <PasswordRecoveryPage session={session} />
+    return <PasswordRecoveryPage session={passwordRecoverySession} />
   }
 
   if (currentPath === BACKUP_RECOVERY_PATH) {
@@ -2768,6 +2774,7 @@ function PasswordRecoveryPage({ session }: PasswordRecoveryPageProps) {
   const [email, setEmail] = useState('')
   const [newPassword, setNewPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
+  const [verifiedRecoverySession, setVerifiedRecoverySession] = useState<Session | null>(null)
   const [status, setStatus] = useState<'request' | 'verifying' | 'reset' | 'success' | 'error'>('request')
   const [message, setMessage] = useState('')
   const [busy, setBusy] = useState(false)
@@ -2775,35 +2782,45 @@ function PasswordRecoveryPage({ session }: PasswordRecoveryPageProps) {
   useEffect(() => {
     let mounted = true
     const authParams = getAuthCallbackParams()
-    const hasRecoveryCallback = authParams.get('type')?.toLowerCase() === 'recovery' || authParams.has('code') || authParams.has('token_hash')
-    if (!hasRecoveryCallback) return () => { mounted = false }
+    const callbackError = authParams.get('error_description') ?? authParams.get('error')
+    const hasRecoveryCallback = authParams.get('type')?.toLowerCase() === 'recovery' || authParams.has('code') || authParams.has('token_hash') || authParams.has('access_token')
+    if (!hasRecoveryCallback && !callbackError) return () => { mounted = false }
 
     const activateRecovery = async () => {
       if (!mounted) return
       setStatus('verifying')
       setMessage('Estamos comprobando el enlace de recuperación.')
       try {
-        const existingSession = await supabase.auth.getSession()
-        if (!existingSession.data.session) {
-          const tokenHash = authParams.get('token_hash')
-          const code = authParams.get('code')
-          const accessToken = authParams.get('access_token')
-          const refreshToken = authParams.get('refresh_token')
-          if (tokenHash) {
-            const { error } = await supabase.auth.verifyOtp({ token_hash: tokenHash, type: 'recovery' })
-            if (error) throw error
-          } else if (code) {
-            const { error } = await supabase.auth.exchangeCodeForSession(code)
-            if (error) throw error
-          } else if (accessToken && refreshToken) {
-            const { error } = await supabase.auth.setSession({ access_token: accessToken, refresh_token: refreshToken })
-            if (error) throw error
+        if (callbackError) throw new Error(callbackError)
+        const tokenHash = authParams.get('token_hash')
+        const code = authParams.get('code')
+        const accessToken = authParams.get('access_token')
+        const refreshToken = authParams.get('refresh_token')
+        let recoveredSession: Session | null = null
+
+        if (tokenHash) {
+          const { data, error } = await supabase.auth.verifyOtp({ token_hash: tokenHash, type: 'recovery' })
+          if (error) throw error
+          recoveredSession = data.session
+        } else if (code) {
+          const { data, error } = await supabase.auth.exchangeCodeForSession(code)
+          if (error) {
+            if (!session?.user) throw error
+            recoveredSession = session
           } else {
-            throw new Error('El enlace de recuperación no contiene una sesión válida.')
+            recoveredSession = data.session
           }
+        } else if (accessToken && refreshToken) {
+          const { data, error } = await supabase.auth.setSession({ access_token: accessToken, refresh_token: refreshToken })
+          if (error) throw error
+          recoveredSession = data.session
         }
+
+        if (!recoveredSession) recoveredSession = session
+        if (!recoveredSession?.user) throw new Error('El enlace de recuperación no contiene una sesión válida.')
         if (!mounted) return
         window.history.replaceState({}, document.title, pagePath(PASSWORD_RECOVERY_PATH))
+        setVerifiedRecoverySession(recoveredSession)
         setStatus('reset')
         setMessage('Enlace confirmado. Ya puedes elegir una contraseña nueva.')
       } catch (recoveryError) {
@@ -2815,7 +2832,7 @@ function PasswordRecoveryPage({ session }: PasswordRecoveryPageProps) {
 
     activateRecovery()
     return () => { mounted = false }
-  }, [])
+  }, [session])
 
   const requestRecovery = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -2841,6 +2858,12 @@ function PasswordRecoveryPage({ session }: PasswordRecoveryPageProps) {
 
   const updatePassword = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+    const activeRecoverySession = verifiedRecoverySession ?? session
+    if (!activeRecoverySession?.user) {
+      setStatus('error')
+      setMessage('Abre nuevamente el enlace de recuperación antes de cambiar tu contraseña.')
+      return
+    }
     if (newPassword.length < 12) {
       setStatus('error')
       setMessage('La nueva contraseña debe tener al menos 12 caracteres.')
@@ -2860,13 +2883,15 @@ function PasswordRecoveryPage({ session }: PasswordRecoveryPageProps) {
       return
     }
     await supabase.auth.signOut()
+    setVerifiedRecoverySession(null)
     setNewPassword('')
     setConfirmPassword('')
     setStatus('success')
     setMessage('Contraseña actualizada. Inicia sesión nuevamente desde Judicial Managment.')
   }
 
-  const showResetForm = status === 'reset' && Boolean(session?.user)
+  const activeRecoverySession = verifiedRecoverySession ?? session
+  const showResetForm = status !== 'success' && Boolean(activeRecoverySession?.user)
 
   return (
     <main className="site-shell confirm-shell">
