@@ -25,6 +25,7 @@ import {
   FileText,
   FolderKanban,
   HeartHandshake,
+  KeyRound,
   Loader2,
   LockKeyhole,
   LogIn,
@@ -65,7 +66,7 @@ function pagePath(path = '/') {
   return cleanPath === '/' ? `${cleanBase || '/'}` : `${cleanBase}${cleanPath}`
 }
 
-const PORTAL_VERSION = '2026.06.16.2'
+const PORTAL_VERSION = '2026.06.23.1'
 
 function publicPagePath(path = '/') {
   const target = pagePath(path)
@@ -74,6 +75,8 @@ function publicPagePath(path = '/') {
 }
 
 const AUTH_CONFIRM_PATH = '/auth/confirm'
+const PASSWORD_RECOVERY_PATH = '/recuperar'
+const BACKUP_RECOVERY_PATH = '/respaldo'
 const AUTH_CONFIRM_QUERY = 'auth=confirm'
 const AUTH_CONFIRM_QUERY_KEY = 'auth'
 const AUTH_CONFIRM_QUERY_VALUE = 'confirm'
@@ -130,7 +133,16 @@ function isAuthConfirmationUrl() {
   return AUTH_CALLBACK_SIGNAL_KEYS.some((key) => authParams.has(key)) || Boolean(authType && AUTH_CALLBACK_TYPES.has(authType))
 }
 
+function isPasswordRecoveryCallback() {
+  const url = new URL(window.location.href)
+  const authType = getAuthCallbackParams().get('type')?.toLowerCase()
+  return authType === 'recovery'
+    || url.pathname.endsWith(PASSWORD_RECOVERY_PATH)
+    || window.location.hash.includes(PASSWORD_RECOVERY_PATH)
+}
+
 function currentAppPath() {
+  if (isPasswordRecoveryCallback()) return PASSWORD_RECOVERY_PATH
   if (isAuthConfirmationUrl()) return AUTH_CONFIRM_PATH
 
   const url = new URL(window.location.href)
@@ -499,6 +511,8 @@ interface ChatMessagePreview {
 }
 
 const getConfirmRedirectUrl = () => `${window.location.origin}${pagePath('/')}?${AUTH_CONFIRM_QUERY}`
+const getPasswordRecoveryRedirectUrl = () => `${window.location.origin}${pagePath(PASSWORD_RECOVERY_PATH)}`
+const BACKUP_RECOVERY_ENABLED = import.meta.env.VITE_BACKUP_RECOVERY_ENABLED === 'true'
 const isOwnerAdminAccount = (session: Session | null, profile: AppProfile | null) =>
   session?.user?.email?.toLowerCase() === OWNER_ADMIN_EMAIL && profile?.role === 'owner'
 
@@ -629,6 +643,14 @@ function App() {
 
   if (currentPath === AUTH_CONFIRM_PATH) {
     return <AuthConfirmPage session={session} sessionLoading={sessionLoading} />
+  }
+
+  if (currentPath === PASSWORD_RECOVERY_PATH) {
+    return <PasswordRecoveryPage session={session} />
+  }
+
+  if (currentPath === BACKUP_RECOVERY_PATH) {
+    return <BackupRecoveryPage session={session} />
   }
 
   const handleTopbarSignOut = async () => {
@@ -1416,8 +1438,6 @@ interface AccountSettingsPageProps {
 function AccountSettingsPage({ session, sessionLoading, profile }: AccountSettingsPageProps) {
   const metadata = (session?.user?.user_metadata ?? {}) as Record<string, string | undefined>
   const [newEmail, setNewEmail] = useState('')
-  const [newPassword, setNewPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
   const [reportCategory, setReportCategory] = useState('otro')
   const [reportTitle, setReportTitle] = useState('')
   const [reportBody, setReportBody] = useState('')
@@ -1494,33 +1514,6 @@ function AccountSettingsPage({ session, sessionLoading, profile }: AccountSettin
     }
     setNewEmail('')
     setMessage('Supabase envio un correo de confirmacion para completar el cambio.')
-  }
-
-  const handlePasswordSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    clearFeedback()
-
-    if (newPassword.length < 8) {
-      setError('La nueva contrasena debe tener minimo 8 caracteres.')
-      return
-    }
-
-    if (newPassword !== confirmPassword) {
-      setError('Las contrasenas no coinciden.')
-      return
-    }
-
-    setBusyAction('password')
-    const { error: passwordError } = await supabase.auth.updateUser({ password: newPassword })
-
-    setBusyAction('')
-    if (passwordError) {
-      setError(passwordError.message)
-      return
-    }
-    setNewPassword('')
-    setConfirmPassword('')
-    setMessage('Contrasena actualizada.')
   }
 
   const handleReportSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -1673,27 +1666,17 @@ function AccountSettingsPage({ session, sessionLoading, profile }: AccountSettin
           </button>
         </form>
 
-        <form className="portal-card settings-form" onSubmit={handlePasswordSubmit}>
+        <div className="portal-card settings-form">
           <div className="card-title-row">
             <LockKeyhole size={22} />
             <span>
-              <strong>Cambiar contrasena</strong>
-              <small>Usa una clave exclusiva para la app.</small>
+              <strong>Restablecer contrasena</strong>
+              <small>Confirma primero un enlace enviado a tu correo.</small>
             </span>
           </div>
-          <label>
-            Nueva contrasena
-            <input type="password" value={newPassword} onChange={(event) => setNewPassword(event.target.value)} minLength={8} />
-          </label>
-          <label>
-            Confirmar contrasena
-            <input type="password" value={confirmPassword} onChange={(event) => setConfirmPassword(event.target.value)} minLength={8} />
-          </label>
-          <button type="submit" disabled={busyAction === 'password'}>
-            {busyAction === 'password' ? <Loader2 className="spin" size={17} /> : <LockKeyhole size={17} />}
-            Actualizar contrasena
-          </button>
-        </form>
+          <p>Por seguridad, la contraseña no se modifica directamente desde una sesión abierta.</p>
+          <a className="portal-primary-link" href={pagePath(PASSWORD_RECOVERY_PATH)}><KeyRound size={17} />Continuar con recuperación</a>
+        </div>
 
         <form className="portal-card settings-form wide" onSubmit={handleReportSubmit}>
           <div className="card-title-row">
@@ -2774,6 +2757,260 @@ function AuthPanel({ session, sessionLoading }: AuthPanelProps) {
         Reenviar correo de verificacion
       </button>
     </form>
+  )
+}
+
+interface PasswordRecoveryPageProps {
+  session: Session | null
+}
+
+function PasswordRecoveryPage({ session }: PasswordRecoveryPageProps) {
+  const [email, setEmail] = useState('')
+  const [newPassword, setNewPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [status, setStatus] = useState<'request' | 'verifying' | 'reset' | 'success' | 'error'>('request')
+  const [message, setMessage] = useState('')
+  const [busy, setBusy] = useState(false)
+
+  useEffect(() => {
+    let mounted = true
+    const authParams = getAuthCallbackParams()
+    const hasRecoveryCallback = authParams.get('type')?.toLowerCase() === 'recovery' || authParams.has('code') || authParams.has('token_hash')
+    if (!hasRecoveryCallback) return () => { mounted = false }
+
+    const activateRecovery = async () => {
+      if (!mounted) return
+      setStatus('verifying')
+      setMessage('Estamos comprobando el enlace de recuperación.')
+      try {
+        const existingSession = await supabase.auth.getSession()
+        if (!existingSession.data.session) {
+          const tokenHash = authParams.get('token_hash')
+          const code = authParams.get('code')
+          const accessToken = authParams.get('access_token')
+          const refreshToken = authParams.get('refresh_token')
+          if (tokenHash) {
+            const { error } = await supabase.auth.verifyOtp({ token_hash: tokenHash, type: 'recovery' })
+            if (error) throw error
+          } else if (code) {
+            const { error } = await supabase.auth.exchangeCodeForSession(code)
+            if (error) throw error
+          } else if (accessToken && refreshToken) {
+            const { error } = await supabase.auth.setSession({ access_token: accessToken, refresh_token: refreshToken })
+            if (error) throw error
+          } else {
+            throw new Error('El enlace de recuperación no contiene una sesión válida.')
+          }
+        }
+        if (!mounted) return
+        window.history.replaceState({}, document.title, pagePath(PASSWORD_RECOVERY_PATH))
+        setStatus('reset')
+        setMessage('Enlace confirmado. Ya puedes elegir una contraseña nueva.')
+      } catch (recoveryError) {
+        if (!mounted) return
+        setStatus('error')
+        setMessage(recoveryError instanceof Error ? recoveryError.message : 'No se pudo validar el enlace de recuperación.')
+      }
+    }
+
+    activateRecovery()
+    return () => { mounted = false }
+  }, [])
+
+  const requestRecovery = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    const normalizedEmail = email.trim().toLowerCase()
+    if (!normalizedEmail) {
+      setStatus('error')
+      setMessage('Escribe el correo de tu cuenta para continuar.')
+      return
+    }
+    setBusy(true)
+    setStatus('request')
+    const { error } = await supabase.auth.resetPasswordForEmail(normalizedEmail, {
+      redirectTo: getPasswordRecoveryRedirectUrl(),
+    })
+    setBusy(false)
+    if (error) {
+      setStatus('error')
+      setMessage(error.message)
+      return
+    }
+    setMessage('Si existe una cuenta con ese correo, recibirá un enlace de recuperación. Revisa también la carpeta de correo no deseado.')
+  }
+
+  const updatePassword = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    if (newPassword.length < 12) {
+      setStatus('error')
+      setMessage('La nueva contraseña debe tener al menos 12 caracteres.')
+      return
+    }
+    if (newPassword !== confirmPassword) {
+      setStatus('error')
+      setMessage('Las contraseñas no coinciden.')
+      return
+    }
+    setBusy(true)
+    const { error } = await supabase.auth.updateUser({ password: newPassword })
+    setBusy(false)
+    if (error) {
+      setStatus('error')
+      setMessage(error.message)
+      return
+    }
+    await supabase.auth.signOut()
+    setNewPassword('')
+    setConfirmPassword('')
+    setStatus('success')
+    setMessage('Contraseña actualizada. Inicia sesión nuevamente desde Judicial Managment.')
+  }
+
+  const showResetForm = status === 'reset' && Boolean(session?.user)
+
+  return (
+    <main className="site-shell confirm-shell">
+      <section className="confirm-card" aria-live="polite">
+        <img src={companyLogo} alt="" className="confirm-logo" />
+        <KeyRound className={`confirm-icon ${status === 'success' ? 'success' : status === 'error' ? 'error' : ''}`} size={44} />
+        <h1>{showResetForm ? 'Nueva contraseña' : 'Recuperar acceso'}</h1>
+        <p>{showResetForm ? 'El enlace fue confirmado. Esta contraseña reemplazará la anterior.' : 'Escribe el correo de tu cuenta para recibir un enlace seguro de un solo uso.'}</p>
+
+        {message && <div className={`form-alert ${status === 'error' ? 'error' : 'success'}`}><span>{message}</span></div>}
+
+        {status === 'verifying' && <Loader2 className="spin" size={28} />}
+
+        {showResetForm && (
+          <form className="confirm-resend-form" onSubmit={updatePassword}>
+            <input type="password" value={newPassword} onChange={(event) => setNewPassword(event.target.value)} autoComplete="new-password" minLength={12} placeholder="Nueva contraseña (mínimo 12)" required />
+            <input type="password" value={confirmPassword} onChange={(event) => setConfirmPassword(event.target.value)} autoComplete="new-password" minLength={12} placeholder="Confirmar contraseña" required />
+            <button className="download-button primary" type="submit" disabled={busy}>{busy ? <Loader2 className="spin" size={18} /> : <KeyRound size={18} />}Actualizar contraseña</button>
+          </form>
+        )}
+
+        {!showResetForm && status !== 'verifying' && status !== 'success' && (
+          <form className="confirm-resend-form" onSubmit={requestRecovery}>
+            <input type="email" value={email} onChange={(event) => setEmail(event.target.value)} autoComplete="email" placeholder="correo@empresa.com" required />
+            <button className="download-button primary" type="submit" disabled={busy}>{busy ? <Loader2 className="spin" size={18} /> : <MailCheck size={18} />}Enviar enlace de recuperación</button>
+            <a className="legal-link" href={pagePath(`${BACKUP_RECOVERY_PATH}?modo=recuperar`)}>No recuerdo mi correo: usar respaldo</a>
+          </form>
+        )}
+
+        {status === 'success' && <a className="download-button secondary" href={pagePath('/acceso')}><LogIn size={18} />Ir a iniciar sesión</a>}
+      </section>
+    </main>
+  )
+}
+
+interface BackupRecoveryPageProps {
+  session: Session | null
+}
+
+async function callBackupRecoveryService(action: 'begin' | 'request', payload: Record<string, string>, accessToken?: string) {
+  const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/account-recovery-email`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
+    },
+    body: JSON.stringify({ action, ...payload }),
+  })
+  if (!response.ok) {
+    const body = await response.json().catch(() => null) as { error?: string } | null
+    throw new Error(body?.error || 'No se pudo procesar la solicitud de recuperación.')
+  }
+}
+
+function BackupRecoveryPage({ session }: BackupRecoveryPageProps) {
+  const [backupEmail, setBackupEmail] = useState('')
+  const [mfaEnabled, setMfaEnabled] = useState(false)
+  const [busy, setBusy] = useState(false)
+  const [message, setMessage] = useState('')
+  const [error, setError] = useState('')
+  const [confirmationDone, setConfirmationDone] = useState(false)
+  const recoveryMode = new URL(window.location.href).searchParams.get('modo') === 'recuperar'
+  const token = new URL(window.location.href).searchParams.get('token')
+
+  useEffect(() => {
+    if (!session?.user) return
+    supabase.auth.mfa.listFactors().then(({ data }) => {
+      setMfaEnabled(Boolean((data?.totp ?? []).some((factor) => factor.status === 'verified')))
+    }).catch(() => setMfaEnabled(false))
+  }, [session?.user])
+
+  useEffect(() => {
+    if (!token || confirmationDone) return
+    let mounted = true
+    const confirmBackupEmail = async () => {
+      await Promise.resolve()
+      if (!mounted) return
+      setBusy(true)
+      const { data, error: confirmError } = await supabase.rpc('confirm_recovery_email_challenge', { raw_token: token })
+      if (!mounted) return
+      setBusy(false)
+      if (confirmError || !data) {
+        setError(confirmError?.message || 'El enlace de respaldo no es válido o ya venció.')
+        return
+      }
+      window.history.replaceState({}, document.title, pagePath(BACKUP_RECOVERY_PATH))
+      setConfirmationDone(true)
+      setMessage('Correo de respaldo confirmado. Ya podrá usarse para iniciar una recuperación segura.')
+    }
+    void confirmBackupEmail()
+    return () => { mounted = false }
+  }, [confirmationDone, token])
+
+  const submitBackup = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    const normalizedEmail = backupEmail.trim().toLowerCase()
+    if (!normalizedEmail) return
+    setBusy(true); setError(''); setMessage('')
+    try {
+      if (recoveryMode) {
+        await callBackupRecoveryService('request', { email: normalizedEmail })
+        setMessage('Si el correo corresponde a un respaldo confirmado, recibirá un enlace de recuperación.')
+      } else {
+        const { data } = await supabase.auth.getSession()
+        if (!data.session?.access_token) throw new Error('Inicia sesión nuevamente para configurar el respaldo.')
+        await callBackupRecoveryService('begin', { email: normalizedEmail }, data.session.access_token)
+        setMessage('Enviamos un enlace de confirmación al correo de respaldo. Ábrelo para terminar la configuración.')
+      }
+      setBackupEmail('')
+    } catch (requestError) {
+      setError(requestError instanceof Error ? requestError.message : 'No se pudo continuar con el correo de respaldo.')
+    } finally {
+      setBusy(false)
+    }
+  }
+
+  const locked = !BACKUP_RECOVERY_ENABLED || (!recoveryMode && (!session?.user || !mfaEnabled))
+  const lockedCopy = !BACKUP_RECOVERY_ENABLED
+    ? 'El servicio de correo de respaldo aún no está habilitado por el administrador.'
+    : !session?.user
+      ? 'Inicia sesión para configurar un correo de respaldo.'
+      : 'Activa la verificación en 2 pasos antes de agregar un correo de respaldo.'
+
+  return (
+    <main className="site-shell confirm-shell">
+      <section className="confirm-card" aria-live="polite">
+        <img src={companyLogo} alt="" className="confirm-logo" />
+        <ShieldCheck className={`confirm-icon ${confirmationDone ? 'success' : error ? 'error' : ''}`} size={44} />
+        <h1>{recoveryMode ? 'Recuperar con respaldo' : 'Correo de respaldo'}</h1>
+        <p>{recoveryMode ? 'Usa el Hotmail confirmado para recibir un enlace de recuperación.' : 'El respaldo solo se agrega después de activar 2FA y confirmar el enlace que recibe ese correo.'}</p>
+        {message && <div className="form-alert success"><span>{message}</span></div>}
+        {error && <div className="form-alert error"><span>{error}</span></div>}
+        {locked ? (
+          <div className="form-alert error"><ShieldAlert size={17} /><span>{lockedCopy}</span></div>
+        ) : !confirmationDone && (
+          <form className="confirm-resend-form" onSubmit={submitBackup}>
+            <input type="email" value={backupEmail} onChange={(event) => setBackupEmail(event.target.value)} autoComplete="email" placeholder="respaldo@hotmail.com" required />
+            <button className="download-button primary" type="submit" disabled={busy}>{busy ? <Loader2 className="spin" size={18} /> : <MailCheck size={18} />}{recoveryMode ? 'Enviar recuperación' : 'Enviar confirmación'}</button>
+          </form>
+        )}
+        {recoveryMode && <a className="legal-link" href={pagePath(PASSWORD_RECOVERY_PATH)}>Usar correo principal</a>}
+        {!recoveryMode && <a className="legal-link" href={pagePath('/configuracion')}>Volver a configuración</a>}
+      </section>
+    </main>
   )
 }
 
