@@ -66,7 +66,7 @@ function pagePath(path = '/') {
   return cleanPath === '/' ? `${cleanBase || '/'}` : `${cleanBase}${cleanPath}`
 }
 
-const PORTAL_VERSION = '2026.06.23.2'
+const PORTAL_VERSION = '3.3.5'
 
 function publicPagePath(path = '/') {
   const target = pagePath(path)
@@ -164,15 +164,15 @@ function currentAppPath() {
 const WINDOWS_DOWNLOAD_URL =
   'https://github.com/YzDemnz/judicial-managment-portal/releases/latest/download/Judicial-Managment-Setup.exe'
 const MAC_APPLE_SILICON_DOWNLOAD_URL =
-  'https://github.com/YzDemnz/judicial-managment-portal/releases/latest/download/Judicial-Managment-Mac-3.1.6-arm64.dmg'
+  'https://github.com/YzDemnz/judicial-managment-portal/releases/latest/download/Judicial-Managment-Mac-3.3.5-arm64.dmg'
 const MAC_INTEL_DOWNLOAD_URL =
-  'https://github.com/YzDemnz/judicial-managment-portal/releases/latest/download/Judicial-Managment-Mac-3.1.6-x64.dmg'
+  'https://github.com/YzDemnz/judicial-managment-portal/releases/latest/download/Judicial-Managment-Mac-3.3.5-x64.dmg'
 const WINDOWS_FILE_NAME = 'Judicial-Managment-Setup.exe'
-const MAC_APPLE_SILICON_FILE_NAME = 'Judicial-Managment-Mac-3.1.6-arm64.dmg'
-const MAC_INTEL_FILE_NAME = 'Judicial-Managment-Mac-3.1.6-x64.dmg'
+const MAC_APPLE_SILICON_FILE_NAME = 'Judicial-Managment-Mac-3.3.5-arm64.dmg'
+const MAC_INTEL_FILE_NAME = 'Judicial-Managment-Mac-3.3.5-x64.dmg'
 const TERMS_DOC_URL = assetPath('/docs/Judicial-Managment-Terminos-y-Condiciones.docx')
-const TERMS_PAGE_URL = `${pagePath('/')}?legal=terminos`
-const PRIVACY_NOTICE_URL = `${pagePath('/')}?legal=privacidad`
+const TERMS_PAGE_URL = publicPagePath('/terminos')
+const PRIVACY_NOTICE_URL = publicPagePath('/privacidad')
 const DESKTOP_APP_URL = 'judicial-managment://auth/callback?source=web'
 const OWNER_ADMIN_EMAIL = 'marod_legal@outlook.com'
 const GOOGLE_AUTH_ENABLED = false
@@ -278,8 +278,9 @@ const privacyNoticeSections = [
   {
     title: '1. Responsable del tratamiento',
     body: [
-      'Judicial Managment es una aplicacion de gestion juridica operada en fase de distribucion controlada bajo la marca MR Legal/Judicial Managment. Para efectos del presente aviso, el responsable del tratamiento de datos personales es el titular del proyecto, actuando como persona fisica.',
-      'El correo de contacto para asuntos de privacidad, acceso a datos, rectificacion, cancelacion, oposicion o dudas sobre el tratamiento es marod_legal@outlook.com.',
+      'Judicial Managment es una aplicación de gestión jurídica operada bajo la marca MR Legal/Judicial Managment. Para los datos de cuenta, contratación, soporte y seguridad que determina directamente, el responsable del tratamiento es el titular persona física del proyecto.',
+      'Cuando un abogado o despacho carga información de clientes, partes o terceros y decide para qué se utiliza, conserva las obligaciones que legalmente le correspondan como responsable. Judicial Managment realiza el tratamiento técnico necesario para prestar el servicio conforme a sus instrucciones y al marco aplicable.',
+      'El contacto para privacidad y ejercicio de derechos es marod_legal@outlook.com. Antes de una comercialización abierta se publicarán también los demás datos de identificación y contacto que exija la legislación aplicable.',
     ],
   },
   {
@@ -287,7 +288,7 @@ const privacyNoticeSections = [
     body: [
       'La aplicacion puede tratar datos de cuenta como correo electronico, identificador de usuario, fecha de registro, estado de verificacion, estado de suscripcion, rol de administracion, configuracion de perfil y datos opcionales como nombre visible o telefono.',
       'Cuando el usuario utiliza la aplicacion para su trabajo, puede cargar informacion propia de expedientes, clientes, colaboradores, movimientos, audiencias, documentos, imagenes, PDF, archivos de Word, mensajes internos, reportes de soporte y configuracion de despacho.',
-      'El usuario es responsable de contar con autorizacion o base legal suficiente para capturar informacion de clientes, partes, colaboradores o terceros dentro de la aplicacion.',
+      'El usuario es responsable de contar con autorización, deber profesional o base jurídica suficiente para capturar información de clientes, partes, colaboradores o terceros, y debe evitar cargar datos excesivos o innecesarios.',
     ],
   },
   {
@@ -295,7 +296,7 @@ const privacyNoticeSections = [
     body: [
       'Los datos se usan para crear y autenticar cuentas, confirmar correos, permitir el acceso a despachos, administrar permisos, sincronizar informacion, registrar expedientes, movimientos y clientes, mostrar calendario, gestionar documentos, habilitar chat interno, atender reportes y mejorar la estabilidad del servicio.',
       'Tambien pueden utilizarse datos tecnicos basicos para seguridad, prevencion de abuso, deteccion de errores, control de acceso, soporte, mantenimiento, auditoria interna y cumplimiento de obligaciones legales aplicables.',
-      'Judicial Managment no tiene por finalidad vender datos personales ni recopilar informacion con fines maliciosos.',
+      'Judicial Managment no vende datos personales ni los utiliza para publicidad ajena basada en expedientes. Los datos no se emplean para entrenar modelos públicos; los modelos locales y documentos privados se procesan bajo la configuración elegida por el usuario.',
     ],
   },
   {
@@ -303,13 +304,13 @@ const privacyNoticeSections = [
     body: [
       'El servicio puede apoyarse en proveedores tecnicos como Supabase para autenticacion, base de datos y almacenamiento; GitHub Pages o GitHub Releases para distribucion de portal e instaladores; Mercado Pago para pagos o suscripciones; y servicios de correo para confirmaciones y notificaciones.',
       'Cuando el usuario decide instalar herramientas locales como Ollama o modelos de IA en su propia computadora, su funcionamiento depende del equipo del usuario y de los terminos del proveedor correspondiente.',
-      'Algunos proveedores pueden operar infraestructura fuera de Mexico. El uso de la aplicacion implica la aceptacion de transferencias tecnicas necesarias para operar el servicio, en la medida permitida por la legislacion aplicable.',
+      'Algunos proveedores pueden operar infraestructura fuera de México. Las remisiones y transferencias técnicas necesarias se limitarán a la operación del servicio, se informarán conforme al aviso integral y estarán sujetas a las medidas y excepciones previstas por la legislación aplicable.',
     ],
   },
   {
     title: '5. Derechos ARCO y control del usuario',
     body: [
-      'El usuario puede solicitar acceso, rectificacion, cancelacion u oposicion respecto de sus datos personales enviando un correo a marod_legal@outlook.com con la informacion necesaria para identificar la cuenta y el derecho que desea ejercer.',
+      'El titular puede solicitar acceso, rectificación, cancelación u oposición enviando un correo a marod_legal@outlook.com. La solicitud debe permitir identificar razonablemente la cuenta, describir el derecho que desea ejercer y señalar un medio para comunicar la respuesta; se atenderá dentro de los plazos legales.',
       'Cuando la informacion pertenezca a un despacho, expediente, colaborador o tercero, la solicitud podra requerir validacion adicional para evitar accesos indebidos o eliminaciones no autorizadas.',
       'El usuario puede dejar de usar la aplicacion y solicitar orientacion para respaldar o retirar informacion, sujeto a disponibilidad tecnica, permisos, obligaciones legales y medidas razonables de seguridad.',
     ],
@@ -317,9 +318,9 @@ const privacyNoticeSections = [
   {
     title: '6. Seguridad y conservacion',
     body: [
-      'La aplicacion utiliza mecanismos razonables de seguridad como autenticacion, verificacion de correo, roles de acceso, controles por despacho y politicas de base de datos para limitar el acceso a la informacion.',
+      'La aplicación utiliza medidas administrativas, técnicas y físicas razonables, incluidas autenticación, verificación de correo, roles, controles por despacho, cifrado en tránsito y políticas de base de datos. Su alcance se revisa conforme al riesgo y a la naturaleza de la información.',
       'Ningun sistema tecnologico es infalible. El usuario debe conservar respaldos externos de expedientes, documentos, promociones, acuerdos, audiencias y cualquier informacion que considere critica para su actividad profesional.',
-      'Los datos se conservaran durante el tiempo necesario para operar la cuenta, cumplir obligaciones, atender soporte, prevenir abuso, resolver incidencias o conservar evidencia razonable de uso, salvo solicitud valida de eliminacion o disposicion legal en contrario.',
+      'Los datos se conservarán durante el tiempo necesario para las finalidades informadas, obligaciones legales, soporte, seguridad, prevención de abuso o defensa de derechos. Una vulneración significativa se atenderá y notificará a las personas afectadas cuando la legislación lo exija.',
     ],
   },
   {
@@ -523,6 +524,84 @@ function App() {
   const [appProfile, setAppProfile] = useState<AppProfile | null>(null)
   const [profileLoading, setProfileLoading] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [currentPath, setCurrentPath] = useState(currentAppPath)
+  const [routeTransitioning, setRouteTransitioning] = useState(false)
+
+  useEffect(() => {
+    type TransitionDocument = Document & {
+      startViewTransition?: (callback: () => void) => { finished: Promise<void> }
+    }
+
+    const commitRoute = (nextPath: string, scrollToTop: boolean) => {
+      const updateRoute = () => {
+        setCurrentPath(nextPath)
+        setMobileMenuOpen(false)
+        if (scrollToTop) {
+          window.requestAnimationFrame(() => window.scrollTo({ top: 0, behavior: 'auto' }))
+        }
+      }
+      const transitionDocument = document as TransitionDocument
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+      setRouteTransitioning(true)
+      if (transitionDocument.startViewTransition && !reduceMotion) {
+        const transition = transitionDocument.startViewTransition(updateRoute)
+        transition.finished.finally(() => setRouteTransitioning(false)).catch(() => undefined)
+      } else {
+        updateRoute()
+        window.setTimeout(() => setRouteTransitioning(false), 180)
+      }
+    }
+
+    const handleInternalNavigation = (event: MouseEvent) => {
+      if (
+        event.defaultPrevented
+        || event.button !== 0
+        || event.metaKey
+        || event.ctrlKey
+        || event.shiftKey
+        || event.altKey
+      ) return
+
+      const target = event.target
+      if (!(target instanceof Element)) return
+
+      const anchor = target.closest<HTMLAnchorElement>('a[href]')
+      if (!anchor || anchor.hasAttribute('download')) return
+      if (anchor.target && anchor.target !== '_self') return
+
+      const rawHref = anchor.getAttribute('href')
+      if (!rawHref || rawHref.startsWith('#') || rawHref.startsWith('mailto:') || rawHref.startsWith('tel:')) return
+
+      let destination: URL
+      try {
+        destination = new URL(anchor.href, window.location.href)
+      } catch {
+        return
+      }
+
+      if (destination.origin !== window.location.origin) return
+      if (/\.(?:apk|dmg|docx|exe|pdf|zip)$/i.test(destination.pathname)) return
+
+      const base = getBasePath()
+      const cleanBase = base === '/' ? '/' : base.replace(/\/$/, '')
+      if (cleanBase !== '/' && !destination.pathname.startsWith(cleanBase)) return
+      if (destination.href === window.location.href) return
+
+      event.preventDefault()
+      window.history.pushState({}, '', destination)
+      commitRoute(currentAppPath(), true)
+    }
+
+    const handleHistoryNavigation = () => commitRoute(currentAppPath(), true)
+    document.addEventListener('click', handleInternalNavigation)
+    window.addEventListener('popstate', handleHistoryNavigation)
+
+    return () => {
+      document.removeEventListener('click', handleInternalNavigation)
+      window.removeEventListener('popstate', handleHistoryNavigation)
+    }
+  }, [])
 
   useEffect(() => {
     const legacyRoutes: Record<string, string> = {
@@ -645,8 +724,6 @@ function App() {
     }
   }, [session?.user?.id])
 
-  const currentPath = currentAppPath()
-
   if (currentPath === AUTH_CONFIRM_PATH) {
     return <AuthConfirmPage session={session} sessionLoading={sessionLoading} />
   }
@@ -682,7 +759,8 @@ function App() {
   ].some((path) => currentPath === path || currentPath.startsWith(`${path}/`))
 
   return (
-    <main className="site-shell">
+    <main className={`site-shell ${routeTransitioning ? 'route-transitioning' : ''}`}>
+      <span className="route-progress" aria-hidden="true" />
       <header className={`topbar ${mobileMenuOpen ? 'mobile-open' : ''}`} aria-label="Principal">
         <a className="brand-lockup" href={publicPagePath('/')} aria-label="Judicial Managment" onClick={closeMobileMenu}>
           <img src={companyLogo} alt="" className="brand-mark" />
@@ -747,24 +825,26 @@ function App() {
         </div>
       </header>
 
-      {currentPath === '/configuracion' ? (
-        <AccountSettingsPage session={session} sessionLoading={sessionLoading} profile={appProfile} />
-      ) : currentPath === '/admin' ? (
-        <AdminPage
-          session={session}
-          sessionLoading={sessionLoading}
-          profileLoading={profileLoading}
-          canAccessAdmin={canAccessAdmin}
-        />
-      ) : isPublicInformationPath ? (
-        <PublicInformationPage
-          path={currentPath}
-          session={session}
-          sessionLoading={sessionLoading}
-        />
-      ) : (
-        <LandingPage session={session} />
-      )}
+      <div className="route-content" key={currentPath}>
+        {currentPath === '/configuracion' ? (
+          <AccountSettingsPage session={session} sessionLoading={sessionLoading} profile={appProfile} />
+        ) : currentPath === '/admin' ? (
+          <AdminPage
+            session={session}
+            sessionLoading={sessionLoading}
+            profileLoading={profileLoading}
+            canAccessAdmin={canAccessAdmin}
+          />
+        ) : isPublicInformationPath ? (
+          <PublicInformationPage
+            path={currentPath}
+            session={session}
+            sessionLoading={sessionLoading}
+          />
+        ) : (
+          <LandingPage session={session} />
+        )}
+      </div>
     </main>
   )
 }
@@ -826,7 +906,7 @@ function LandingPage({ session }: LandingPageProps) {
                 <Smartphone size={20} />
                 <span>
                   Descargar app movil
-                  <small>APK Android beta</small>
+                  <small>Aplicación Android</small>
                 </span>
               </a>
             </div>
@@ -872,7 +952,7 @@ function LandingPage({ session }: LandingPageProps) {
                 <img src={companyLogo} alt="" />
                 <span>
                   <strong>Judicial Managment</strong>
-                  <small>Aplicacion de escritorio 3.0</small>
+                  <small>Aplicación de escritorio 3.3.5</small>
                 </span>
               </div>
               <span className="live-product-badge">
@@ -1118,7 +1198,7 @@ function PublicInformationPage({ path, session, sessionLoading }: PublicInformat
         />
         <section className="info-band">
           <div className="mobile-download-grid">
-            <article><IonAndroidIcon /><h3>Android</h3><p>APK beta para pruebas controladas.</p><a href={MOBILE_ANDROID_APK_URL}>Descargar aplicación</a></article>
+            <article><IonAndroidIcon /><h3>Android</h3><p>APK para distribución controlada.</p><a href={MOBILE_ANDROID_APK_URL}>Descargar aplicación</a></article>
             <article><Apple size={28} /><h3>iPhone</h3><p>La edición para iOS requiere distribución y firma de Apple.</p><span>En preparación</span></article>
             <article><ExternalLink size={28} /><h3>Notas de versión</h3><p>Consulta el paquete publicado y su fecha de actualización.</p><a href={MOBILE_ANDROID_RELEASE_URL} target="_blank" rel="noreferrer">Ver versión</a></article>
           </div>
@@ -1139,7 +1219,7 @@ function PublicInformationPage({ path, session, sessionLoading }: PublicInformat
             <article><Download size={25} /><h3>Windows</h3><p>Aplicación de escritorio completa para equipos x64.</p><a href={WINDOWS_DOWNLOAD_URL} download={WINDOWS_FILE_NAME}>Descargar instalador</a></article>
             <article><Apple size={25} /><h3>Mac Apple Silicon</h3><p>Para equipos con procesadores M1, M2, M3 y posteriores.</p><a href={MAC_APPLE_SILICON_DOWNLOAD_URL} download={MAC_APPLE_SILICON_FILE_NAME}>Descargar DMG</a></article>
             <article><Apple size={25} /><h3>Mac Intel</h3><p>Para equipos Mac con procesador Intel.</p><a href={MAC_INTEL_DOWNLOAD_URL} download={MAC_INTEL_FILE_NAME}>Descargar DMG</a></article>
-            <article><Smartphone size={25} /><h3>Android</h3><p>Aplicación móvil beta conectada a tu cuenta.</p><a href={MOBILE_ANDROID_APK_URL}>Descargar APK</a></article>
+            <article><Smartphone size={25} /><h3>Android</h3><p>Aplicación móvil conectada a tu cuenta.</p><a href={MOBILE_ANDROID_APK_URL}>Descargar APK</a></article>
             <article><Sparkles size={25} /><h3>Juris IA local</h3><p>Consulta los requisitos y modelos opcionales para tu computadora.</p><a href={publicPagePath('/ia-local')}>Ver guía de IA</a></article>
           </div>
         </section>
@@ -1160,8 +1240,8 @@ function PublicInformationPage({ path, session, sessionLoading }: PublicInformat
     content = (
       <LegalNoticePage
         icon={FileText}
-        eyebrow="Terminos y condiciones"
-        title="Terminos y condiciones de Judicial Managment"
+        eyebrow="Términos y condiciones"
+        title="Términos y condiciones de Judicial Managment"
         copy="Consulta el acuerdo de uso aplicable a la app, portal, instaladores, cuentas, despachos, datos, documentos y funciones conectadas."
         updatedLabel={`Vigente desde ${legalEffectiveDate}`}
         intro={legalIntro}
@@ -1298,7 +1378,7 @@ function LegalNoticePage({
         <div className="legal-document">
           <div className="legal-document-header">
             <div>
-              <p className="eyebrow"><FileText size={17} /> Documento publico</p>
+              <p className="eyebrow"><FileText size={17} /> Documento público</p>
               <h2 id="legal-document-title">{title}</h2>
               <p>{updatedLabel}</p>
             </div>

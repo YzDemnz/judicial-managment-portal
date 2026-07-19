@@ -142,7 +142,7 @@ def add_cover(doc: Document, effective_date: str):
     title = doc.add_paragraph()
     title.alignment = WD_ALIGN_PARAGRAPH.CENTER
     title.paragraph_format.space_after = Pt(8)
-    title_run = title.add_run("Terminos y Condiciones")
+    title_run = title.add_run("Términos y Condiciones")
     title_run.bold = True
     title_run.font.size = Pt(28)
     title_run.font.color.rgb = RGBColor(15, 23, 42)
@@ -150,7 +150,7 @@ def add_cover(doc: Document, effective_date: str):
     subtitle = doc.add_paragraph()
     subtitle.alignment = WD_ALIGN_PARAGRAPH.CENTER
     subtitle.paragraph_format.space_after = Pt(24)
-    subtitle_run = subtitle.add_run("Contrato de uso para fase alpha/beta privada")
+    subtitle_run = subtitle.add_run("Contrato de uso para distribución controlada")
     subtitle_run.font.size = Pt(14)
     subtitle_run.font.color.rgb = RGBColor(75, 85, 99)
 
@@ -161,7 +161,7 @@ def add_cover(doc: Document, effective_date: str):
     rows = [
         ("Producto", "Judicial Managment"),
         ("Marca", "MR Legal / Judicial Managment"),
-        ("Version del documento", "Alpha/Beta"),
+        ("Versión del documento", "Distribución controlada 3.3.5"),
         ("Vigencia", effective_date),
     ]
     for row, (label, value) in zip(meta.rows, rows):
@@ -174,7 +174,7 @@ def add_cover(doc: Document, effective_date: str):
     notice.alignment = WD_ALIGN_PARAGRAPH.CENTER
     notice.paragraph_format.space_before = Pt(18)
     notice_run = notice.add_run(
-        "Documento preliminar para revision. Debe ser revisado por abogado antes de publicarse en beta comercial."
+        "Borrador contractual reforzado. Debe ser validado por un abogado mexicano antes de una distribución comercial abierta."
     )
     notice_run.italic = True
     notice_run.font.size = Pt(10)
@@ -184,7 +184,7 @@ def add_cover(doc: Document, effective_date: str):
 
 
 def add_intro(doc: Document, intro: list[str]):
-    doc.add_heading("Resumen de aceptacion", level=1)
+    doc.add_heading("Resumen de aceptación", level=1)
     for paragraph in intro:
         p = doc.add_paragraph(paragraph)
         p.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
@@ -194,7 +194,7 @@ def add_intro(doc: Document, intro: list[str]):
     set_cell_shading(cell, "FFF8E1")
     set_cell_text(
         cell,
-        "Aviso: la aplicacion esta en fase alpha/beta. El usuario debe conservar respaldos independientes y verificar informacion juridica en fuentes oficiales.",
+        "Aviso: la aplicación es una herramienta de apoyo. El usuario debe conservar respaldos independientes, proteger datos de terceros y verificar toda información jurídica y salida automatizada.",
         bold=True,
     )
     doc.add_page_break()
@@ -202,12 +202,14 @@ def add_intro(doc: Document, intro: list[str]):
 
 def add_sections(doc: Document, sections):
     doc.add_heading("Contrato completo", level=1)
-    for section in sections:
+    for index, section in enumerate(sections):
         heading = doc.add_heading(section["title"], level=2)
         heading.paragraph_format.keep_with_next = True
         for paragraph in section["body"]:
             p = doc.add_paragraph(paragraph)
             p.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
+        if index < len(sections) - 1:
+            doc.add_page_break()
 
 
 def main():
@@ -224,16 +226,17 @@ def main():
 
     doc = Document()
     style_document(doc)
-    add_footer(doc.sections[0], "Judicial Managment - Terminos y Condiciones")
+    add_footer(doc.sections[0], "Judicial Managment - Términos y Condiciones")
     add_cover(doc, effective_date)
 
     body_section = doc.add_section(WD_SECTION.NEW_PAGE)
-    add_footer(body_section, "Judicial Managment - Terminos y Condiciones")
+    body_section.footer.is_linked_to_previous = False
+    add_footer(body_section, "Judicial Managment - Términos y Condiciones")
     add_intro(doc, intro)
     add_sections(doc, sections)
 
-    doc.core_properties.title = "Terminos y Condiciones de Judicial Managment"
-    doc.core_properties.subject = "Contrato de uso alpha/beta"
+    doc.core_properties.title = "Términos y Condiciones de Judicial Managment"
+    doc.core_properties.subject = "Contrato de uso para distribución controlada"
     doc.core_properties.author = "Judicial Managment"
     doc.save(OUT_DOCX)
     print(OUT_DOCX)

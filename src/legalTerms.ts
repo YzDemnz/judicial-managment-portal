@@ -3,12 +3,12 @@ export interface LegalTermSection {
   body: string[]
 }
 
-export const legalEffectiveDate = '27 de mayo de 2026'
+export const legalEffectiveDate = '18 de julio de 2026'
 
 export const legalIntro = [
-  'Estos Terminos y Condiciones constituyen un contrato de adhesion electronico entre el titular persona fisica del proyecto Judicial Managment, actuando por cuenta propia y bajo la marca comercial MR Legal/Judicial Managment, y toda persona que descargue, instale, acceda, pruebe, use, configure, recomiende o administre la aplicacion, la pagina web, el portal beta, el instalador, los modulos, las funciones experimentales, los servicios conectados, las bases de datos, los documentos digitales, los chats, las notificaciones y cualquier herramienta relacionada.',
-  'Judicial Managment se ofrece en fase alpha/beta, es decir, como software preliminar, experimental, sujeto a errores, interrupciones, cambios, ajustes, eliminacion de funciones, variaciones de precio, restricciones de acceso y modificaciones tecnicas. El uso de la aplicacion durante esta etapa no debe entenderse como servicio definitivo, estable, ininterrumpido, certificado, auditado, garantizado ni apto como unico medio de resguardo de informacion juridica o documental.',
-  'La aceptacion ocurre al descargar, instalar, crear una cuenta, iniciar sesion, confirmar correo, unirse a un despacho, crear un despacho, cargar documentos, registrar expedientes, registrar movimientos, usar herramientas internas, usar el calendario, usar el chat, pagar una suscripcion futura o continuar usando el sistema despues de que estos Terminos se pongan a disposicion del usuario.',
+  'Estos Términos y Condiciones constituyen un contrato electrónico entre el titular persona física del proyecto Judicial Managment, quien actúa por cuenta propia bajo la marca MR Legal/Judicial Managment, y toda persona que descargue, instale, acceda, use, configure o administre la aplicación, el portal, los instaladores, módulos, servicios conectados, bases de datos, documentos digitales, chats, notificaciones y herramientas relacionadas.',
+  'Judicial Managment es software de distribución controlada y evolución continua. Puede recibir correcciones, actualizaciones de seguridad, cambios de compatibilidad y mejoras funcionales. No es un expediente judicial oficial, un servicio de fe pública, un sustituto del criterio profesional ni el único medio recomendado para resguardar información jurídica o controlar plazos.',
+  'La aceptación ocurre cuando el usuario marca la casilla correspondiente o, después de que estos Términos se ponen claramente a su disposición, descarga, instala, crea una cuenta, inicia sesión, se une a un despacho, carga información, contrata un plan o continúa utilizando el servicio. Ninguna aceptación implica renuncia a derechos que la legislación mexicana considere irrenunciables.',
 ]
 
 export const legalTermSections: LegalTermSection[] = [
@@ -21,19 +21,19 @@ export const legalTermSections: LegalTermSection[] = [
     ],
   },
   {
-    title: 'Cuartilla 02. Fase alpha, beta privada y advertencia reforzada',
+    title: 'Cuartilla 02. Distribución controlada y evolución del producto',
     body: [
-      'El usuario reconoce que la aplicacion esta en fase alpha y/o beta privada. Esto significa que puede contener errores de programacion, pantallas incompletas, fallas de rendimiento, defectos de sincronizacion, cambios de estructura, diferencias entre versiones, funcionalidades no terminadas, modulos temporales y comportamientos no previstos. La prueba de la aplicacion tiene por objeto evaluar viabilidad, recibir retroalimentacion y mejorar el producto antes de una distribucion comercial amplia.',
-      'Durante esta fase, el Titular podra modificar, suspender, limitar, reemplazar o eliminar cualquier modulo, funcion, diseno, precio, periodo de prueba, regla de colaboracion, sistema de permisos, politica de almacenamiento, integracion de correo, integracion de calendario, herramienta interna, sistema de seguridad o forma de distribucion, sin que ello genere derecho adquirido a conservar una funcion experimental.',
-      'El usuario acepta que no debe depender de la aplicacion como unica fuente de control de terminos judiciales, audiencias, vencimientos, obligaciones de pago, notificaciones oficiales, plazos procesales, promociones, anexos, documentos originales, contratos, expedientes, pruebas o informacion esencial. El uso prudente exige conservar respaldos externos y verificar cualquier informacion con fuentes oficiales o con el expediente fisico/digital correspondiente.',
+      'El usuario reconoce que la aplicación se distribuye de forma controlada y se actualiza de manera continua. Puede contener defectos de programación, fallas de sincronización, incompatibilidades, interrupciones o comportamientos imprevistos aun después de pruebas razonables. Los reportes de uso y soporte permiten corregir el producto, pero no convierten al Titular en responsable de la operación profesional del despacho.',
+      'El Titular podrá modificar módulos, diseño, compatibilidad, límites, proveedores o controles de seguridad por razones técnicas, legales, operativas o de protección de usuarios. Los cambios materiales a un servicio pagado se comunicarán con anticipación razonable y no reducirán retroactivamente prestaciones ya pagadas, salvo cuando una medida inmediata sea necesaria por seguridad, mandato legal o riesgo grave.',
+      'El usuario no debe depender de la aplicación como fuente única para controlar términos judiciales, audiencias, vencimientos, notificaciones oficiales, documentos originales, pruebas o información esencial. Debe conservar respaldos independientes y verificar la información con el expediente y las fuentes oficiales correspondientes.',
     ],
   },
   {
-    title: 'Cuartilla 03. Marco civil de Coahuila y limites legales de la exencion',
+    title: 'Cuartilla 03. Marco jurídico y límites de las exclusiones',
     body: [
-      'Estos Terminos se redactan tomando como referencia general el Codigo Civil para el Estado de Coahuila de Zaragoza, particularmente los principios de voluntad contractual, licitud, responsabilidad civil, danos y perjuicios, regulacion convencional de responsabilidad y prohibicion de renunciar anticipadamente a responsabilidades derivadas de dolo, mala fe o supuestos no renunciables. El documento tambien considera normas federales aplicables a datos personales y relaciones de consumo cuando resulten procedentes.',
-      'El usuario entiende que la responsabilidad civil puede pactarse y limitarse en la medida permitida por la ley, pero ninguna clausula de estos Terminos debe interpretarse como renuncia anticipada a derechos irrenunciables, como autorizacion para actuar con dolo o mala fe, como eliminacion de obligaciones impuestas por normas de orden publico, como exclusion absoluta de responsabilidad en casos donde la ley lo prohiba o como traslado indebido de responsabilidad al usuario cuando la legislacion aplicable no lo permita.',
-      'Si una autoridad competente determina que alguna limitacion es excesiva, abusiva, ineficaz o no exigible, dicha determinacion afectara solo la porcion invalida, conservandose el resto del contrato en la maxima medida legal. La intencion contractual es asignar riesgos razonables propios de una herramienta alpha/beta, no privar al usuario de derechos minimos inderogables.',
+      'Estos Términos se interpretan conforme a la legislación mexicana aplicable, incluidos el Código Civil Federal, el Código de Comercio, la Ley Federal de Protección al Consumidor y la Ley Federal de Protección de Datos Personales en Posesión de los Particulares cuando corresponda, además de las normas imperativas locales que resulten competentes.',
+      'Las partes pueden distribuir y limitar ciertos riesgos contractuales dentro de lo permitido por la ley. Ninguna cláusula autoriza dolo o mala fe, elimina responsabilidad legal irrenunciable, limita derechos de consumidores en forma prohibida, impide derechos ARCO ni traslada al usuario una obligación que legalmente corresponda al Titular.',
+      'Si una autoridad determina que una disposición es excesiva, abusiva o ineficaz, se reducirá al alcance máximo legalmente válido y el resto conservará sus efectos. La finalidad es asignar riesgos tecnológicos de forma clara y proporcional, no privar a ninguna persona de protecciones de orden público.',
     ],
   },
   {
@@ -87,9 +87,9 @@ export const legalTermSections: LegalTermSection[] = [
   {
     title: 'Cuartilla 10. Datos personales y aviso de privacidad',
     body: [
-      'El uso de la aplicacion puede implicar tratamiento de datos personales de usuarios, colaboradores, clientes, partes, representantes, contactos, testigos, trabajadores, beneficiarios, contrapartes y terceros. Estos datos pueden incluir nombres, correos, telefonos, domicilios, datos patrimoniales, datos laborales, informacion de expedientes, documentos legales y datos sensibles cuando el usuario los cargue bajo su responsabilidad.',
-      'El Titular debera poner a disposicion un aviso de privacidad y mecanismos razonables para el ejercicio de derechos ARCO cuando resulte aplicable. El usuario acepta que, en fase alpha/beta, algunos procesos pueden evolucionar y que debera revisar periodicamente la pagina, la aplicacion o los comunicados oficiales para conocer actualizaciones.',
-      'Nada en estos Terminos exime al Titular de las obligaciones legales irrenunciables en materia de datos personales. La limitacion de responsabilidad por perdida de datos se interpreta de forma compatible con las medidas de seguridad, notificacion de vulneraciones y derechos de titulares previstos en la legislacion aplicable.',
+      'El uso de la aplicación puede implicar tratamiento de datos personales de usuarios y de terceros incluidos en expedientes. Respecto de los datos de cuenta, soporte y contratación, el Titular actúa como responsable en los términos del aviso de privacidad. Respecto de la información que un despacho carga sobre clientes, partes, testigos o contrapartes, el despacho o profesional que decide sus finalidades conserva la calidad jurídica que le corresponda y el Titular presta tratamiento técnico limitado para operar el servicio.',
+      'El usuario declara que cuenta con una base jurídica, autorización, deber profesional o consentimiento suficiente para cargar cada dato, especialmente información sensible, patrimonial, financiera, médica, biométrica, de menores o sujeta a secreto. También debe aplicar minimización, permisos internos y plazos de conservación adecuados.',
+      'El Titular pondrá a disposición un aviso de privacidad, medios para ejercer derechos ARCO y medidas razonables de seguridad. Nada en estos Términos elimina obligaciones irrenunciables de confidencialidad, seguridad, información, atención de derechos o notificación de vulneraciones previstas por la legislación aplicable.',
     ],
   },
   {
@@ -101,11 +101,11 @@ export const legalTermSections: LegalTermSection[] = [
     ],
   },
   {
-    title: 'Cuartilla 12. Perdida de datos, respaldos y exencion en fase alpha',
+    title: 'Cuartilla 12. Pérdida de datos, respaldos y asignación de riesgos',
     body: [
-      'Por tratarse de una aplicacion alpha/beta, el usuario acepta que puede existir perdida, corrupcion, duplicacion, desincronizacion, retraso, incompatibilidad, eliminacion accidental o inaccesibilidad temporal o definitiva de datos. El usuario se obliga a mantener respaldos externos, verificables y actualizados de todo documento, expediente, movimiento, calendario, fecha critica, cliente, contrato, evidencia o informacion que considere importante.',
-      'En la maxima medida permitida por la ley, el Titular persona fisica no sera responsable por perdida de datos, perdida de documentos, interrupcion de acceso, errores de captura, eliminacion por el usuario, eliminacion por colaboradores autorizados, fallas de internet, fallas de equipo, fallas de terceros, fallas de proveedores, eventos de fuerza mayor, pruebas de desarrollo, migraciones, cambios de version, cambios de base de datos o uso de la aplicacion como unico repositorio.',
-      'Esta limitacion no pretende excluir responsabilidad por dolo, mala fe, conducta intencional, incumplimiento legal irrenunciable o supuestos donde la ley expresamente prohiba limitar responsabilidad. Si una autoridad competente determina responsabilidad imputable al Titular, esta se limitara, en la medida legalmente posible, al monto efectivamente pagado por el usuario por el servicio en los tres meses previos al evento, o al monto minimo permitido por la ley si dicha limitacion no fuera valida.',
+      'El usuario acepta que cualquier sistema digital puede sufrir pérdida, corrupción, duplicación, desincronización, retraso, incompatibilidad, eliminación accidental o inaccesibilidad. Se obliga a mantener respaldos externos verificables y actualizados de documentos, expedientes, calendarios, fechas críticas, contratos, evidencias e información que resulte esencial para su actividad.',
+      'En la máxima medida permitida, el Titular no será responsable por pérdidas causadas por errores de captura, actos del usuario o de colaboradores autorizados, credenciales comprometidas, equipos del usuario, servicios de internet, terceros, proveedores, fuerza mayor, archivos maliciosos o por utilizar la aplicación como repositorio único. El usuario deberá mitigar cualquier daño, suspender el uso afectado y notificar el incidente sin demora injustificada.',
+      'Esta asignación no excluye dolo, mala fe, conducta intencional, incumplimientos no renunciables ni obligaciones que una autoridad determine directamente imputables al Titular. Si existe responsabilidad directa legalmente limitable, se aplicará el tope previsto en la Cuartilla 38 y no una exención absoluta.',
     ],
   },
   {
@@ -113,7 +113,7 @@ export const legalTermSections: LegalTermSection[] = [
     body: [
       'El usuario acepta que el respaldo de informacion juridica es una obligacion propia y continua. Debe conservar copias fisicas o digitales independientes de expedientes, promociones, acuerdos, sentencias, contratos, identificaciones, poderes, anexos, constancias, recibos, convenios, documentos laborales y cualquier archivo que pueda ser necesario para defensa, prueba, auditoria, cumplimiento o atencion al cliente.',
       'La aplicacion no debe utilizarse como archivo unico, archivo maestro, caja fuerte digital exclusiva, sistema de fe publica, repositorio oficial o sustituto de obligaciones profesionales de conservacion documental. La existencia de funciones de carga de PDF, Word, imagenes o notas no cambia esta obligacion.',
-      'Si el usuario decide operar sin respaldos externos, acepta que lo hace bajo su propio riesgo. La falta de respaldo externo se considerara incumplimiento de una medida elemental de prudencia, especialmente en una etapa alpha/beta expresamente anunciada como experimental.',
+      'Si el usuario decide operar sin respaldos externos, lo hace bajo su propio riesgo. La ausencia de respaldo podrá considerarse falta de mitigación o incumplimiento de una medida elemental de prudencia al valorar daños que razonablemente pudieron evitarse.',
     ],
   },
   {
@@ -135,25 +135,25 @@ export const legalTermSections: LegalTermSection[] = [
   {
     title: 'Cuartilla 16. Precio, prueba gratuita y cambios comerciales',
     body: [
-      'Durante alpha/beta, la aplicacion puede ser gratuita, parcialmente gratuita, limitada, de prueba, por invitacion, con acceso controlado o con funciones futuras sujetas a pago. El Titular puede modificar precios, paquetes, limites, funciones, duracion de prueba, condiciones de suscripcion, promociones, planes y politicas comerciales antes de lanzamiento o durante la beta.',
-      'Ninguna funcion gratuita durante alpha/beta crea derecho permanente a gratuidad. La continuidad del servicio puede condicionarse a pago, suscripcion, renovacion, verificacion, aceptacion de nuevos terminos, disponibilidad tecnica o permanencia dentro del programa beta.',
-      'Si se implementan pagos, el usuario debera revisar el plan contratado, precio, impuestos, periodicidad, forma de cancelacion, restricciones y politica de reembolsos. Mientras no exista sistema de cobro formal, cualquier referencia a precios futuros sera informativa y sujeta a cambio.',
+      'La aplicación puede ofrecer acceso gratuito, prueba temporal, planes limitados, funciones premium o suscripciones. Antes de contratar se informarán de forma clara el precio total, impuestos cuando correspondan, periodicidad, funciones incluidas, límites, vigencia, medios de pago, renovación, cancelación y política de reembolsos aplicable.',
+      'Una función gratuita no crea derecho indefinido a conservarla sin costo. Los cambios futuros de precio o plan se aplicarán hacia adelante y serán comunicados antes de la siguiente contratación o renovación; no alterarán retroactivamente el periodo ya pagado.',
+      'Todo cobro recurrente requerirá consentimiento expreso e informado. El usuario podrá cancelar de manera inmediata y sin penalización indebida por el mismo canal o por un mecanismo de dificultad equivalente al de contratación, sin perjuicio de servicios ya prestados o saldos legítimamente causados.',
     ],
   },
   {
     title: 'Cuartilla 17. Cambios de funciones y ausencia de derecho adquirido',
     body: [
-      'El usuario acepta que las funciones de expedientes, archivo, clientes, movimientos, calendario, laboral, chat, documentos, dashboard, seguridad, 2FA, Google, descarga, invitaciones, roles, reportes y cualquier otra pueden modificarse. Los cambios pueden responder a mejoras, errores, seguridad, costo, viabilidad legal, decisiones de producto o comentarios de beta.',
-      'El Titular podra cambiar nombres de modulos, orden de pantallas, colores, iconos, flujos, permisos, estructuras de datos, limites de archivos, integraciones, opciones de busqueda y reglas de colaboracion. La modificacion o eliminacion de funciones experimentales no sera incumplimiento, salvo obligaciones especificas pactadas por escrito en contrato separado.',
-      'El usuario debe revisar notas de version o comunicados cuando existan. Si no esta de acuerdo con un cambio, su remedio principal sera dejar de usar la aplicacion, exportar o respaldar su informacion en la medida en que la funcion este disponible y cancelar su participacion beta.',
+      'El usuario acepta que las funciones de expedientes, archivo, clientes, movimientos, calendario, laboral, chat, documentos, dashboard, seguridad, 2FA, descarga, invitaciones, roles y reportes pueden modificarse por mejoras, correcciones, seguridad, costo, viabilidad legal o decisiones justificadas de producto.',
+      'El Titular podrá cambiar nombres de módulos, orden de pantallas, colores, iconos, flujos, permisos, estructuras de datos, límites de archivos, integraciones y reglas de colaboración. La modificación de una función no esencial no será incumplimiento, salvo una obligación específica pactada por escrito.',
+      'El usuario debe revisar notas de versión o comunicados. Si no acepta un cambio futuro material, podrá dejar de usar la aplicación, cancelar renovaciones y exportar o respaldar su información en la medida disponible.',
     ],
   },
   {
-    title: 'Cuartilla 18. Herramientas internas y ausencia de asesoria juridica automatizada',
+    title: 'Cuartilla 18. Juris, modelos locales y ausencia de asesoría jurídica automatizada',
     body: [
-      'Las herramientas internas de consulta se basan en reglas, palabras clave, textos predefinidos o logica experimental. No sustituyen consulta juridica, no interpretan expedientes completos, no evaluan pruebas, no garantizan legislacion vigente, no emiten dictamen profesional y no deben utilizarse como base unica para decisiones legales.',
-      'Las respuestas o referencias internas pueden contener errores, generalizaciones, omisiones, desactualizaciones o recomendaciones no aplicables al caso concreto. El usuario debe verificar cualquier informacion con fuentes oficiales, legislacion vigente y criterio profesional antes de actuar.',
-      'El Titular no responde por danos derivados de confiar exclusivamente en herramientas internas, especialmente cuando el usuario no revise la informacion o la use para plazos, audiencias, promociones, demandas, contestaciones, recursos, convenios, estrategias o asesorias a terceros.',
+      'Juris y cualquier modelo local son herramientas de asistencia técnica. Pueden resumir, buscar referencias, proponer borradores o usar documentos aportados por el despacho, pero no ejercen la abogacía, no representan al usuario, no presentan escritos, no certifican hechos, no sustituyen una revisión profesional y no garantizan que una cita, plazo, criterio, norma o formato sea correcto o vigente.',
+      'Los modelos pueden producir información falsa, incompleta, desactualizada o no aplicable. Los formatos privados que cargue el usuario tendrán prioridad operativa como referencia cuando la función esté disponible; la biblioteca general será supletoria. Esa prioridad no acredita autenticidad, vigencia, licitud ni adecuación al caso.',
+      'El usuario debe revisar íntegramente cada resultado, contrastar fuentes oficiales, eliminar datos innecesarios y aprobar personalmente cualquier documento antes de firmarlo, enviarlo o presentarlo. En la máxima medida legal, el Titular no responde por decisiones profesionales basadas en una salida no verificada ni por el comportamiento, instalación, disponibilidad o límites de modelos locales de terceros.',
     ],
   },
   {
@@ -207,9 +207,9 @@ export const legalTermSections: LegalTermSection[] = [
   {
     title: 'Cuartilla 25. Confidencialidad profesional',
     body: [
-      'Los usuarios que sean abogados, auxiliares o colaboradores deben cumplir deberes de secreto profesional, confidencialidad, reserva, lealtad y resguardo de expedientes conforme a su normativa aplicable. El uso de la aplicacion no disminuye esos deberes ni convierte al Titular en responsable de la estrategia de confidencialidad del despacho.',
-      'El usuario debe abstenerse de subir informacion cuando no cuente con autorizacion, cuando exista orden de reserva, cuando pueda violar confidencialidad, cuando exceda la finalidad del despacho o cuando el acceso de colaboradores no este adecuadamente limitado.',
-      'El Titular mantendra controles razonables de seguridad para operar el servicio, pero no puede asumir obligaciones de secreto profesional propias del abogado frente a sus clientes salvo las obligaciones legales de confidencialidad y proteccion de datos que correspondan al tratamiento tecnico.',
+      'Los abogados, auxiliares y colaboradores deben cumplir sus deberes de secreto profesional, confidencialidad, reserva, lealtad, minimización y resguardo de expedientes. El uso de la aplicación no transfiere al Titular la decisión profesional sobre qué información puede digitalizarse, compartirse o procesarse mediante un modelo local.',
+      'El usuario no deberá subir información sin autorización suficiente, sujeta a una prohibición de tratamiento, ajena a la finalidad del despacho, excesiva para el servicio o accesible a colaboradores sin necesidad de conocerla. Antes de usar documentos reales como referencia de Juris deberá anonimizar o seudonimizar los datos cuando el caso lo permita.',
+      'El Titular aplicará controles razonables de seguridad y confidencialidad al tratamiento técnico que le corresponda. No asume por ese solo hecho el secreto profesional propio del abogado ni la calidad de custodio oficial de expedientes, sin perjuicio de sus obligaciones legales directas sobre los datos que trate.',
     ],
   },
   {
@@ -224,8 +224,8 @@ export const legalTermSections: LegalTermSection[] = [
     title: 'Cuartilla 27. Propiedad intelectual',
     body: [
       'El nombre Judicial Managment, marca MR Legal cuando se use asociada al proyecto, logotipos, disenos, interfaces, textos propios, codigo, compilaciones, estructura visual, bases de conocimiento, materiales, documentacion y elementos no aportados por el usuario pertenecen al Titular o a sus licenciantes, salvo componentes de codigo abierto sujetos a sus licencias respectivas.',
-      'El usuario recibe una licencia limitada, revocable, no exclusiva, no transferible y condicionada al cumplimiento de estos Terminos para instalar y usar la aplicacion durante la beta o periodo autorizado. No se otorga venta de codigo fuente, cesion de marca, derecho de sublicencia ni derecho a explotar comercialmente la plataforma salvo acuerdo escrito.',
-      'El usuario conserva propiedad sobre sus datos y documentos, pero autoriza el tratamiento tecnico necesario para operar el servicio. Cualquier sugerencia, comentario o retroalimentacion enviada durante beta podra utilizarse para mejorar el producto sin obligacion de compensacion, salvo acuerdo escrito distinto.',
+      'El usuario recibe una licencia limitada, revocable, no exclusiva, no transferible y condicionada al cumplimiento de estos Términos para instalar y usar la aplicación durante el periodo autorizado. No se otorga venta de código fuente, cesión de marca, derecho de sublicencia ni derecho a explotar comercialmente la plataforma salvo acuerdo escrito.',
+      'El usuario conserva la titularidad que le corresponda sobre sus datos y documentos, pero autoriza el tratamiento técnico necesario para operar el servicio. Las sugerencias o comentarios podrán utilizarse para mejorar el producto sin obligación de compensación, salvo acuerdo escrito distinto.',
     ],
   },
   {
@@ -239,8 +239,8 @@ export const legalTermSections: LegalTermSection[] = [
   {
     title: 'Cuartilla 29. Soporte, mantenimiento y tiempos de respuesta',
     body: [
-      'Durante alpha/beta, el soporte puede ser limitado, informal, manual, por disponibilidad del Titular y sin niveles de servicio garantizados. El usuario puede reportar errores, solicitudes, ideas o fallas, pero el Titular no esta obligado a resolver todo reporte, implementar toda sugerencia o responder en plazo determinado salvo acuerdo escrito.',
-      'El mantenimiento puede requerir interrupciones, actualizaciones, migraciones, reinicios, pruebas, limpieza de datos, cambios de estructura o bloqueo temporal. En la medida posible se procurara reducir afectaciones, pero la fase experimental implica tolerancia a interrupciones.',
+      'Salvo un plan o acuerdo de nivel de servicio que indique lo contrario, el soporte se presta conforme a disponibilidad y sin tiempo de respuesta garantizado. El usuario puede reportar errores, solicitudes o fallas, pero el Titular no está obligado a implementar toda sugerencia ni a resolver asuntos ajenos al alcance contratado.',
+      'El mantenimiento puede requerir interrupciones, actualizaciones, migraciones, reinicios, pruebas o cambios de estructura. Se procurará reducir afectaciones y comunicar mantenimientos previsibles cuando resulte razonable.',
       'El usuario debe describir errores de forma clara, evitar enviar datos sensibles innecesarios y conservar respaldos antes de permitir pruebas o diagnosticos. El soporte no incluye asesoria juridica, reparacion de equipos, recuperacion garantizada de datos ni administracion interna del despacho.',
     ],
   },
@@ -248,40 +248,40 @@ export const legalTermSections: LegalTermSection[] = [
     title: 'Cuartilla 30. Disponibilidad y continuidad',
     body: [
       'La aplicacion puede no estar disponible de forma continua. Puede fallar por internet, servidor, proveedor de base de datos, mantenimiento, cambios de version, errores de autenticacion, bloqueo de correo, antivirus, firewall, expiracion de sesion, problemas de instalacion o causas no imputables al Titular.',
-      'El Titular no garantiza disponibilidad 24/7, tiempos minimos de actividad, recuperacion inmediata, ausencia de errores ni continuidad indefinida de la beta. El usuario debe contar con planes alternos para trabajar expedientes y cumplir obligaciones aun cuando el sistema no funcione.',
+      'Salvo acuerdo escrito específico, el Titular no garantiza disponibilidad 24/7, un porcentaje mínimo de actividad, recuperación inmediata ni ausencia total de errores. El usuario debe contar con planes alternos para trabajar y cumplir obligaciones cuando el sistema no esté disponible.',
       'La indisponibilidad temporal no libera al usuario de sus obligaciones profesionales, procesales, laborales, fiscales o contractuales. La app es una herramienta auxiliar y no debe ser el unico medio de operacion critica.',
     ],
   },
   {
     title: 'Cuartilla 31. Actualizaciones obligatorias y migraciones',
     body: [
-      'El Titular podra requerir actualizaciones para corregir errores, mejorar seguridad, cambiar base de datos, incorporar funciones, retirar modulos o preparar distribucion comercial. Algunas versiones antiguas pueden dejar de funcionar o perder compatibilidad.',
-      'Las migraciones de datos pueden implicar riesgos. El usuario debe respaldar informacion antes de actualizar o migrar. El Titular podra realizar esfuerzos razonables de migracion, pero no garantiza que todos los datos, adjuntos, formatos, configuraciones o historiales se conserven intactos durante la fase alpha/beta.',
-      'Si el usuario rechaza actualizaciones necesarias, puede perder acceso, seguridad, compatibilidad o soporte. La continuacion del uso despues de una actualizacion implica aceptacion de los cambios tecnicos y funcionales asociados.',
+      'El Titular podrá requerir actualizaciones para corregir errores, atender vulnerabilidades, mantener compatibilidad, migrar datos o incorporar funciones. Las versiones antiguas pueden perder soporte o interoperabilidad cuando mantenerlas implique un riesgo razonable.',
+      'Las actualizaciones automáticas sustituyen archivos de la aplicación y no deben eliminar deliberadamente la información del usuario almacenada en servicios conectados. No obstante, toda migración implica riesgos residuales; por ello el usuario debe conservar respaldos externos y no interrumpir una instalación en curso.',
+      'Si el usuario rechaza una actualización de seguridad necesaria, puede perder compatibilidad o soporte. Los cambios contractuales materiales no se tendrán por aceptados únicamente por una actualización silenciosa cuando la ley requiera aviso o consentimiento expreso.',
     ],
   },
   {
-    title: 'Cuartilla 32. Beta controlada, admision y baja de usuarios',
+    title: 'Cuartilla 32. Distribución controlada, admisión y baja de usuarios',
     body: [
-      'La beta puede limitar el numero de usuarios, despachos, expedientes, colaboradores, archivos, invitaciones o funciones. El Titular podra admitir o rechazar usuarios por disponibilidad, seguridad, capacidad tecnica, perfil de prueba, abuso, incumplimiento o necesidad de controlar costos.',
-      'El usuario no adquiere derecho indefinido de acceso por haber sido invitado. La beta puede terminar para todos o para ciertos usuarios. El Titular podra cerrar registros, modificar limites, pausar la beta o migrar a una version comercial.',
-      'Cuando sea razonablemente posible, se procurara avisar cambios relevantes. Sin embargo, en casos de seguridad, abuso, falla grave, requerimiento legal o riesgo operativo, el acceso puede suspenderse sin aviso previo.',
+      'La distribución controlada puede limitar usuarios, despachos, colaboradores, archivos, almacenamiento, invitaciones o funciones. El Titular podrá admitir o rechazar altas por capacidad técnica, seguridad, prevención de abuso, incumplimiento o necesidad razonable de controlar la operación.',
+      'Una invitación no otorga acceso indefinido ni propiedad sobre el servicio. El Titular podrá cerrar registros, modificar límites futuros o suspender nuevas altas, respetando los periodos pagados y los derechos irrenunciables que resulten aplicables.',
+      'Se procurará avisar los cambios relevantes. En casos de seguridad, fraude, abuso, falla grave, mandato de autoridad o riesgo para terceros, el acceso afectado podrá suspenderse de inmediato mientras se investiga, con oportunidad razonable de aclaración cuando no se comprometa la protección del sistema.',
     ],
   },
   {
     title: 'Cuartilla 33. Comunicaciones oficiales',
     body: [
-      'Las comunicaciones oficiales podran realizarse por correo electronico registrado, avisos dentro de la aplicacion, pagina web, mensajes del portal beta, documentos publicados, cambios visibles en la interfaz o cualquier medio razonable. El usuario debe mantener su correo actualizado y revisar avisos.',
+      'Las comunicaciones oficiales podrán realizarse por correo registrado, avisos dentro de la aplicación, página web, portal, documentos publicados o cualquier medio razonable. El usuario debe mantener sus datos actualizados y revisar avisos.',
       'El Titular no responde si el usuario no lee correos, si su proveedor los envia a spam, si perdio acceso al correo, si compartio credenciales o si no reviso actualizaciones disponibles. La obligacion de mantenerse informado recae tambien en el usuario.',
       'Los avisos sobre cambios de Terminos, privacidad, precios, funciones o seguridad surtiran efectos conforme al texto indicado en el aviso o, en su defecto, desde su publicacion o puesta a disposicion, salvo que la ley exija plazo o consentimiento especifico.',
     ],
   },
   {
-    title: 'Cuartilla 34. Modificacion de terminos',
+    title: 'Cuartilla 34. Modificación de términos',
     body: [
-      'El Titular podra modificar estos Terminos por cambios legales, tecnicos, comerciales, de seguridad, de producto, de proveedores, de modelo de negocio o de fase alpha/beta a fase comercial. La version vigente sera la publicada en la pagina o en la aplicacion.',
-      'Si el usuario continua usando la aplicacion despues de la publicacion de cambios, se entendera que acepta la nueva version, salvo que la ley requiera consentimiento expreso. Si no esta de acuerdo, debera dejar de usar la aplicacion y respaldar su informacion.',
-      'Los cambios no buscaran afectar retroactivamente derechos irrenunciables ya adquiridos. Sin embargo, las funciones experimentales, precios futuros, planes, limites y disponibilidad podran cambiar hacia adelante por la naturaleza alpha/beta.',
+      'El Titular podrá actualizar estos Términos por cambios legales, técnicos, de seguridad, producto, proveedores o modelo comercial. La versión vigente, su fecha y un medio de consulta permanente estarán disponibles en el portal.',
+      'Los cambios materiales se comunicarán con anticipación razonable y surtirán efectos hacia adelante. Cuando alteren de forma esencial un plan pagado o la ley exija consentimiento expreso, no bastará una cláusula de aceptación automática ni se afectará retroactivamente el periodo contratado.',
+      'Si el usuario no acepta una modificación futura podrá dejar de usar el servicio, cancelar renovaciones y respaldar su información. Las correcciones no materiales, aclaraciones, medidas urgentes de seguridad y cambios favorables podrán aplicarse desde su publicación.',
     ],
   },
   {
@@ -295,7 +295,7 @@ export const legalTermSections: LegalTermSection[] = [
   {
     title: 'Cuartilla 36. Terminacion o suspension por el Titular',
     body: [
-      'El Titular podra suspender o terminar el acceso del usuario por incumplimiento, riesgo de seguridad, uso abusivo, falta de pago futuro, pruebas concluidas, cierre de beta, requerimiento de autoridad, violacion de derechos de terceros, afectacion a otros usuarios o conducta que comprometa la operacion.',
+      'El Titular podrá suspender o terminar el acceso por incumplimiento, riesgo de seguridad, uso abusivo, falta de pago, cierre del servicio, requerimiento de autoridad, violación de derechos de terceros o conducta que comprometa la operación.',
       'Cuando sea posible y no exista riesgo, se podra otorgar oportunidad razonable para respaldar informacion. No obstante, en casos graves o urgentes, el acceso puede suspenderse de inmediato.',
       'La terminacion no elimina obligaciones pendientes, responsabilidades por uso indebido, deberes de confidencialidad, obligaciones de pago ya generadas ni disposiciones que por su naturaleza deban subsistir.',
     ],
@@ -311,41 +311,41 @@ export const legalTermSections: LegalTermSection[] = [
   {
     title: 'Cuartilla 38. Limitacion general de responsabilidad',
     body: [
-      'En la maxima medida permitida por la ley, el Titular no sera responsable por danos indirectos, especiales, incidentales, punitivos, consecuenciales, perdida de oportunidad, lucro cesante, perdida de negocio, perdida de reputacion, perdida de clientes, interrupcion de actividad profesional, perdida de informacion por falta de respaldo, perdida de plazos por no verificar fuentes oficiales o danos derivados del uso experimental del software.',
-      'Cualquier responsabilidad directa que legalmente no pueda excluirse se limitara, en la medida permitida, al monto efectivamente pagado por el usuario al Titular por el servicio durante los tres meses anteriores al evento que dio origen a la reclamacion. Si no hubo pago, la responsabilidad se limitara al minimo permitido por la legislacion aplicable.',
-      'Esta limitacion no excluye derechos irrenunciables, responsabilidad por dolo, mala fe, conducta intencional, vulneraciones legales no eximibles o supuestos donde una autoridad competente determine que la limitacion es invalida.',
+      'En la máxima medida permitida por la ley, el Titular no responderá por daños indirectos, incidentales, especiales, punitivos o consecuenciales; lucro cesante; pérdida de oportunidad, negocio, reputación o clientes; ni por perjuicios derivados de plazos no verificados, datos sin respaldo, decisiones profesionales, contenido del usuario, actos de colaboradores o fallas de servicios ajenos.',
+      'Cuando exista responsabilidad directa legalmente limitable, la responsabilidad acumulada del Titular por todos los hechos relacionados con un mismo evento no excederá el importe efectivamente pagado por el usuario por el servicio durante los tres meses anteriores al primer hecho reclamado. Este tope no opera cuando una norma imperativa o una resolución firme exija una reparación distinta.',
+      'La exclusión y el tope no comprenden dolo, mala fe, conducta intencional, responsabilidad que no pueda renunciarse, derechos irrenunciables de consumidores ni incumplimientos directamente imputables que la ley prohíba limitar. El usuario deberá adoptar medidas razonables para evitar o reducir daños y comunicar la reclamación con información suficiente tan pronto como sea posible.',
     ],
   },
   {
     title: 'Cuartilla 39. Caso fortuito, fuerza mayor y terceros',
     body: [
       'El Titular no sera responsable por incumplimientos, retrasos, fallas o perdida de disponibilidad derivados de caso fortuito, fuerza mayor o causas fuera de control razonable, incluyendo fallas de energia, internet, servidores, proveedores, ataques, desastres, actos de autoridad, conflictos, errores de plataformas, cambios legales, bloqueos, fallas masivas de servicios tecnologicos o eventos imprevisibles.',
-      'La fase alpha/beta aumenta la posibilidad de incidencias tecnicas. El usuario acepta que debe prever contingencias y que la herramienta no debe ser su unico mecanismo de trabajo.',
+      'Toda plataforma conectada conserva riesgos técnicos residuales. El usuario debe prever contingencias y no utilizar la herramienta como único mecanismo de trabajo crítico.',
       'Cuando ocurra un evento de esta naturaleza, el Titular podra suspender, limitar, modificar o reanudar el servicio segun disponibilidad, sin responsabilidad por danos indirectos o por informacion que el usuario no haya respaldado.',
     ],
   },
   {
     title: 'Cuartilla 40. Relacion con derechos de consumo',
     body: [
-      'Judicial Managment se dirige principalmente a profesionales, abogados y despachos que usan la herramienta en su actividad. No obstante, si por cualquier razon resulta aplicable la legislacion de proteccion al consumidor, estos Terminos se interpretaran de forma compatible con dicha legislacion y no limitaran derechos irrenunciables.',
-      'Ninguna disposicion debe entenderse como autorizacion para imponer obligaciones abusivas, modificar unilateralmente obligaciones esenciales en perjuicio del consumidor cuando la ley lo prohiba, renunciar a protecciones legales o liberar responsabilidad civil en supuestos no permitidos por la Ley Federal de Proteccion al Consumidor.',
-      'Las limitaciones aqui previstas buscan reflejar el caracter alpha/beta, el deber de respaldo y la asignacion razonable de riesgos tecnologicos, no desconocer derechos minimos establecidos por normas imperativas.',
+      'Judicial Managment se dirige principalmente a profesionales y despachos que utilizan la herramienta en su actividad. Si una persona tiene la calidad legal de consumidora, estos Términos se interpretarán conforme a la Ley Federal de Protección al Consumidor y no reducirán sus derechos irrenunciables.',
+      'No serán exigibles cláusulas que permitan modificar unilateralmente obligaciones esenciales en perjuicio del consumidor, liberen al proveedor de responsabilidad civil en casos prohibidos, impongan formalidades desproporcionadas, reduzcan plazos legales, sometan obligatoriamente a jurisdicción extranjera o impliquen renuncia a protecciones de orden público.',
+      'La información comercial, precios, restricciones y mecanismos de cancelación deberán ser claros. Las limitaciones de responsabilidad restantes buscan asignar riesgos tecnológicos previsibles de forma proporcional y serán aplicadas solo hasta donde la legislación permita.',
     ],
   },
   {
     title: 'Cuartilla 41. Aviso de no garantia',
     body: [
-      'La aplicacion se proporciona "tal como esta" y "segun disponibilidad" durante la fase alpha/beta. No se otorgan garantias de comerciabilidad, idoneidad para un fin particular, ausencia de errores, disponibilidad continua, compatibilidad universal, recuperacion de datos, exactitud juridica, integridad documental o cumplimiento de necesidades especificas del usuario.',
-      'Las demostraciones, capturas, textos comerciales, conversaciones, planes futuros, prototipos, promesas generales o ideas de desarrollo no constituyen garantia contractual definitiva salvo que se pacten expresamente por escrito y con identificacion del alcance, precio, version y fecha.',
-      'El usuario asume el riesgo de probar software preliminar y acepta que la decision de usarlo para informacion real debe ir acompanada de respaldos, supervision profesional y controles internos.',
+      'Salvo las garantías expresas y derechos irrenunciables que resulten aplicables, la aplicación se proporciona según disponibilidad. No se garantiza operación ininterrumpida, compatibilidad universal, ausencia absoluta de errores, recuperación de información no respaldada, exactitud jurídica de resultados automatizados ni idoneidad como único sistema para una obligación profesional específica.',
+      'Las demostraciones, capturas, hojas de ruta, planes futuros, prototipos o conversaciones no constituyen garantía contractual independiente salvo que se documenten expresamente con alcance, versión, precio y vigencia. La publicidad y oferta obligarán en los términos que establezca la legislación aplicable.',
+      'El usuario acepta los riesgos residuales razonables de toda herramienta tecnológica y se obliga a acompañar su uso con respaldos, supervisión humana, controles de acceso, actualización de equipos y verificación profesional.',
     ],
   },
   {
     title: 'Cuartilla 42. Exportacion, portabilidad y continuidad de informacion',
     body: [
-      'El Titular podra incorporar funciones de exportacion, descarga o portabilidad, pero durante alpha/beta dichas funciones pueden ser parciales, manuales, limitadas o inexistentes. El usuario debe mantener sus propios respaldos para no depender de una exportacion futura.',
+      'Las funciones de exportación, descarga o portabilidad pueden variar según módulo, permisos, formato y plan. El usuario debe mantener sus propios respaldos y verificar la integridad de cada exportación.',
       'Cuando existan funciones de exportacion, el usuario sera responsable de verificar que los archivos exportados sean completos, legibles, actuales y suficientes. La exportacion no garantiza valor probatorio, integridad certificada, sello de tiempo, firma electronica avanzada ni aceptacion por autoridades.',
-      'Si la beta termina, el Titular podra establecer un periodo razonable de descarga o migracion cuando sea tecnicamente posible, pero no garantiza conservacion indefinida si el usuario no actua dentro del plazo comunicado.',
+      'Si el servicio termina, el Titular procurará establecer un periodo razonable de descarga o migración cuando sea técnicamente posible, sin garantizar conservación indefinida si el usuario no actúa dentro del plazo comunicado.',
     ],
   },
   {
@@ -373,11 +373,11 @@ export const legalTermSections: LegalTermSection[] = [
     ],
   },
   {
-    title: 'Cuartilla 46. Suscripciones futuras y prueba limitada',
+    title: 'Cuartilla 46. Suscripciones, renovación y prueba limitada',
     body: [
-      'El Titular podra implementar una version limitada gratuita, periodo de prueba de diez dias, planes de pago mensual, version ilimitada, modulos premium, limites por numero de despachos, expedientes, usuarios, almacenamiento, archivos o funciones. Estas condiciones se definiran en comunicados, pagina de precios o contrato actualizado.',
-      'La descarga inicial o acceso beta no garantiza precio preferente indefinido, acceso ilimitado, permanencia gratuita ni congelamiento de condiciones. El Titular podra ajustar precios por costos de infraestructura, soporte, almacenamiento, seguridad, proveedores, mercado o mejora del producto.',
-      'Cuando se active cobro recurrente, el usuario debera aceptar condiciones especificas de pago, cancelacion, renovacion, facturacion, impuestos y reembolsos. Hasta entonces, cualquier texto de precios futuros es preparatorio y sujeto a cambio.',
+      'El Titular podrá ofrecer una versión gratuita, prueba temporal, planes mensuales, módulos premium y límites por despachos, colaboradores, almacenamiento o funciones. Cada oferta indicará las condiciones vigentes antes de que el usuario proporcione datos de pago o confirme la contratación.',
+      'Una renovación automática requerirá consentimiento expreso. Se enviará el aviso previo exigible, incluyendo al menos el recordatorio legal aplicable antes del cobro recurrente, y se facilitará la cancelación inmediata sin penalización indebida. La cancelación impedirá cobros posteriores, pero no revierte automáticamente servicios ya consumidos ni obligaciones válidamente generadas.',
+      'Los cambios de precio se notificarán antes de la renovación afectada. El usuario podrá no renovar si no acepta el nuevo importe. Los reembolsos se resolverán conforme a la oferta, el medio de pago y los derechos imperativos aplicables.',
     ],
   },
   {
@@ -392,24 +392,32 @@ export const legalTermSections: LegalTermSection[] = [
     title: 'Cuartilla 48. Cesion, subcontratacion y cambios del proyecto',
     body: [
       'El Titular podra subcontratar servicios tecnicos, migrar proveedores, cambiar infraestructura, asociarse, transferir activos, crear una persona moral, vender el proyecto, licenciar la tecnologia o reorganizar la operacion, siempre procurando respetar derechos legales aplicables y avisos de privacidad.',
-      'El usuario no podra ceder su cuenta, licencia, acceso beta o permisos sin autorizacion, salvo que la funcion de despacho permita invitar colaboradores. La cuenta es personal y el usuario responde por actividad realizada con sus credenciales.',
+      'El usuario no podrá ceder su cuenta, licencia o permisos sin autorización, salvo que la función de despacho permita invitar colaboradores. La cuenta es personal y el usuario responde por la actividad realizada con sus credenciales.',
       'Si en el futuro el proyecto pasa de persona fisica a persona moral, estos Terminos podran actualizarse para reflejar al nuevo responsable contractual, sin afectar derechos irrenunciables ni obligaciones ya generadas.',
     ],
   },
   {
     title: 'Cuartilla 49. Ley aplicable, competencia y medios alternos',
     body: [
-      'En lo no previsto y en la medida que corresponda, estos Terminos se interpretaran conforme a la legislacion mexicana aplicable y, para aspectos civiles locales, tomando como referencia el Estado de Coahuila de Zaragoza. Cuando proceda, las partes procuraran resolver controversias mediante comunicacion directa y buena fe antes de acudir a autoridades.',
-      'Salvo derechos irrenunciables, normas de consumo, competencia territorial obligatoria o disposiciones especiales, las partes podran someterse a los tribunales competentes del Estado de Coahuila de Zaragoza para controversias civiles relacionadas con estos Terminos.',
-      'Si una controversia corresponde a PROFECO, autoridad de datos personales, autoridad judicial, autoridad administrativa o autoridad especializada por disposicion legal, estos Terminos no impediran el ejercicio de los derechos o acciones que la ley conceda.',
+      'Estos Términos se rigen por la legislación mexicana. Las partes procurarán primero una solución directa y de buena fe, sin que ese acercamiento suspenda plazos legales ni sea requisito para acudir a una autoridad cuando la ley permita acción inmediata.',
+      'Salvo competencia territorial obligatoria, derechos de consumo o disposiciones especiales, las controversias civiles podrán someterse a los tribunales competentes de Torreón, Coahuila de Zaragoza. Esta elección no obliga a una persona consumidora a renunciar al foro que la ley le reconozca.',
+      'Nada impide acudir a PROFECO, a la autoridad competente en protección de datos personales, a autoridades judiciales, administrativas o especializadas. El arbitraje o mediación solo procederá mediante consentimiento válido y separado cuando corresponda.',
     ],
   },
   {
     title: 'Cuartilla 50. Integridad, supervivencia y lectura completa',
     body: [
-      'Estos Terminos, junto con el aviso de privacidad, politicas de precios, comunicados de beta, condiciones de plan, licencias de terceros y avisos dentro de la aplicacion, integran el acuerdo aplicable al uso de Judicial Managment. Si existe contrato escrito separado firmado por el Titular y el usuario, ese contrato prevalecera en lo expresamente pactado.',
-      'Las clausulas sobre propiedad intelectual, confidencialidad, limitacion de responsabilidad, perdida de datos, respaldos, indemnidad, ley aplicable, datos personales, suspension, terminacion y defensa de derechos subsistiran aun despues de que el usuario deje de usar la aplicacion.',
-      'El usuario declara haber tenido oportunidad de leer estos Terminos antes de usar la aplicacion. Si no entiende alguna disposicion, debe abstenerse de usar el sistema o solicitar asesoria independiente. El uso continuo constituye aceptacion informada dentro de los limites permitidos por la ley.',
+      'Estos Términos, el aviso de privacidad, la oferta o plan contratado, las licencias de terceros y los avisos incorporados por referencia integran el acuerdo aplicable. Si existe un contrato separado firmado por las partes, prevalecerá únicamente sobre las materias que regule expresamente.',
+      'Las cláusulas de propiedad intelectual, confidencialidad, límites válidos de responsabilidad, respaldos, indemnidad, datos personales, suspensión, terminación y defensa de derechos subsistirán en la medida necesaria por su naturaleza. La nulidad parcial no invalida el resto del contrato.',
+      'El usuario declara haber tenido oportunidad real de consultar y conservar estos Términos antes de aceptar. Este documento es un borrador contractual preparado para revisión jurídica profesional y deberá ser validado por un abogado mexicano antes de una distribución comercial abierta.',
+    ],
+  },
+  {
+    title: 'Cuartilla 51. Referencias normativas y criterio de interpretación',
+    body: [
+      'La redacción considera, entre otras disposiciones, los artículos aplicables del Código Civil Federal sobre daños, caso fortuito y regulación convencional de responsabilidad; los artículos del Código de Comercio relativos a mensajes de datos; la Ley Federal de Protección al Consumidor en materia de comercio electrónico, contratos de adhesión, cláusulas inválidas, cobros recurrentes y cancelación; y la Ley Federal de Protección de Datos Personales en Posesión de los Particulares sobre principios, aviso de privacidad, seguridad, confidencialidad y derechos ARCO.',
+      'Las referencias legales son informativas y no sustituyen la revisión de reformas, criterios administrativos, jurisprudencia, reglas fiscales, disposiciones locales ni circunstancias concretas del modelo comercial. Prevalecerá siempre el texto oficial vigente y la interpretación de la autoridad competente.',
+      'Antes de habilitar pagos al público, el Titular deberá completar y validar con su abogado la identidad contractual, domicilio y teléfono de contacto, datos fiscales, política de cancelación y reembolso, aviso de privacidad integral, tratamiento de datos sensibles, encargados, transferencias y cualquier requisito de registro de contrato de adhesión que resulte aplicable.',
     ],
   },
 ]
