@@ -861,15 +861,16 @@ function LandingPage({ session }: LandingPageProps) {
           <div className="product-hero-copy">
             <p className="product-kicker">
               <Scale size={17} />
-              Software juridico de escritorio
+              Software jurídico de escritorio
             </p>
             <h1>
               <span>Judicial</span>
+              {' '}
               <strong>Managment</strong>
             </h1>
             <p className="product-lead">
               Controla expedientes, clientes, movimientos, calendario, documentos y
-              colaboracion interna desde una aplicacion profesional para despachos.
+              colaboración interna desde una aplicación profesional para despachos.
             </p>
 
             <div id="descargas" className="product-downloads" aria-label="Descargas">
