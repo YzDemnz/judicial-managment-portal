@@ -66,6 +66,11 @@ function pagePath(path = '/') {
   return cleanPath === '/' ? `${cleanBase || '/'}` : `${cleanBase}${cleanPath}`
 }
 
+function normalizeAppPath(path: string) {
+  if (!path || path === '/') return '/'
+  return path.replace(/\/+$/, '') || '/'
+}
+
 const PORTAL_VERSION = '3.3.5'
 
 function publicPagePath(path = '/') {
@@ -155,10 +160,10 @@ function currentAppPath() {
   const pathname = window.location.pathname
 
   if (cleanBase && pathname.startsWith(cleanBase)) {
-    return pathname.slice(cleanBase.length) || '/'
+    return normalizeAppPath(pathname.slice(cleanBase.length) || '/')
   }
 
-  return pathname
+  return normalizeAppPath(pathname)
 }
 
 const WINDOWS_DOWNLOAD_URL =
