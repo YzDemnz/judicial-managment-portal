@@ -1,32 +1,38 @@
-# Judicial Managment Web
+# Judicial Managment · Portal
 
-Pagina web de distribucion controlada para Judicial Managment.
+Portal web de acceso y distribución de Judicial Managment, desarrollado con React, TypeScript y Vite.
 
-Incluye:
+## Funciones
 
-- pagina de descarga del instalador Windows;
-- registro e inicio de sesion con Supabase Auth;
-- confirmacion de correo con `?auth=confirm`;
-- botones para descargar o abrir la app de escritorio.
+- Presentación del producto y acceso a la descarga de escritorio.
+- Registro e inicio de sesión.
+- Retorno de confirmación de correo mediante `?auth=confirm`.
+- Enlaces para descargar o abrir la aplicación de escritorio.
 
 ## Desarrollo local
 
 ```powershell
-npm install
+npm ci
 npm run dev
 ```
 
-Abrir `http://127.0.0.1:5173/`.
+La aplicación se sirve por defecto en `http://127.0.0.1:5173/`.
 
-## Entorno
-
-Copiar `.env.example` a `.env.local` y poner las credenciales publicas de Supabase:
+Copiar `.env.example` a `.env.local` y configurar el backend del entorno:
 
 ```env
-VITE_SUPABASE_URL=https://TU-PROYECTO.supabase.co
-VITE_SUPABASE_ANON_KEY=TU_ANON_KEY_PUBLICA
+VITE_SUPABASE_URL=https://your-project.supabase.co
+VITE_SUPABASE_ANON_KEY=your-public-anon-key
 ```
 
-## Produccion
+La clave pública del cliente depende de las políticas del backend. No utilizar credenciales de administración ni publicar `.env.local`.
 
-Ver [BETA_DEPLOYMENT.md](./BETA_DEPLOYMENT.md).
+## Construcción
+
+`npm run build` sincroniza la versión del portal, comprueba TypeScript y genera la aplicación estática con su fallback de rutas. `npm run preview` sirve la construcción local. El procedimiento de publicación se documenta en [BETA_DEPLOYMENT.md](BETA_DEPLOYMENT.md).
+
+## Estructura y alcance
+
+`src/App.tsx` contiene la interfaz; `src/lib/` la conexión a servicios; `scripts/` las tareas de construcción y distribución. Este repositorio corresponde al portal, separado de la aplicación jurídica y del cliente móvil. Autenticación, retornos y descargas requieren una configuración de despliegue válida.
+
+[GitHub del desarrollador](https://github.com/YzDemnz) · [CV y portafolio](https://yzdemnz.github.io/cv-portafolio/)
